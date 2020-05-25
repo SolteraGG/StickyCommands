@@ -11,7 +11,7 @@ node('docker-cli') {
       checkout scm
       
       // Download BuildTools and required dependencies.
-      sh 'apt-get update && apt-get install git wget -y && git config --global --unset core.autocrlf && wget -O https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar'
+      sh 'apt-get update && apt-get install git wget -y && wget -O https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar'
       
     }
     
