@@ -11,12 +11,12 @@ node('docker-cli') {
       checkout scm
       
       // Download BuildTools and required dependencies.
-      sh 'apt-get update && apt-get install git wget -y && wget -O https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar'
+      sh 'mkdir -p libs && cd libs && apt-get update && apt-get install git wget -y && wget -O https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar'
       
     }
     
     stage('Setup (BuildTools)') {
-      sh 'mkdir -p libs && cd libs && java -jar BuildTools.jar --rev 1.15.2'
+      sh 'cd libs && java -jar BuildTools.jar --rev 1.15.2'
     }
 
     stage('Build') {
