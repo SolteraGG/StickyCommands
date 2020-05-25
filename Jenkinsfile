@@ -22,7 +22,7 @@ node('docker-cli') {
     stage('Build') {
       sh 'mvn clean install'
         
-      archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+      archiveArtifacts artifacts: 'target/StickyCommands-*.jar', fingerprint: true
 				
       ghSetStatus("The build passed.", "success", "ci")
     }
