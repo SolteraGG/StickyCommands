@@ -67,7 +67,7 @@ public class Item {
     public static double getItem(String item) {
         getItems();
         double worth = Item.CustomConfig.getDouble(item);
-
+      
         if (worth == 0) {
             return GeneralizeItem(item);
         }
@@ -94,7 +94,6 @@ public class Item {
         }
         return false;
     } 
-
     /**
      * Get the configuration object for messages.yml
      * 
