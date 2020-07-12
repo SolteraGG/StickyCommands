@@ -18,6 +18,10 @@ public class Item {
         "white", "orange", "magenta", "lightblue", "yellow", "lime", "pink", "gray", "lightgray", "cyan", "purple", "blue", "brown", "green", "red", "black", "oak", "spruce", "birch", "jungle", "acacia", "darkoak"
     };
 
+    private static String[] durItemPool = {
+        "helmet", "tunic", "chestplate", "leggings", "boots", "axe", "shovel", "sword", "hoe"
+    };
+
     // Initialized by our GetMessages() function.
     protected Item() {
         String worthFile = self.getConfig().getString("general.worthFile", "worth.yml");
@@ -63,6 +67,7 @@ public class Item {
     public static double getItem(String item) {
         getItems();
         double worth = Item.CustomConfig.getDouble(item);
+
         if (worth == 0) {
             return GeneralizeItem(item);
         }
@@ -80,6 +85,15 @@ public class Item {
 
         return 0;
     }
+
+    public static boolean HasDurability(String item) {
+        for(String s : durItemPool) {
+            if(item.endsWith(s)) {
+                return true;
+            }
+        }
+        return false;
+    } 
 
     /**
      * Get the configuration object for messages.yml

@@ -17,6 +17,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.v1_16_R1.inventory.CraftItemStack;
+import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -27,9 +28,6 @@ public class SellCommand implements CommandExecutor {
             return User.PermissionDenied(sender, "stickycommands.sell");
 
         Player player = (Player) sender;
-
-        if (args.length < 1)
-            return User.invalidSyntax(sender);
 
         ItemStack is = player.getInventory().getItemInMainHand();
         ItemStack[] invent = player.getInventory().getContents();
@@ -45,8 +43,25 @@ public class SellCommand implements CommandExecutor {
         // Create an NBTTagCompound to access raw NBT data.
         NBTTagCompound isCompound = (nmsis.hasTag()) ? nmsis.getTag() : new NBTTagCompound();
         
+        // If the item has durability, calculate the
+        // price depending on durability.
+        double percentage = 100.00;
+        if(Item.HasDurability(iss)) {
+            double maxDur = is.getType().getMaxDurability();
+            double currDur = maxDur - is.getDurability(); 
+            percentage = Math.round((currDur / maxDur) * 100.00) / 100.00;
+
+            if((currDur / maxDur) < 0.4) {
+                isd = 0;
+            } else {
+                isd = Math.round((isd * percentage) * 100.00) / 100.00;
+            }
+
+        }
+        
         // Defaults to false (?) - check required
         // If the item was marked as not sellable, set the price to 0.0 to prevent selling.
+
         isd = (isCompound.getBoolean("notsellable")) ? 0.0 : isd;
         
         // ----- Check NBT Data END -----
@@ -61,6 +76,7 @@ public class SellCommand implements CommandExecutor {
         // "Fucking Java" - DDD Staff 2020
         final int isaFinal = isa;
         final double isdFinal = isd;
+        final double percentageFinal = percentage;
         try {
             Map<String, String> var = new TreeMap<String, String>(String.CASE_INSENSITIVE_ORDER) {
                 {
@@ -74,51 +90,56 @@ public class SellCommand implements CommandExecutor {
                 return false;
             }
 
-            if (args.length >= 1) {
-                if (args[0].equalsIgnoreCase("hand")) {
-                    if (!PermissionUtil.Check(sender, "stickycommands.sell.hand", false))
-                        return User.PermissionDenied(sender, "stickycommands.sell.hand");
-                    Map<String, String> Variables = new TreeMap<String, String>(String.CASE_INSENSITIVE_ORDER) {
-                        {
-                            put("player", player.getName());
-                            put("amount", String.valueOf(is.getAmount()));
-                            put("worth", String.valueOf(is.getAmount() * isdFinal));
+            if (args.length == 0 || args[0].equalsIgnoreCase("hand")) {
+                if (!PermissionUtil.Check(sender, "stickycommands.sell.hand", false))
+                    return User.PermissionDenied(sender, "stickycommands.sell.hand");
+                Map<String, String> Variables = new TreeMap<String, String>(String.CASE_INSENSITIVE_ORDER) {
+                    {
+                        put("player", player.getName());
+                        put("amount", String.valueOf(is.getAmount()));
+                        put("worth", String.valueOf(is.getAmount() * isdFinal));
+                        if(!Item.HasDurability(iss)) {
                             put("item", iss);
+                        } else {
+                            put("item", iss + " (" + percentageFinal * 100.0 + "% durability)");
                         }
-                    };
-                    Main.getEconomy().depositPlayer(player, is.getAmount() * isd);
-                    player.sendMessage(Messages.Translate("sellMessage", Variables));
-                    player.getInventory().getItemInMainHand().setAmount(0);
-                    return true;
-                }
-                if ((args[0].equalsIgnoreCase("inventory") || args[0].equalsIgnoreCase("inv")
-                        || args[0].equalsIgnoreCase("invent"))
-                        || args.length > 1 && args[0].equalsIgnoreCase("all") && args[1].equalsIgnoreCase("hand")) {
-                    if (!PermissionUtil.Check(sender, "stickycommands.sell.inventory", false))
-                        return User.PermissionDenied(sender, "stickycommands.sell.inventory");
-                    Map<String, String> Variables = new TreeMap<String, String>(String.CASE_INSENSITIVE_ORDER) {
-                        {
-                            put("player", player.getName());
-                            put("amount", String.valueOf(isaFinal));
-                            put("worth", String.valueOf(isdFinal * isaFinal));
-                            put("item", iss);
-                        }
-                    };
-                    Main.getEconomy().depositPlayer(player, isd * isaFinal);
-                    player.sendMessage(Messages.Translate("sellMessage", Variables));
-                    consumeItem(player, isaFinal, is.getType());
-                    return true;
-                }
-                if (args.length == 1 && args[0].equalsIgnoreCase("all")) {
-                    sender.sendMessage(ChatColor.RED + "Sorry! This hasn't been added yet!");
+                    }
+                };
+                Main.getEconomy().depositPlayer(player, is.getAmount() * isd);
+                player.sendMessage(Messages.Translate("sellMessage", Variables));
+                player.getInventory().getItemInMainHand().setAmount(0);
+                return true;
+            } else if ((args[0].equalsIgnoreCase("inventory") || args[0].equalsIgnoreCase("inv")
+                    || args[0].equalsIgnoreCase("invent"))
+                    || args.length > 1 && args[0].equalsIgnoreCase("all") && args[1].equalsIgnoreCase("hand")) {
+
+                sender.sendMessage(ChatColor.RED + "Sorry! This hasn't been added yet!");
+                return true;
+
+                //not ready for launch, disabled
+                /*if (!PermissionUtil.Check(sender, "stickycommands.sell.inventory", false))
+                    return User.PermissionDenied(sender, "stickycommands.sell.inventory");
+                Map<String, String> Variables = new TreeMap<String, String>(String.CASE_INSENSITIVE_ORDER) {
+                    {
+                        put("player", player.getName());
+                        put("amount", String.valueOf(isaFinal));
+                        put("worth", String.valueOf(isdFinal * isaFinal));
+                        put("item", iss);
+                    }
+                };
+                Main.getEconomy().depositPlayer(player, isd * isaFinal);
+                player.sendMessage(Messages.Translate("sellMessage", Variables));
+                consumeItem(player, isaFinal, is.getType());
+                return true; */
+            } else if (args[0].equalsIgnoreCase("all")) {
+                sender.sendMessage(ChatColor.RED + "Sorry! This hasn't been added yet!");
 /*                     double d = 0;
-                    for (ItemStack s : invent) {
-                        if (s != null) {
-                            d = d + Item.getItem(s.getType().toString().replace("_", "").toLowerCase());
-                        }
-                    } */
-                    return true;
-                }
+                for (ItemStack s : invent) {
+                    if (s != null) {
+                        d = d + Item.getItem(s.getType().toString().replace("_", "").toLowerCase());
+                    }
+                } */
+                return true;
             }
 
         } catch (Exception e) {
