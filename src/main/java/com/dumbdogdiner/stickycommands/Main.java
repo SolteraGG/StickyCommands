@@ -1,159 +1,224 @@
 package com.dumbdogdiner.stickycommands; // package owo
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import com.dumbdogdiner.stickycommands.utils.*;
-import com.google.common.io.ByteArrayDataInput;
-import com.google.common.io.ByteStreams;
-import com.dumbdogdiner.stickycommands.commands.*;
-import com.dumbdogdiner.stickycommands.listeners.*;
+import com.dumbdogdiner.stickycommands.commands.Jump;
+import com.dumbdogdiner.stickycommands.commands.Kill;
+import com.dumbdogdiner.stickycommands.utils.Database;
+import com.ristexsoftware.knappy.Knappy;
+import com.ristexsoftware.knappy.bukkit.command.AsyncCommand;
+import com.ristexsoftware.knappy.cache.Cache;
+import com.ristexsoftware.knappy.translation.LocaleProvider;
+import com.ristexsoftware.knappy.util.ReflectionUtil;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Server;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandMap;
 import org.bukkit.entity.Player;
-
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.plugin.messaging.PluginMessageListener;
 
+import lombok.Getter;
 import net.milkbowl.vault.economy.Economy;
-public class Main extends JavaPlugin implements PluginMessageListener {
-    // For some reason using Futures with the Bukkit Async scheduler doesn't work.
-    // Instead of relying on dumb bukkit APIs to get tasks done, we use a thread
-    // pool of
-    // our own control to get whatever we want done.
-    public static ExecutorService pool = Executors.newFixedThreadPool(3);
-    public static HashMap<UUID, User> USERS = new HashMap<UUID, User>();
 
-    public Boolean sqlError = false;
-    public static CompletableFuture<String> serverName;
-    private static Economy econ = null;
+public class Main extends JavaPlugin {
 
+    /**
+     * The singleton instance of the plugin.
+     */
+    @Getter
+    private static Main instance;
+
+    /**
+     * Thread pool for the execution of asynchronous tasks.
+     */
+    @Getter
+    private ExecutorService pool = Executors.newFixedThreadPool(3);
+
+    /**
+     * Cache of all online users.
+     */
+    @Getter
+    private Cache<User> onlineUserCache = new Cache<>(User.class);
+
+    /**
+     * The current vault economy instance.
+     */
+    @Getter
+    private Economy economy = null;
+
+    @Getter
+    private LocaleProvider localeProvider;
+
+    /**
+     * The database connected
+     */
+    @Getter
+    Database database;
+
+    List<Command> commandList = new ArrayList<Command>();
+
+    @Override
+    public void onLoad() {
+        instance = this;
+    }
+
+    @Override
     public void onEnable() {
+        if (!setupConfig())
+        return;
+        
+        if (!setupLocale())
+        return;
 
-        // Plugin startup logic
-        new Configuration(this.getConfig());
-        if (!setupEconomy() ) {
-            getLogger().severe(String.format("[%s] - Disabled economy commands due to no Vault dependency found!", getDescription().getName()));
+        if (!setupEconomy())
+            getLogger().severe("Disabled economy commands due to no Vault dependency found!");
+
+        // this.database = new Database();
+        // database.createMissingTables();
+
+        // Set our thread pool
+        Knappy.setPool(pool);
+
+        // Register currently online users - in case of a reload.
+        // (stop reloading spigot, please.)
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            this.onlineUserCache.put(User.fromPlayer(player));
         }
 
-        // Creating config folder, and adding config to it.
-        if (!this.getDataFolder().exists()) {
-            // Sticky~
-            getLogger().info("Error: No folder for StickyCommands was found! Creating...");
-            this.getDataFolder().mkdirs();
-            this.saveDefaultConfig();
-            getLogger().severe("Please configure StickyCommands and restart the server! :)");
-            // return;
-        }
-
-        if (!(new File(this.getDataFolder(), "config.yml").exists())) {
-            this.saveDefaultConfig();
-            getLogger().severe("Please configure StickyCommands and restart the server! :)");
-            // They're not gonna have their database setup, just exit. It stops us from
-            // having errors.
-            // return;
-        }
-        DebugUtil.sendDebug("Config successfully loaded", this.getClass(), DebugUtil.getLineNumber());
-
-        // Initialize our database connections.
-        if (!DatabaseUtil.initDatabase())
-            getLogger().severe("Database failed to connect! Disabling seen and speed commands and login events");
-        else {
-            DebugUtil.sendDebug("Database connected successfully, registering /seen and /speed commands and connection listeners", this.getClass(), DebugUtil.getLineNumber());
-            this.getCommand("seen").setExecutor(new SeenCommand());
-            this.getCommand("speed").setExecutor(new SpeedCommand());
-            getServer().getPluginManager().registerEvents(new PlayerConnectionListeners(), this);
-        }
-
-        DebugUtil.sendDebug("Grabbing messages", this.getClass(), DebugUtil.getLineNumber());
-        // Make sure our messages file exists
-        Messages.GetMessages();
-
-        DebugUtil.sendDebug("Grabbing item worth values", this.getClass(), DebugUtil.getLineNumber());
-        // Grab the worth values for our items
-        Item.getItems();
-
-        if (this.getConfig().getBoolean("general.allowSelling")) {
-            DebugUtil.sendDebug("Attempting to disabled /sell and /worth", this.getClass(), DebugUtil.getLineNumber());
-            this.getCommand("worth").setExecutor(new WorthCommand());
-            this.getCommand("sell").setExecutor(new SellCommand());
-            getLogger().info("Worth and selling commands are disabled in this server, skipping commmand registration");
-        }
-
-        DebugUtil.sendDebug("Attempting to register listeners", this.getClass(), DebugUtil.getLineNumber());
-        getServer().getPluginManager().registerEvents(new PlayerMovementListener(), this);
-        getServer().getPluginManager().registerEvents(new PlayerInteractionListener(), this);
-
-        for (Player p : Bukkit.getOnlinePlayers()) {
-            USERS.put(p.getUniqueId(), new User(p));
-        }
-
-        DebugUtil.sendDebug("Attempting to register commands", this.getClass(), DebugUtil.getLineNumber());
-        this.getCommand("top").setExecutor(new TopCommand());
-        this.getCommand("jump").setExecutor(new JumpCommand());
-        this.getCommand("stickycommands").setExecutor(new StickyCommand());
-        this.getCommand("smite").setExecutor(new SmiteCommand());
-        this.getCommand("afk").setExecutor(new AFKComand());
-        this.getCommand("hat").setExecutor(new HatCommand());
-        this.getCommand("item").setExecutor(new ItemCommand());
-        this.getCommand("item").setTabCompleter(new ItemCommand());
-        this.getCommand("memory").setExecutor(new MemoryCommand());
-
-        this.getCommand("boop").setExecutor(new BoopCommand());
-        this.getCommand("boop").setPermission("stickycommands.boop"); // Lets make sure this command doesn't exist for people without permissions
-
-        this.getCommand("whip").setExecutor(new WhipCommand());
-        this.getCommand("kill").setExecutor(new KillCommand());
-        this.getCommand("powertool").setExecutor(new PowertoolCommand());
-        this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
-        this.getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", this);
+        if (!registerCommands())
+            return;
 
         getLogger().info("StickyCommands started successfully!");
     }
 
     @Override
     public void onDisable() {
-        // Save our config values
-        reloadConfig();
-        // Close out or database.
-        DatabaseUtil.Terminate();
+        saveConfig(); // Save our config
+        // database.terminate(); // Terminate our database connection
     }
 
-    public void onPluginMessageReceived(String channel, Player player, byte[] message) {
-        if (!channel.equals("BungeeCord")) {
-            return;
-        }
-        ByteArrayDataInput in = ByteStreams.newDataInput(message);
-        String subchannel = in.readUTF();
-
-        if(subchannel.equals("GetServer")) {
-            String name = in.readUTF();
-
-            if (Main.serverName == null)
-                Main.serverName = new CompletableFuture<>();
-
-            Main.serverName.complete(name);
-        }
-    }
-
-    public static Economy getEconomy() {
-        return econ;
-    }
-
+    /**
+     * Setup the vault economy instance.
+     */
     private boolean setupEconomy() {
-        if (getServer().getPluginManager().getPlugin("Vault") == null) {
-            return false;
-        }
+        if (getServer().getPluginManager().getPlugin("Vault") == null) return false;
+        
         RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-        if (rsp == null) {
+        if (rsp == null) return false;
+        
+        this.economy = rsp.getProvider();
+        return economy != null;
+    }
+
+    
+    /**
+     * Setup the configuration files
+     */
+    boolean setupConfig() {
+        // Creating config folder, and adding config to it.
+        if (!this.getDataFolder().exists()) {
+            // Sticky~
+            getLogger().severe("Error: No folder for StickyCommands was found! Creating...");
+            this.getDataFolder().mkdirs();
+            this.saveDefaultConfig();
+            getLogger().severe("Please configure StickyCommands and restart the server! :)");
             return false;
         }
-        econ = rsp.getProvider();
-        return econ != null;
+        
+        if (!(new File(this.getDataFolder(), "config.yml").exists())) {
+            this.saveDefaultConfig();
+            getLogger().severe("Please configure StickyCommands and restart the server! :)");
+            // They're not gonna have their database setup, just exit. It stops us from
+            // having errors.
+            return false;
+        }
+        return true;
+    }
+    
+    /**
+     * Setup the locale provider and default variables
+     */
+    boolean setupLocale() {
+        this.localeProvider = new LocaleProvider(new File(getDataFolder(), "locale"));
+        
+        int loadedLocales = this.localeProvider.loadAllLocales();
+        Boolean localeEnabled = this.localeProvider.setDefaultLocale("messages.en_us");
+        
+        if (!localeEnabled) {
+            getLogger()
+            .severe("Failed to configure default locale file - perhaps you deleted it? Will create a new one.");
+            // This is horrible and needs to be improved
+            try {
+                this.localeProvider.writeLocaleStream(getResource("messages.en_us.yml"), "messages.en_us.yml", true);
+            } catch (Exception e) {
+                e.printStackTrace();
+                getLogger().severe("Something went horribly wrong while saving the default locale.");
+                return false;
+            }
+            
+            this.localeProvider.loadAllLocales();
+            this.localeProvider.setDefaultLocale("messages.en_us");
+        } else
+        getLogger().info("Loaded " + String.valueOf(loadedLocales) + " localizations");
+        
+        this.localeProvider.registerDefaultTranslation("prefix", "prefix", "[dddMC]");
+        this.localeProvider.registerDefaultTranslation("network-name", "networkName", "Dumb Dog Diner");
+        this.localeProvider.registerDefaultTranslation("website", "website", "dumbdogdiner.com");
+        this.localeProvider.registerDefaultTranslation("server-error", "serverError", "The server encountered an error!");
+        this.localeProvider.registerDefaultTranslation("invalid-syntax", "invalidSyntax", "&cInvalid Syntax!");
+        
+        return true;
+    }
+
+    /**
+     * Register all the commands!
+     */
+    boolean registerCommands() {
+        // Register economy based commands only if the economy provider is not null.
+        if (economy != null) {
+
+        }
+        commandList.add(new Kill(this));
+        commandList.add(new Jump(this));
+
+        CommandMap cmap = ReflectionUtil.getProtectedValue(Bukkit.getServer(), "commandMap");
+        cmap.registerAll(this.getName().toLowerCase(), commandList);
+        return true;
+    }
+
+    // Before you get mad, just remember this knob named md_5 couldn't help but make Bukkit the worst Minecraft API
+    // and while making it, didn't add a way of getting the server's TPS without NMS or reflection.
+    // Special thanks to this guy who saved me all of 5 minutes! https://gist.github.com/vemacs/6a345b2f9822b79a9a7f
+    
+    private static Object minecraftServer;
+    private static Field recentTps; 
+
+    /**
+     * Get the server's recent TPS
+     * @return {@link java.lang.Double} The server TPS in the last 15 minutes (1m, 5m, 15m)
+     */
+    public double[] getRecentTps() {
+        try {
+            if (minecraftServer == null) {
+                Server server = Bukkit.getServer();
+                Field consoleField = server.getClass().getDeclaredField("console");
+                consoleField.setAccessible(true);
+                minecraftServer = consoleField.get(server);
+            }
+            if (recentTps == null) {
+                recentTps = minecraftServer.getClass().getSuperclass().getDeclaredField("recentTps");
+                recentTps.setAccessible(true);
+            }
+            return (double[]) recentTps.get(minecraftServer);
+        } catch (IllegalAccessException | NoSuchFieldException ignored) {
+        }
+        return new double[] {0, 0, 0}; // If there's an issue, let's make it known.
     }
 }
