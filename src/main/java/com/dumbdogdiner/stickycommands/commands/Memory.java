@@ -53,7 +53,11 @@ public class Memory extends AsyncCommand {
             variables.put("loaded_chunks", String.valueOf(player.getWorld().getLoadedChunks().length));
             variables.put("entities", String.valueOf(player.getWorld().getEntities().size()));
             variables.put("world", player.getWorld().getName());
-            variables.put("uptime", String.valueOf(new Timestamp(Main.getInstance().getUpTime()*1000L)));
+            System.out.println(Main.getInstance().getUpTime());
+            System.out.println(System.currentTimeMillis());
+            System.out.println(new Timestamp(Main.getInstance().getUpTime()));
+            System.out.println(new Timestamp(System.currentTimeMillis()));
+            variables.put("uptime", String.valueOf(TimeUtil.getUnixTime() - Main.getInstance().getUpTime()));
             variables.put("uptime_long", String.valueOf(Main.getInstance().getUpTime()));
             sender.sendMessage(locale.translate("memory-message", variables));
         } catch (Exception e) {
