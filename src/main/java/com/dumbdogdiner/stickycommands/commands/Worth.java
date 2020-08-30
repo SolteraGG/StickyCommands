@@ -14,6 +14,12 @@ public class Worth extends AsyncCommand {
     }
 
     @Override
+    public int executeCommand(CommandSender sender, String commandLabel, String[] args) {
+
+        return 0;
+    }
+
+    @Override
     public void onSyntaxError(CommandSender sender, String label, String[] args) {
     }
 
@@ -26,11 +32,4 @@ public class Worth extends AsyncCommand {
     public void onError(CommandSender sender, String label, String[] args) {
 
     }
-
-    @Override
-    public int executeCommand(CommandSender sender, String commandLabel, String[] args) {
-
-        return 0;
-    }
-    
 }

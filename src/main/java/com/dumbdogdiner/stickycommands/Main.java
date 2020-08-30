@@ -9,12 +9,14 @@ import java.util.concurrent.Executors;
 
 import com.dumbdogdiner.stickycommands.commands.Jump;
 import com.dumbdogdiner.stickycommands.commands.Kill;
+import com.dumbdogdiner.stickycommands.commands.Memory;
 import com.dumbdogdiner.stickycommands.utils.Database;
 import com.ristexsoftware.knappy.Knappy;
 import com.ristexsoftware.knappy.bukkit.command.AsyncCommand;
 import com.ristexsoftware.knappy.cache.Cache;
 import com.ristexsoftware.knappy.translation.LocaleProvider;
 import com.ristexsoftware.knappy.util.ReflectionUtil;
+import com.ristexsoftware.knappy.util.TimeUtil;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
@@ -33,34 +35,37 @@ public class Main extends JavaPlugin {
      * The singleton instance of the plugin.
      */
     @Getter
-    private static Main instance;
+    static Main instance;
 
     /**
      * Thread pool for the execution of asynchronous tasks.
      */
     @Getter
-    private ExecutorService pool = Executors.newFixedThreadPool(3);
+    ExecutorService pool = Executors.newFixedThreadPool(3);
 
     /**
      * Cache of all online users.
      */
     @Getter
-    private Cache<User> onlineUserCache = new Cache<>(User.class);
+    Cache<User> onlineUserCache = new Cache<>(User.class);
 
     /**
      * The current vault economy instance.
      */
     @Getter
-    private Economy economy = null;
+    Economy economy = null;
 
     @Getter
-    private LocaleProvider localeProvider;
+    LocaleProvider localeProvider;
 
     /**
      * The database connected
      */
     @Getter
     Database database;
+
+    @Getter
+    final Long upTime = TimeUtil.getUnixTime();
 
     List<Command> commandList = new ArrayList<Command>();
 
@@ -187,6 +192,7 @@ public class Main extends JavaPlugin {
         }
         commandList.add(new Kill(this));
         commandList.add(new Jump(this));
+        commandList.add(new Memory(this));
 
         CommandMap cmap = ReflectionUtil.getProtectedValue(Bukkit.getServer(), "commandMap");
         cmap.registerAll(this.getName().toLowerCase(), commandList);
