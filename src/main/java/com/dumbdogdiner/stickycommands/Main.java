@@ -10,6 +10,10 @@ import java.util.concurrent.Executors;
 import com.dumbdogdiner.stickycommands.commands.Jump;
 import com.dumbdogdiner.stickycommands.commands.Kill;
 import com.dumbdogdiner.stickycommands.commands.Memory;
+import com.dumbdogdiner.stickycommands.commands.PowerTool;
+import com.dumbdogdiner.stickycommands.commands.Top;
+import com.dumbdogdiner.stickycommands.listeners.PlayerInteractionListener;
+import com.dumbdogdiner.stickycommands.listeners.PlayerJoinListener;
 import com.dumbdogdiner.stickycommands.utils.Database;
 import com.ristexsoftware.knappy.Knappy;
 import com.ristexsoftware.knappy.bukkit.command.AsyncCommand;
@@ -96,6 +100,9 @@ public class Main extends JavaPlugin {
         for (Player player : Bukkit.getOnlinePlayers()) {
             this.onlineUserCache.put(User.fromPlayer(player));
         }
+
+        if (!registerEvents())
+            return;
 
         if (!registerCommands())
             return;
@@ -193,9 +200,17 @@ public class Main extends JavaPlugin {
         commandList.add(new Kill(this));
         commandList.add(new Jump(this));
         commandList.add(new Memory(this));
+        commandList.add(new Top(this));
+        commandList.add(new PowerTool(this));
 
         CommandMap cmap = ReflectionUtil.getProtectedValue(Bukkit.getServer(), "commandMap");
         cmap.registerAll(this.getName().toLowerCase(), commandList);
+        return true;
+    }
+
+    boolean registerEvents() {
+        getServer().getPluginManager().registerEvents(new PlayerInteractionListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
         return true;
     }
 

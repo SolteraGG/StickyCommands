@@ -11,7 +11,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 /**
  * Handles logic relating to players joining and leaving the server.
  */
-class PlayerJoinListener implements Listener {
+public class PlayerJoinListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
         Main.getInstance().getOnlineUserCache().put(User.fromPlayer(e.getPlayer()));

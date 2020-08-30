@@ -8,48 +8,48 @@ network-name: "&bDumb Dog Diner"
 website: "dumbdogdiner.com"
 
 # Common error messages used throughout the plugin
-invalid-syntax: "{PREFIX}&cInvalid Syntax!"
-server-error: "{PREFIX}&cThe server encountered an error, please try again later."
-no-permission: "{PREFIX}&cError! Permission denied!"
-player-does-not-exist: "{PREFIX}&cError! The player {PLAYER} does not exist!"
-player-has-not-joined: "{PREFIX}&cError! The player {PLAYER} has not joined before!"
-must-be-player: "{PREFIX}&cYou must be a player to execute this command!"
+invalid-syntax: "{prefix}&cInvalid Syntax!"
+server-error: "{prefix}&cThe server encountered an error, please try again later."
+no-permission: "{prefix}&cError! Permission denied!"
+player-does-not-exist: "{prefix}&cError! The player {PLAYER} does not exist!"
+player-has-not-joined: "{prefix}&cError! The player {PLAYER} has not joined before!"
+must-be-player: "{prefix}&cYou must be a player to execute this command!"
 
 # The config supports new lines (\n), it can be used on any node
-seen-message: "{PREFIX}&bPlayer: {PLAYER}\n{PREFIX}&bUUID: {UUID}\n{PREFIX}&bIP: {IPADDRESS}\n{PREFIX}&bFirst Login: {FIRSTLOGIN}\n{PREFIX}&bLast Login: {LASTLOGIN}\n{PREFIX}&bOnline: {ONLINE}\n{PREFIX}&bLast Server: {SERVER}\n{PREFIX}&bTimesConnected: {TIMESCONNECTED}"
-top-message: "{PREFIX}&bWoosh! You're at the top!"
-jump-message: "{PREFIX}&bWEEEEE!!!"
-speed-message: "{PREFIX}&bYour speed has been set to &5{SPEED}&b!"
+seen-message: "{prefix}&bPlayer: {PLAYER}\n{prefix}&bUUID: {UUID}\n{prefix}&bIP: {IPADDRESS}\n{prefix}&bFirst Login: {FIRSTLOGIN}\n{prefix}&bLast Login: {LASTLOGIN}\n{prefix}&bOnline: {ONLINE}\n{prefix}&bLast Server: {SERVER}\n{prefix}&bTimesConnected: {TIMESCONNECTED}"
+top-message: "{prefix}&bWoosh! You're at the top!"
+jump-message: "{prefix}&bWEEEEE!!!"
+speed-message: "{prefix}&bYour speed has been set to &f{SPEED}&b!"
 reload:
-  configs-success: "{PREFIX}&aReloaded configuration and messages successfully!"
-  database-success: "{PREFIX}&aReloaded configuration and messages successfully!"
-  error: "{PREFIX}&cThere was an error reloading StickyCommands, please see console for details!"
+  configs-success: "{prefix}&aReloaded configuration and messages successfully!"
+  database-success: "{prefix}&aReloaded configuration and messages successfully!"
+  error: "{prefix}&cThere was an error reloading StickyCommands, please see console for details!"
 
-you-smitted: "{PREFIX}&bYou smitted &f{PLAYER}&bat &f{LOCX}, {LOCY}, {LOCZ}!"
-you-were-smitten: "{PREFIX}&bThou hast been smitten!"
+you-smitted: "{prefix}&bYou smitted &f{PLAYER}&bat &f{LOCX}, {LOCY}, {LOCZ}!"
+you-were-smitten: "{prefix}&bThou hast been smitten!"
 
-cannot-sell: "{PREFIX}&cThis item cannot be sold!"
-worth-message: "{PREFIX}&51 {ITEM} &bis worth &5${SINGLEWORTH} &7(Hand: ${HANDWORTH}, Inventory: ${INVENTWORTH})"
-sell-message: "{PREFIX}&bYou sold &5{AMOUNT} {ITEM} &bfor &5${WORTH}&b!"
+cannot-sell: "{prefix}&cThis item cannot be sold!"
+worth-message: "{prefix}&f1 {ITEM} &bis worth &f${SINGLEWORTH} &7(Hand: ${HANDWORTH}, Inventory: ${INVENTWORTH})"
+sell-message: "{prefix}&bYou sold &f{AMOUNT} {ITEM} &bfor &f${WORTH}&b!"
 afk-message: "&7&o* {PLAYER} is now AFK!"
 not-afk-message: "&7&o* {PLAYER} is no longer AFK!"
 
 hat:
-  no-hat: "{PREFIX}&bYou do not have a hat!"
-  new-hat: "{PREFIX}&bEnjoy your new hat!"
-  remove-hat: "{PREFIX}&bYour hat has been removed!"
-item-message: "{PREFIX}&bGave you &5{AMOUNT} {ITEM}&b!"
-memory-message: "{PREFIX}&bServer performance \n&8&l» &bWorld: &f{world}\n&8&l» &bEntities: &f{entities}\n&8&l» &bLoaded Chunks: &f{loaded_chunks}\n&8&l» &bTPS: &f{tps_1m}, {tps_5m}, {tps_15m} (1m, 5m, 15m)\n&8&l» &bMemory: {memory_bar}\n&8&l» &bUptime: &f{uptime|duration}"
+  no-hat: "{prefix}&bYou do not have a hat!"
+  new-hat: "{prefix}&bEnjoy your new hat!"
+  remove-hat: "{prefix}&bYour hat has been removed!"
+item-message: "{prefix}&bGave you &f{AMOUNT} {ITEM}&b!"
+memory-message: "{prefix}&bServer performance \n&8&l» &bWorld: &f{world}\n&8&l» &bEntities: &f{entities}\n&8&l» &bLoaded Chunks: &f{loaded_chunks}\n&8&l» &bTPS: &f{tps_1m}, {tps_5m}, {tps_15m} (1m, 5m, 15m)\n&8&l» &bMemory: {memory_bar}\n&8&l» &bUptime: &f{uptime|duration}"
 
 kill:
-  you-were-killed: "{PREFIX}&bThou hast been slain!"
-  you-killed: "{PREFIX}&bYou killed {PLAYER}"
-  suicide: "{PREFIX}&bYou magically died!"
+  you-were-killed: "{prefix}&bThou hast been slain!"
+  you-killed: "{prefix}&bYou killed {PLAYER}"
+  suicide: "{prefix}&bYou magically died!"
 
 whip:
-  you-whipped: "{PREFIX}&bYou whipped &5{PLAYER}&b for &5{DAMAGE}&bhp &5{AMOUNT}&b times!"
-  were-whipped: "{PREFIX}&bOWWW!! That hurts!!!"
+  you-whipped: "{prefix}&bYou whipped &f{PLAYER}&b for &f{DAMAGE}&bhp &f{AMOUNT}&b times!"
+  were-whipped: "{prefix}&bOWWW!! That hurts!!!"
 
 powertool:
-  cleared: "{PREFIX}&bCleared your powertool!"
-  assigned: "{PREFIX}&bPowertool created with command &5\"{COMMAND}\""
+  cleared: "{prefix}&bCleared your powertool!"
+  assigned: "{prefix}&bPowertool created with command &f\"{COMMAND}\""
