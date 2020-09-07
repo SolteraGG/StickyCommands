@@ -18,12 +18,14 @@ import org.bukkit.plugin.Plugin;
 public class Kill extends AsyncCommand {
 
     private LocaleProvider locale = Main.getPlugin(Main.class).getLocaleProvider();
+    TreeMap<String, String> variables = locale.newVariables();
 
     public Kill(Plugin owner) {
         super("kill", owner);
         setPermission("stickycommands.kill");
         setDescription("Kill a player, or yourself...");
         setAliases(Arrays.asList(new String[] { "slay" }));
+        variables.put("syntax", "/kill [player]");
     }
 
     @Override
@@ -36,7 +38,6 @@ public class Kill extends AsyncCommand {
             a.optionalString("target");
 
             Player target = null;
-            TreeMap<String, String> variables = locale.newVariables();
             variables.put("player", a.get("target"));
             variables.put("sender", sender.getName());
 
@@ -73,9 +74,9 @@ public class Kill extends AsyncCommand {
 
     @Override
     public List<String> tabComplete(CommandSender sender, String alias, String[] args) {
-        ArrayList<String> usernames = new ArrayList<String>();
+        var usernames = new ArrayList<String>();
         if (args.length < 2) {
-            for (Player player : Bukkit.getOnlinePlayers())
+            for (var player : Bukkit.getOnlinePlayers())
                 usernames.add(player.getName());
         }
         return usernames;
@@ -90,11 +91,11 @@ public class Kill extends AsyncCommand {
 
     @Override
     public void onPermissionDenied(CommandSender sender, String label, String[] args) {
-        sender.sendMessage(locale.get("permissionDenied"));
+        sender.sendMessage(locale.translate("no-permission", variables));
     }
 
     @Override
     public void onError(CommandSender sender, String label, String[] args) {
-        sender.sendMessage(locale.get("serverError"));
+        sender.sendMessage(locale.translate("server-error", variables));
     }
 }

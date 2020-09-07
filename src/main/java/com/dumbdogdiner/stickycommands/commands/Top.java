@@ -16,10 +16,12 @@ import org.bukkit.plugin.Plugin;
 public class Top extends AsyncCommand {
 
     LocaleProvider locale = Main.getInstance().getLocaleProvider();
+    TreeMap<String, String> variables = locale.newVariables();
     public Top(Plugin owner) {
         super("top", owner);
         setPermission("stickycommands.top");
         setDescription("Teleport to the highest block above you");
+        variables.put("syntax", "/top");
     }
 
     @Override
@@ -31,12 +33,12 @@ public class Top extends AsyncCommand {
 
     @Override
     public void onPermissionDenied(CommandSender sender, String label, String[] args) {
-        sender.sendMessage(locale.get("permissionDenied"));
+        sender.sendMessage(locale.translate("no-permission", variables));
     }
 
     @Override
     public void onError(CommandSender sender, String label, String[] args) {
-        sender.sendMessage(locale.get("serverError"));
+        sender.sendMessage(locale.translate("server-error", variables));
     }
 
     @Override
@@ -45,11 +47,10 @@ public class Top extends AsyncCommand {
             if (!sender.hasPermission("stickycommands.top"))
                 return 2;
     
-            TreeMap<String, String> variables = locale.newVariables();
             if (!(sender instanceof Player))
                 sender.sendMessage(locale.translate("must-be-player", variables));
-            Player player = (Player) sender;
-            Location loc = LocationUtil.getSafeDestination(new Location(player.getWorld(), player.getLocation().getBlockX(), player.getWorld().getMaxHeight(), player.getLocation().getBlockZ(), player.getLocation().getYaw(), player.getLocation().getPitch()));
+            var player = (Player) sender;
+            var loc = LocationUtil.getSafeDestination(new Location(player.getWorld(), player.getLocation().getBlockX(), player.getWorld().getMaxHeight(), player.getLocation().getBlockZ(), player.getLocation().getYaw(), player.getLocation().getPitch()));
             variables.put("x", String.valueOf(loc.getX()));
             variables.put("y", String.valueOf(loc.getY()));
             variables.put("z", String.valueOf(loc.getZ()));

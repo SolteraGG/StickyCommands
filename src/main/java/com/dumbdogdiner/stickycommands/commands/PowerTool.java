@@ -18,11 +18,13 @@ import org.bukkit.plugin.Plugin;
 
 public class PowerTool extends AsyncCommand {
     LocaleProvider locale = Main.getInstance().getLocaleProvider();
+    TreeMap<String, String> variables = locale.newVariables();
 
     public PowerTool(Plugin owner) {
         super("powertool", owner);
         setPermission("stickycommands.powertool");
-        setDescription("");
+        setDescription("Bind an item to a command");
+        variables.put("syntax", "/powertool [command/clear]");
     }
 
     @Override
@@ -32,37 +34,38 @@ public class PowerTool extends AsyncCommand {
 
     @Override
     public void onPermissionDenied(CommandSender sender, String label, String[] args) {
-        sender.sendMessage(locale.get("permissionDenied"));
+        sender.sendMessage(locale.translate("no-permission", variables));
     }
 
     @Override
     public void onError(CommandSender sender, String label, String[] args) {
-        sender.sendMessage(locale.get("serverError"));
+        sender.sendMessage(locale.translate("server-error", variables));
     }
 
     @Override
     public int executeCommand(CommandSender sender, String commandLabel, String[] args) {
-        if (!sender.hasPermission("stickycommands.powertool"))
+        if (!sender.hasPermission("stickycommands.powertool") || (!(sender instanceof Player)))
             return 2;
 
-        TreeMap<String, String> variables = locale.newVariables();
-        Player player = (Player) sender;
+        var player = (Player) sender;
+        variables.put("player", player.getName());
         try {
             if (args.length < 1) {
-                variables.put("player", player.getName());
                 if (player.getInventory().getItemInMainHand().getType() != Material.AIR) {
+                    variables.put("item", player.getInventory().getItemInMainHand().getItemMeta().getDisplayName());
                     getPowerTool(player, null, true);
                     sender.sendMessage(locale.translate("powertool.cleared", variables));
                 }
             } else {
-                String s = Joiner.on(" ").join(args);
+                var s = Joiner.on(" ").join(args);
                 variables.put("command", s);
                 if (player.getInventory().getItemInMainHand().getType() != Material.AIR) {
+                    variables.put("item", player.getInventory().getItemInMainHand().getItemMeta().getDisplayName());
                     getPowerTool(player, s, false);
                     sender.sendMessage(locale.translate("powertool.assigned", variables));
                     return 0;
                 }
-                sender.sendMessage("You cannot bind air to a command!");
+                sender.sendMessage(locale.translate("powertool.cannot-bind-air", variables));
             }
         } catch (Exception e) {
             return 1;

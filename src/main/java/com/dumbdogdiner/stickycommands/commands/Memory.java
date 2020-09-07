@@ -18,12 +18,14 @@ import org.bukkit.plugin.Plugin;
 
 public class Memory extends AsyncCommand {
     LocaleProvider locale = Main.getInstance().getLocaleProvider();
+    TreeMap<String, String> variables = locale.newVariables();
 
     public Memory(Plugin owner) {
         super("memory", owner);
         setPermission("stickycommands.memory");
         setDescription("Check the server's performance");
         setAliases(Arrays.asList("lag,elag,egc,mem,emem,memory,ememory,uptime,euptime,tps,etps,entities,eentities".split(",")));
+        variables.put("syntax", "/memory");
     }
 
     @Override
@@ -35,14 +37,13 @@ public class Memory extends AsyncCommand {
                 sender.sendMessage(locale.translate("must-be-player", new TreeMap<String, String>()));
                 return 0;
             }
-            Player player = (Player) sender;
-            TreeMap<String, String> variables = locale.newVariables();
-            DecimalFormat df = new DecimalFormat("0.0");
+            var player = (Player) sender;
+            var df = new DecimalFormat("0.0");
 
-            double max = Runtime.getRuntime().maxMemory() / 1024 / 1024;
-            double used = Runtime.getRuntime().totalMemory() / 1024 / 1024 - Runtime.getRuntime().freeMemory() / 1024 / 1024;
-            double usage = Double.valueOf(df.format(((used / max) * 100)));
-            char color = usage < 60 ? 'a' : (usage < 85 ? 'e' : 'c');
+            var max = Runtime.getRuntime().maxMemory() / 1024 / 1024;
+            var used = Runtime.getRuntime().totalMemory() / 1024 / 1024 - Runtime.getRuntime().freeMemory() / 1024 / 1024;
+            var usage = Double.valueOf(df.format(((used / max) * 100)));
+            var color = usage < 60 ? 'a' : (usage < 85 ? 'e' : 'c');
             double[] tps = Main.getInstance().getRecentTps();
             variables.put("tps_1m", String.valueOf(df.format(tps[0])));
             variables.put("tps_5m", String.valueOf(df.format(tps[1])));
@@ -72,12 +73,12 @@ public class Memory extends AsyncCommand {
 
     @Override
     public void onPermissionDenied(CommandSender sender, String label, String[] args) {
-        sender.sendMessage(locale.get("permissionDenied"));
+        sender.sendMessage(locale.translate("no-permission", variables));
     }
 
     @Override
     public void onError(CommandSender sender, String label, String[] args) {
-        sender.sendMessage(locale.get("serverError"));
+        sender.sendMessage(locale.translate("server-error", variables));
     }
 
     @Override
@@ -86,9 +87,9 @@ public class Memory extends AsyncCommand {
     }
 
     public String createBar(double size, double usage) {
-        double barCount = ((usage / 100) * size);
-        String bar = "";
-        for (double i = 0; i < size; i++) {
+        var barCount = ((usage / 100) * size);
+        var bar = "";
+        for (var i = 0.0; i < size; i++) {
             if (i < barCount && size - i > 5)
                 bar += "▍";
             else {

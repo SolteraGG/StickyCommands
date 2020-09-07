@@ -11,10 +11,13 @@ import com.dumbdogdiner.stickycommands.commands.Jump;
 import com.dumbdogdiner.stickycommands.commands.Kill;
 import com.dumbdogdiner.stickycommands.commands.Memory;
 import com.dumbdogdiner.stickycommands.commands.PowerTool;
+import com.dumbdogdiner.stickycommands.commands.Sell;
 import com.dumbdogdiner.stickycommands.commands.Top;
+import com.dumbdogdiner.stickycommands.commands.Worth;
 import com.dumbdogdiner.stickycommands.listeners.PlayerInteractionListener;
 import com.dumbdogdiner.stickycommands.listeners.PlayerJoinListener;
 import com.dumbdogdiner.stickycommands.utils.Database;
+import com.dumbdogdiner.stickycommands.utils.Item;
 import com.ristexsoftware.knappy.Knappy;
 import com.ristexsoftware.knappy.bukkit.command.AsyncCommand;
 import com.ristexsoftware.knappy.cache.Cache;
@@ -27,6 +30,7 @@ import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -67,7 +71,7 @@ public class Main extends JavaPlugin {
      */
     @Getter
     Database database;
-
+    
     @Getter
     final Long upTime = TimeUtil.getUnixTime();
 
@@ -76,15 +80,16 @@ public class Main extends JavaPlugin {
     @Override
     public void onLoad() {
         instance = this;
+        new Item();
     }
 
     @Override
     public void onEnable() {
         if (!setupConfig())
-        return;
+            return;
         
         if (!setupLocale())
-        return;
+            return;
 
         if (!setupEconomy())
             getLogger().severe("Disabled economy commands due to no Vault dependency found!");
@@ -120,15 +125,16 @@ public class Main extends JavaPlugin {
      * Setup the vault economy instance.
      */
     private boolean setupEconomy() {
-        if (getServer().getPluginManager().getPlugin("Vault") == null) return false;
-        
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            return false;
+        }
         RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-        if (rsp == null) return false;
-        
-        this.economy = rsp.getProvider();
+        if (rsp == null) {
+            return false;
+        }
+        economy = rsp.getProvider();
         return economy != null;
     }
-
     
     /**
      * Setup the configuration files
@@ -180,11 +186,12 @@ public class Main extends JavaPlugin {
         } else
         getLogger().info("Loaded " + String.valueOf(loadedLocales) + " localizations");
         
-        this.localeProvider.registerDefaultTranslation("prefix", "prefix", "[dddMC]");
-        this.localeProvider.registerDefaultTranslation("network-name", "networkName", "Dumb Dog Diner");
-        this.localeProvider.registerDefaultTranslation("website", "website", "dumbdogdiner.com");
-        this.localeProvider.registerDefaultTranslation("server-error", "serverError", "The server encountered an error!");
-        this.localeProvider.registerDefaultTranslation("invalid-syntax", "invalidSyntax", "&cInvalid Syntax!");
+        this.localeProvider.registerDefaultTranslation("prefix", "[dddMC]");
+        this.localeProvider.registerDefaultTranslation("network-name", "Dumb Dog Diner");
+        this.localeProvider.registerDefaultTranslation("website", "dumbdogdiner.com");
+        this.localeProvider.registerDefaultTranslation("server-error", this.localeProvider.getDefaultTranslation("prefix") +  "&cThe server encountered an error!");
+        this.localeProvider.registerDefaultTranslation("no-permission", this.localeProvider.getDefaultTranslation("prefix") + "&cError! Permission denied!");
+        this.localeProvider.registerDefaultTranslation("invalid-syntax", this.localeProvider.getDefaultTranslation("prefix") + "&cInvalid Syntax!");
         
         return true;
     }
@@ -195,13 +202,14 @@ public class Main extends JavaPlugin {
     boolean registerCommands() {
         // Register economy based commands only if the economy provider is not null.
         if (economy != null) {
-
+            commandList.add(new Sell(this));
         }
         commandList.add(new Kill(this));
         commandList.add(new Jump(this));
         commandList.add(new Memory(this));
         commandList.add(new Top(this));
         commandList.add(new PowerTool(this));
+        commandList.add(new Worth(this));
 
         CommandMap cmap = ReflectionUtil.getProtectedValue(Bukkit.getServer(), "commandMap");
         cmap.registerAll(this.getName().toLowerCase(), commandList);

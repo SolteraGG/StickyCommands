@@ -42,7 +42,8 @@ dependencies {
     // plugin-specific deps
     implementation "me.clip:placeholderapi:2.10.6"
     implementation "com.github.MilkBowl:VaultAPI:1.7"
-    implementation "com.github.NotZachery:knappy:48a1eb1747"
+    implementation "com.github.NotZachery:knappy:10034392db"
+    // implementation files('libs/knappy-0.3.0.jar')
 }
 
 tasks.build.dependsOn tasks.shadowJar

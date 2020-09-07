@@ -17,9 +17,13 @@ import org.bukkit.entity.Player;
 
 public class Jump extends AsyncCommand {
     private static LocaleProvider locale = Main.getInstance().getLocaleProvider();
+    TreeMap<String, String> variables = locale.newVariables();
 
     public Jump(Plugin owner) {
         super("jump", owner);
+        setPermission("stickycommands.jump");
+        setDescription("Jump to a block");
+        variables.put("syntax", "/jump");
     }
 
     @Override
@@ -31,7 +35,7 @@ public class Jump extends AsyncCommand {
                 return 0;
             }
     
-            Player player = (Player) sender;
+            var player = (Player) sender;
             Location loc = null;
             
             try {
@@ -49,7 +53,6 @@ public class Jump extends AsyncCommand {
             loc.add(0, 1, 0);
             final Location syncLoc = loc;
             Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getInstance(), () -> player.teleport(syncLoc), 1L);
-            TreeMap<String, String> variables = locale.newVariables();
             variables.put("player", player.getName());
             variables.put("x", String.valueOf(loc.getX()));
             variables.put("y", String.valueOf(loc.getY()));
@@ -71,12 +74,12 @@ public class Jump extends AsyncCommand {
     
     @Override
     public void onPermissionDenied(CommandSender sender, String label, String[] args) {
-        sender.sendMessage(locale.get("permissionDenied"));
+        sender.sendMessage(locale.translate("no-permission", variables));
     }
 
     @Override
     public void onError(CommandSender sender, String label, String[] args) {
-        sender.sendMessage(locale.get("serverError"));
+        sender.sendMessage(locale.translate("server-error", variables));
     }
 
     @Override
