@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.TreeMap;
 
 import com.dumbdogdiner.stickycommands.Main;
-import com.ristexsoftware.knappy.bukkit.command.AsyncCommand;
-import com.ristexsoftware.knappy.translation.LocaleProvider;
-import com.ristexsoftware.knappy.util.TimeUtil;
+import com.ristexsoftware.koffee.bukkit.command.AsyncCommand;
+import com.ristexsoftware.koffee.translation.LocaleProvider;
+import com.ristexsoftware.koffee.util.TimeUtil;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -40,11 +40,14 @@ public class Memory extends AsyncCommand {
             var player = (Player) sender;
             var df = new DecimalFormat("0.0");
 
+            // FIXME: Memory usage is always 0%
             var max = Runtime.getRuntime().maxMemory() / 1024 / 1024;
             var used = Runtime.getRuntime().totalMemory() / 1024 / 1024 - Runtime.getRuntime().freeMemory() / 1024 / 1024;
             var usage = Double.valueOf(df.format(((used / max) * 100)));
             var color = usage < 60 ? 'a' : (usage < 85 ? 'e' : 'c');
+            
             double[] tps = Main.getInstance().getRecentTps();
+            
             variables.put("tps_1m", String.valueOf(df.format(tps[0])));
             variables.put("tps_5m", String.valueOf(df.format(tps[1])));
             variables.put("tps_15m", String.valueOf(df.format(tps[2])));

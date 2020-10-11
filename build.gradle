@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "com.dumbdogdiner"
-version = "2.0.0"
+version = "2.1.0"
 
 repositories {
     mavenCentral()
@@ -42,13 +42,12 @@ dependencies {
     // plugin-specific deps
     implementation "me.clip:placeholderapi:2.10.6"
     implementation "com.github.MilkBowl:VaultAPI:1.7"
-    implementation "com.github.NotZachery:knappy:10034392db"
-    // implementation files('libs/knappy-0.3.0.jar')
+    implementation "com.github.ristex-software:koffee:0.9.0"
 }
 
 tasks.build.dependsOn tasks.shadowJar
 shadowJar {
     archiveClassifier = ""
     project.configurations.implementation.canBeResolved = true
-    configurations = [project.configurations.implementation, project.configurations.compile]
+    configurations = [project.configurations.implementation]
 }

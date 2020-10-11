@@ -4,8 +4,8 @@ import java.util.TreeMap;
 
 import com.dumbdogdiner.stickycommands.Main;
 import com.dumbdogdiner.stickycommands.utils.LocationUtil;
-import com.ristexsoftware.knappy.bukkit.command.AsyncCommand;
-import com.ristexsoftware.knappy.translation.LocaleProvider;
+import com.ristexsoftware.koffee.bukkit.command.AsyncCommand;
+import com.ristexsoftware.koffee.translation.LocaleProvider;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -26,10 +26,7 @@ public class Top extends AsyncCommand {
 
     @Override
     public void onSyntaxError(CommandSender sender, String label, String[] args) {
-        TreeMap<String, String> vars = locale.newVariables();
-        vars.put("syntax", "/top");
-        sender.sendMessage(locale.translate("invalidSyntax", vars));
-    }
+        sender.sendMessage(locale.translate("invalid-syntax", variables));    }
 
     @Override
     public void onPermissionDenied(CommandSender sender, String label, String[] args) {

@@ -4,8 +4,8 @@ import java.util.TreeMap;
 
 import com.dumbdogdiner.stickycommands.Main;
 import com.dumbdogdiner.stickycommands.utils.Item;
-import com.ristexsoftware.knappy.bukkit.command.AsyncCommand;
-import com.ristexsoftware.knappy.translation.LocaleProvider;
+import com.ristexsoftware.koffee.bukkit.command.AsyncCommand;
+import com.ristexsoftware.koffee.translation.LocaleProvider;
 
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -68,7 +68,7 @@ public class Worth extends AsyncCommand {
 
     @Override
     public void onSyntaxError(CommandSender sender, String label, String[] args) {
-
+        sender.sendMessage(locale.translate("invalid-syntax", variables));
     }
 
     @Override

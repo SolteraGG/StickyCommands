@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.TreeMap;
 
 import com.dumbdogdiner.stickycommands.Main;
-import com.ristexsoftware.knappy.arguments.Arguments;
-import com.ristexsoftware.knappy.bukkit.command.AsyncCommand;
-import com.ristexsoftware.knappy.translation.LocaleProvider;
+import com.ristexsoftware.koffee.arguments.Arguments;
+import com.ristexsoftware.koffee.bukkit.command.AsyncCommand;
+import com.ristexsoftware.koffee.translation.LocaleProvider;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -84,9 +84,7 @@ public class Kill extends AsyncCommand {
 
     @Override
     public void onSyntaxError(CommandSender sender, String label, String[] args) {
-        TreeMap<String, String> vars = locale.newVariables();
-        vars.put("syntax", "/kill [player]");
-        sender.sendMessage(locale.translate("invalidSyntax", vars));
+        sender.sendMessage(locale.translate("invalid-syntax", variables));
     }
 
     @Override

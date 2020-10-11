@@ -4,9 +4,9 @@ import java.util.TreeMap;
 
 import com.dumbdogdiner.stickycommands.Main;
 import com.dumbdogdiner.stickycommands.utils.Item;
-import com.ristexsoftware.knappy.arguments.Arguments;
-import com.ristexsoftware.knappy.bukkit.command.AsyncCommand;
-import com.ristexsoftware.knappy.translation.LocaleProvider;
+import com.ristexsoftware.koffee.arguments.Arguments;
+import com.ristexsoftware.koffee.bukkit.command.AsyncCommand;
+import com.ristexsoftware.koffee.translation.LocaleProvider;
 
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -79,7 +79,7 @@ public class Sell extends AsyncCommand {
                     consumeItem(player, inventoryAmount, item.getType());
                     return 0;                    
             }
-            sender.sendMessage(locale.translate("worth-message", variables));
+            sender.sendMessage(locale.translate("cannot-sell", variables));
             return 0;
         }
         
@@ -89,7 +89,7 @@ public class Sell extends AsyncCommand {
 
     @Override
     public void onSyntaxError(CommandSender sender, String label, String[] args) {
-
+        sender.sendMessage(locale.translate("invalid-syntax", variables));
     }
 
     @Override

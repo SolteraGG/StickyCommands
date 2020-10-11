@@ -2,7 +2,7 @@ package com.dumbdogdiner.stickycommands;
 
 import java.util.UUID;
 
-import com.ristexsoftware.knappy.cache.Cacheable;
+import com.ristexsoftware.koffee.cache.Cacheable;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -16,7 +16,7 @@ public class User implements Cacheable {
      */
     @Getter
     @Setter
-    private String username;
+    private String name;
 
     /**
      * The UUID of the user.
@@ -33,7 +33,7 @@ public class User implements Cacheable {
     private boolean afk;
 
     public User(String username, UUID uniqueId) {
-        this.username = username;
+        this.name = username;
         this.uniqueId = uniqueId;
     }
 
@@ -51,26 +51,20 @@ public class User implements Cacheable {
         return new User(player.getName(), player.getUniqueId());
     }
 
-    // public User(Player player) {
-    //     this(player.getName(), player.getUniqueId());
-    // }
-
     public String getKey() {
         return this.uniqueId.toString();
     }
 
-    public void setFlySpeed(Float speed) {
-        // Make sure shit doesn't break
-        Bukkit.getPlayer(this.uniqueId).setFlySpeed(speed);
-        Main.getInstance().getDatabase().setSpeed(this.uniqueId, speed, 1);
-    }
-
-    public void setWalkSpeed(Float speed) {
-        try {
-            Bukkit.getPlayer(this.uniqueId).setWalkSpeed(speed);
-            Main.getInstance().getDatabase().setSpeed(this.uniqueId, speed, 0);
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
+    public void setSpeed(SpeedType type, Float speed) {
+        switch(type) {
+            case FLY:
+                Bukkit.getPlayer(this.uniqueId).setFlySpeed(speed);
+                // Main.getInstance().getDatabase().setSpeed(this.uniqueId, speed, 1);
+                break;
+            case WALK:
+                Bukkit.getPlayer(this.uniqueId).setWalkSpeed(speed);
+                // Main.getInstance().getDatabase().setSpeed(this.uniqueId, speed, 0);
+                break;
         }
     }
 }

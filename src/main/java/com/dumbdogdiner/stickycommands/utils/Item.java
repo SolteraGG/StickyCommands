@@ -4,10 +4,10 @@ import java.io.File;
 import java.io.IOException;
 
 import com.dumbdogdiner.stickycommands.Main;
-import com.ristexsoftware.knappy.configuration.InvalidConfigurationException;
-import com.ristexsoftware.knappy.configuration.file.FileConfiguration;
-import com.ristexsoftware.knappy.configuration.file.YamlConfiguration;
-import com.ristexsoftware.knappy.util.StringUtil;
+import com.ristexsoftware.koffee.configuration.InvalidConfigurationException;
+import com.ristexsoftware.koffee.configuration.file.FileConfiguration;
+import com.ristexsoftware.koffee.configuration.file.YamlConfiguration;
+import com.ristexsoftware.koffee.util.StringUtil;
 
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;

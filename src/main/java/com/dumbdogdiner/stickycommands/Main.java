@@ -1,36 +1,38 @@
 package com.dumbdogdiner.stickycommands; // package owo
 
-import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import com.dumbdogdiner.stickycommands.commands.Afk;
 import com.dumbdogdiner.stickycommands.commands.Jump;
 import com.dumbdogdiner.stickycommands.commands.Kill;
 import com.dumbdogdiner.stickycommands.commands.Memory;
 import com.dumbdogdiner.stickycommands.commands.PowerTool;
 import com.dumbdogdiner.stickycommands.commands.Sell;
+import com.dumbdogdiner.stickycommands.commands.Speed;
 import com.dumbdogdiner.stickycommands.commands.Top;
 import com.dumbdogdiner.stickycommands.commands.Worth;
 import com.dumbdogdiner.stickycommands.listeners.PlayerInteractionListener;
 import com.dumbdogdiner.stickycommands.listeners.PlayerJoinListener;
+import com.dumbdogdiner.stickycommands.listeners.PlayerMoveListener;
 import com.dumbdogdiner.stickycommands.utils.Database;
 import com.dumbdogdiner.stickycommands.utils.Item;
-import com.ristexsoftware.knappy.Knappy;
-import com.ristexsoftware.knappy.bukkit.command.AsyncCommand;
-import com.ristexsoftware.knappy.cache.Cache;
-import com.ristexsoftware.knappy.translation.LocaleProvider;
-import com.ristexsoftware.knappy.util.ReflectionUtil;
-import com.ristexsoftware.knappy.util.TimeUtil;
+import com.ristexsoftware.koffee.Koffee;
+import com.ristexsoftware.koffee.bukkit.util.StartupUtil;
+import com.ristexsoftware.koffee.cache.Cache;
+import com.ristexsoftware.koffee.translation.LocaleProvider;
+import com.ristexsoftware.koffee.util.ReflectionUtil;
+import com.ristexsoftware.koffee.util.TimeUtil;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -71,7 +73,7 @@ public class Main extends JavaPlugin {
      */
     @Getter
     Database database;
-    
+
     @Getter
     final Long upTime = TimeUtil.getUnixTime();
 
@@ -80,15 +82,18 @@ public class Main extends JavaPlugin {
     @Override
     public void onLoad() {
         instance = this;
+        // Set our thread pool
+        Koffee.setPool(pool);
         new Item();
     }
 
     @Override
     public void onEnable() {
-        if (!setupConfig())
+        if (!StartupUtil.setupConfig(this))
             return;
-        
-        if (!setupLocale())
+
+        this.localeProvider = StartupUtil.setupLocale(this, this.localeProvider);
+        if (this.localeProvider == null)
             return;
 
         if (!setupEconomy())
@@ -96,9 +101,6 @@ public class Main extends JavaPlugin {
 
         // this.database = new Database();
         // database.createMissingTables();
-
-        // Set our thread pool
-        Knappy.setPool(pool);
 
         // Register currently online users - in case of a reload.
         // (stop reloading spigot, please.)
@@ -135,66 +137,6 @@ public class Main extends JavaPlugin {
         economy = rsp.getProvider();
         return economy != null;
     }
-    
-    /**
-     * Setup the configuration files
-     */
-    boolean setupConfig() {
-        // Creating config folder, and adding config to it.
-        if (!this.getDataFolder().exists()) {
-            // Sticky~
-            getLogger().severe("Error: No folder for StickyCommands was found! Creating...");
-            this.getDataFolder().mkdirs();
-            this.saveDefaultConfig();
-            getLogger().severe("Please configure StickyCommands and restart the server! :)");
-            return false;
-        }
-        
-        if (!(new File(this.getDataFolder(), "config.yml").exists())) {
-            this.saveDefaultConfig();
-            getLogger().severe("Please configure StickyCommands and restart the server! :)");
-            // They're not gonna have their database setup, just exit. It stops us from
-            // having errors.
-            return false;
-        }
-        return true;
-    }
-    
-    /**
-     * Setup the locale provider and default variables
-     */
-    boolean setupLocale() {
-        this.localeProvider = new LocaleProvider(new File(getDataFolder(), "locale"));
-        
-        int loadedLocales = this.localeProvider.loadAllLocales();
-        Boolean localeEnabled = this.localeProvider.setDefaultLocale("messages.en_us");
-        
-        if (!localeEnabled) {
-            getLogger()
-            .severe("Failed to configure default locale file - perhaps you deleted it? Will create a new one.");
-            // This is horrible and needs to be improved
-            try {
-                this.localeProvider.writeLocaleStream(getResource("messages.en_us.yml"), "messages.en_us.yml", true);
-            } catch (Exception e) {
-                e.printStackTrace();
-                getLogger().severe("Something went horribly wrong while saving the default locale.");
-                return false;
-            }
-            
-            this.localeProvider.loadAllLocales();
-            this.localeProvider.setDefaultLocale("messages.en_us");
-        } else
-        getLogger().info("Loaded " + String.valueOf(loadedLocales) + " localizations");
-        
-        this.localeProvider.registerDefaultTranslation("prefix", "[dddMC]");
-        this.localeProvider.registerDefaultTranslation("network-name", "Dumb Dog Diner");
-        this.localeProvider.registerDefaultTranslation("website", "dumbdogdiner.com");
-        this.localeProvider.registerDefaultTranslation("server-error", this.localeProvider.getDefaultTranslation("prefix") +  "&cThe server encountered an error!");
-        this.localeProvider.registerDefaultTranslation("no-permission", this.localeProvider.getDefaultTranslation("prefix") + "&cError! Permission denied!");
-        this.localeProvider.registerDefaultTranslation("invalid-syntax", this.localeProvider.getDefaultTranslation("prefix") + "&cInvalid Syntax!");
-        
-        return true;
-    }
 
     /**
      * Register all the commands!
@@ -203,13 +145,16 @@ public class Main extends JavaPlugin {
         // Register economy based commands only if the economy provider is not null.
         if (economy != null) {
             commandList.add(new Sell(this));
+            commandList.add(new Worth(this));
         }
+
         commandList.add(new Kill(this));
         commandList.add(new Jump(this));
         commandList.add(new Memory(this));
         commandList.add(new Top(this));
         commandList.add(new PowerTool(this));
-        commandList.add(new Worth(this));
+        commandList.add(new Afk(this));
+        commandList.add(new Speed(this));
 
         CommandMap cmap = ReflectionUtil.getProtectedValue(Bukkit.getServer(), "commandMap");
         cmap.registerAll(this.getName().toLowerCase(), commandList);
@@ -219,8 +164,24 @@ public class Main extends JavaPlugin {
     boolean registerEvents() {
         getServer().getPluginManager().registerEvents(new PlayerInteractionListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerMoveListener(), this);
         return true;
     }
+
+    /**
+     * Get an online user
+     * 
+     * @param UUID the UUID of the user to lookup
+     * @return The user if found, otherwise null
+     */
+    public User getOnlineUser(UUID uuid) {
+        for (User user : getOnlineUserCache().getAll()) {
+            if (user.getUniqueId().equals(uuid))
+                return user;
+        }
+        return null;
+    }
+    
 
     // Before you get mad, just remember this knob named md_5 couldn't help but make Bukkit the worst Minecraft API
     // and while making it, didn't add a way of getting the server's TPS without NMS or reflection.
@@ -228,12 +189,11 @@ public class Main extends JavaPlugin {
     
     private static Object minecraftServer;
     private static Field recentTps; 
-
     /**
      * Get the server's recent TPS
      * @return {@link java.lang.Double} The server TPS in the last 15 minutes (1m, 5m, 15m)
      */
-    public double[] getRecentTps() {
+    public double[] getRecentTps() {        
         try {
             if (minecraftServer == null) {
                 Server server = Bukkit.getServer();
