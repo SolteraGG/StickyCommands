@@ -4,8 +4,9 @@ import java.util.TreeMap;
 
 import com.dumbdogdiner.stickycommands.Main;
 import com.dumbdogdiner.stickycommands.utils.Item;
-import com.ristexsoftware.koffee.bukkit.command.AsyncCommand;
-import com.ristexsoftware.koffee.translation.LocaleProvider;
+import com.dumbdogdiner.stickyapi.bukkit.command.AsyncCommand;
+import com.dumbdogdiner.stickyapi.bukkit.command.ExitCode;
+import com.dumbdogdiner.stickyapi.common.translation.LocaleProvider;
 
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -26,10 +27,10 @@ public class Worth extends AsyncCommand {
     }
 
     @Override
-    public int executeCommand(CommandSender sender, String commandLabel, String[] args) {
+    public ExitCode executeCommand(CommandSender sender, String commandLabel, String[] args) {
         try {
             if (!sender.hasPermission("stickycommands.worth") || (!(sender instanceof Player)))
-                return 2;
+                return ExitCode.EXIT_PERMISSION_DENIED;
             
             var player = (Player) sender;
             var item = new Item(player.getInventory().getItemInMainHand());
@@ -39,10 +40,24 @@ public class Worth extends AsyncCommand {
 
             if (item.getAsItemStack().getType() == Material.AIR) {
                 sender.sendMessage(locale.translate("cannot-sell", variables));
-                return 0;
+                return ExitCode.EXIT_SUCCESS;
             }
             
             var worth = item.getWorth();
+            double percentage = 100.00;
+            if(item.hasDurability()) {
+                System.out.println("hi");
+                double maxDur = item.getAsItemStack().getType().getMaxDurability();
+                double currDur = maxDur - item.getAsItemStack().getDurability(); 
+                percentage = Math.round((currDur / maxDur) * 100.00) / 100.00;
+    
+                if((currDur / maxDur) < 0.4) {
+                    worth = 0.0;
+                } else {
+                    worth = Math.round((worth * percentage) * 100.00) / 100.00;
+                }
+    
+            }
             var itemAmount = 0;
             for (var is : inventory) {
                 if (is != null && is.getType() == item.getType()) {
@@ -55,15 +70,15 @@ public class Worth extends AsyncCommand {
             
             if (worth != 0.0) {
                 sender.sendMessage(locale.translate("worth-message", variables));
-                return 0;
+                return ExitCode.EXIT_SUCCESS;
             }
             
             sender.sendMessage(locale.translate("cannot-sell", variables));
         } catch (Exception e) {
             e.printStackTrace();
-            return 1;
+            return ExitCode.EXIT_ERROR;
         }
-        return 0;
+        return ExitCode.EXIT_SUCCESS;
     }
 
     @Override

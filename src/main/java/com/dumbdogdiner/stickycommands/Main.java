@@ -21,12 +21,12 @@ import com.dumbdogdiner.stickycommands.listeners.PlayerJoinListener;
 import com.dumbdogdiner.stickycommands.listeners.PlayerMoveListener;
 import com.dumbdogdiner.stickycommands.utils.Database;
 import com.dumbdogdiner.stickycommands.utils.Item;
-import com.ristexsoftware.koffee.Koffee;
-import com.ristexsoftware.koffee.bukkit.util.StartupUtil;
-import com.ristexsoftware.koffee.cache.Cache;
-import com.ristexsoftware.koffee.translation.LocaleProvider;
-import com.ristexsoftware.koffee.util.ReflectionUtil;
-import com.ristexsoftware.koffee.util.TimeUtil;
+import com.dumbdogdiner.stickyapi.StickyAPI;
+import com.dumbdogdiner.stickyapi.bukkit.util.StartupUtil;
+import com.dumbdogdiner.stickyapi.common.cache.Cache;
+import com.dumbdogdiner.stickyapi.common.translation.LocaleProvider;
+import com.dumbdogdiner.stickyapi.common.util.ReflectionUtil;
+import com.dumbdogdiner.stickyapi.common.util.TimeUtil;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
@@ -83,7 +83,7 @@ public class Main extends JavaPlugin {
     public void onLoad() {
         instance = this;
         // Set our thread pool
-        Koffee.setPool(pool);
+        StickyAPI.setPool(pool);
         new Item();
     }
 

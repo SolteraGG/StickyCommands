@@ -2,7 +2,7 @@ package com.dumbdogdiner.stickycommands;
 
 import java.util.UUID;
 
-import com.ristexsoftware.koffee.cache.Cacheable;
+import com.dumbdogdiner.stickyapi.common.cache.Cacheable;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -11,7 +11,7 @@ import lombok.Setter;
 
 public class User implements Cacheable {
 
-    /**
+    /**A
      * The username of the user.
      */
     @Getter

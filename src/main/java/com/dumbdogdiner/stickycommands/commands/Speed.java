@@ -7,9 +7,10 @@ import java.util.TreeMap;
 import com.dumbdogdiner.stickycommands.Main;
 import com.dumbdogdiner.stickycommands.SpeedType;
 import com.dumbdogdiner.stickycommands.User;
-import com.ristexsoftware.koffee.arguments.Arguments;
-import com.ristexsoftware.koffee.bukkit.command.AsyncCommand;
-import com.ristexsoftware.koffee.translation.LocaleProvider;
+import com.dumbdogdiner.stickyapi.bukkit.command.AsyncCommand;
+import com.dumbdogdiner.stickyapi.bukkit.command.ExitCode;
+import com.dumbdogdiner.stickyapi.common.arguments.Arguments;
+import com.dumbdogdiner.stickyapi.common.translation.LocaleProvider;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -26,23 +27,23 @@ public class Speed extends AsyncCommand {
     }
     
     @Override
-    public int executeCommand(CommandSender sender, String commandLabel, String[] args) {
+    public ExitCode executeCommand(CommandSender sender, String commandLabel, String[] args) {
         if (!(sender instanceof Player))
-            return 2;
+            return ExitCode.EXIT_PERMISSION_DENIED;
 
         User user = Main.getInstance().getOnlineUser(((Player)sender).getUniqueId());
         Arguments a = new Arguments(args);
         a.requiredString("speed");
 
         if (!a.valid())
-            return 1;
+            return ExitCode.EXIT_INVALID_SYNTAX;
 
         if (!(a.get("speed").matches("\\d*\\.?\\d+")))
-            return 1;
+            return ExitCode.EXIT_INVALID_SYNTAX;
 
         var speed = Float.parseFloat(a.get("speed")) / 10;
         if (speed*10> 10 || speed*10 <= 0)
-            return 1;
+            return ExitCode.EXIT_INVALID_SYNTAX;
 
         if (((Player)sender).isFlying()) {
             setSpeed(user, SpeedType.FLY, speed);
@@ -51,7 +52,7 @@ public class Speed extends AsyncCommand {
         }
         variables.put("speed", a.get("speed"));
         sender.sendMessage(locale.translate("speed-message", variables));
-        return 0;
+        return ExitCode.EXIT_SUCCESS;
     }
 
     @Override

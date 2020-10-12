@@ -5,8 +5,9 @@ import java.util.TreeMap;
 
 import com.dumbdogdiner.stickycommands.Main;
 import com.dumbdogdiner.stickycommands.utils.LocationUtil;
-import com.ristexsoftware.koffee.bukkit.command.AsyncCommand;
-import com.ristexsoftware.koffee.translation.LocaleProvider;
+import com.dumbdogdiner.stickyapi.bukkit.command.AsyncCommand;
+import com.dumbdogdiner.stickyapi.bukkit.command.ExitCode;
+import com.dumbdogdiner.stickyapi.common.translation.LocaleProvider;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -27,12 +28,12 @@ public class Jump extends AsyncCommand {
     }
 
     @Override
-    public int executeCommand(CommandSender sender, String commandLabel, String[] args) {
+    public ExitCode executeCommand(CommandSender sender, String commandLabel, String[] args) {
         // TODO handle
         try {
             if (!(sender instanceof Player)) {
                 sender.sendMessage(locale.translate("must-be-player", new TreeMap<String, String>()));
-                return 0;
+                return ExitCode.EXIT_SUCCESS;
             }
     
             var player = (Player) sender;
@@ -42,7 +43,7 @@ public class Jump extends AsyncCommand {
                 loc = LocationUtil.getSafeDestination(LocationUtil.getTarget(player));
             } catch (Exception e) {
                 e.printStackTrace();
-                return 1;
+                return ExitCode.EXIT_ERROR;
             }
             
             if (loc.getBlock().getType() == Material.AIR)
@@ -60,10 +61,10 @@ public class Jump extends AsyncCommand {
             
             sender.sendMessage(locale.translate("jump-message", variables));
     
-            return 0;
+            return ExitCode.EXIT_SUCCESS;
         } catch (Exception e) {
             e.printStackTrace();
-            return 1;
+            return ExitCode.EXIT_ERROR;
         }
     }
 

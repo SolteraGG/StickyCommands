@@ -4,9 +4,10 @@ import java.util.TreeMap;
 
 import com.dumbdogdiner.stickycommands.Main;
 import com.dumbdogdiner.stickycommands.utils.Item;
-import com.ristexsoftware.koffee.arguments.Arguments;
-import com.ristexsoftware.koffee.bukkit.command.AsyncCommand;
-import com.ristexsoftware.koffee.translation.LocaleProvider;
+import com.dumbdogdiner.stickyapi.common.arguments.Arguments;
+import com.dumbdogdiner.stickyapi.bukkit.command.AsyncCommand;
+import com.dumbdogdiner.stickyapi.bukkit.command.ExitCode;
+import com.dumbdogdiner.stickyapi.common.translation.LocaleProvider;
 
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -27,9 +28,9 @@ public class Sell extends AsyncCommand {
     }
 
     @Override
-    public int executeCommand(CommandSender sender, String commandLabel, String[] args) {
+    public ExitCode executeCommand(CommandSender sender, String commandLabel, String[] args) {
         if (!sender.hasPermission("stickycommands.sell") || (!(sender instanceof Player)))
-            return 2;
+            return ExitCode.EXIT_PERMISSION_DENIED;
 
         Arguments a = new Arguments(args);
         a.optionalString("sellMode");
@@ -42,7 +43,7 @@ public class Sell extends AsyncCommand {
 
         if (item.getAsItemStack().getType() == Material.AIR) {
             sender.sendMessage(locale.translate("cannot-sell", variables));
-            return 0;
+            return ExitCode.EXIT_SUCCESS;
         }
 
         var inventoryAmount = 0;
@@ -52,8 +53,19 @@ public class Sell extends AsyncCommand {
             }
         }
         var worth = item.getWorth();
-        // var itemAmount = inventoryAmount-handAmount;
-        System.out.println(inventoryAmount);
+        double percentage = 100.00;
+        if(item.hasDurability()) {
+            double maxDur = item.getAsItemStack().getType().getMaxDurability();
+            double currDur = maxDur - item.getAsItemStack().getDurability(); 
+            percentage = Math.round((currDur / maxDur) * 100.00) / 100.00;
+
+            if((currDur / maxDur) < 0.4) {
+                worth = 0.0;
+            } else {
+                worth = Math.round((worth * percentage) * 100.00) / 100.00;
+            }
+
+        }
         variables.put("single_worth", Double.toString(worth));
         variables.put("hand_worth", Double.toString(worth * item.getAmount()));
         variables.put("inventory_worth", Double.toString(worth * inventoryAmount));
@@ -65,7 +77,7 @@ public class Sell extends AsyncCommand {
                 Main.getInstance().getEconomy().depositPlayer(player, worth * item.getAmount());
                 player.getInventory().getItemInMainHand().setAmount(0);
                 player.sendMessage(locale.translate("sell-message", variables));
-                return 0;
+                return ExitCode.EXIT_SUCCESS;
             }
 
             switch (a.get("sellMode").toLowerCase()) {
@@ -77,14 +89,14 @@ public class Sell extends AsyncCommand {
                     variables.put("worth", String.valueOf(item.getWorth() * inventoryAmount));
                     player.sendMessage(locale.translate("sell-message", variables));
                     consumeItem(player, inventoryAmount, item.getType());
-                    return 0;                    
+                    return ExitCode.EXIT_SUCCESS;                    
             }
             sender.sendMessage(locale.translate("cannot-sell", variables));
-            return 0;
+            return ExitCode.EXIT_SUCCESS;
         }
         
         sender.sendMessage(locale.translate("cannot-sell", variables));
-        return 0;
+        return ExitCode.EXIT_SUCCESS;
     }
 
     @Override

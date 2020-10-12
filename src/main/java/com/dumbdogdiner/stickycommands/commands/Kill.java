@@ -6,9 +6,10 @@ import java.util.List;
 import java.util.TreeMap;
 
 import com.dumbdogdiner.stickycommands.Main;
-import com.ristexsoftware.koffee.arguments.Arguments;
-import com.ristexsoftware.koffee.bukkit.command.AsyncCommand;
-import com.ristexsoftware.koffee.translation.LocaleProvider;
+import com.dumbdogdiner.stickyapi.common.arguments.Arguments;
+import com.dumbdogdiner.stickyapi.bukkit.command.AsyncCommand;
+import com.dumbdogdiner.stickyapi.bukkit.command.ExitCode;
+import com.dumbdogdiner.stickyapi.common.translation.LocaleProvider;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -29,10 +30,10 @@ public class Kill extends AsyncCommand {
     }
 
     @Override
-    public int executeCommand(CommandSender sender, String commandLabel, String[] args) {
+    public ExitCode executeCommand(CommandSender sender, String commandLabel, String[] args) {
         try {
             if (!sender.hasPermission("stickycommands.kill"))
-                return 2;
+                return ExitCode.EXIT_PERMISSION_DENIED;
 
             Arguments a = new Arguments(args);
             a.optionalString("target");
@@ -48,7 +49,7 @@ public class Kill extends AsyncCommand {
                 } else
                     sender.sendMessage(locale.translate("must-be-player", variables));
                     
-                return 0;
+                return ExitCode.EXIT_SUCCESS;
             }
 
             target = Bukkit.getPlayer(a.get("target"));
@@ -58,9 +59,9 @@ public class Kill extends AsyncCommand {
             } else
                 sender.sendMessage(locale.translate("player-does-not-exist", variables));
 
-            return 0;
+            return ExitCode.EXIT_SUCCESS;
         } catch (Exception e) {
-            return 1;
+            return ExitCode.EXIT_ERROR;
         }
     }
 

@@ -4,10 +4,10 @@ import java.io.File;
 import java.io.IOException;
 
 import com.dumbdogdiner.stickycommands.Main;
-import com.ristexsoftware.koffee.configuration.InvalidConfigurationException;
-import com.ristexsoftware.koffee.configuration.file.FileConfiguration;
-import com.ristexsoftware.koffee.configuration.file.YamlConfiguration;
-import com.ristexsoftware.koffee.util.StringUtil;
+import com.dumbdogdiner.stickyapi.common.configuration.InvalidConfigurationException;
+import com.dumbdogdiner.stickyapi.common.configuration.file.FileConfiguration;
+import com.dumbdogdiner.stickyapi.common.configuration.file.YamlConfiguration;
+import com.dumbdogdiner.stickyapi.common.util.StringUtil;
 
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -24,6 +24,9 @@ public class Item {
     static FileConfiguration config;
     private static String[] modifierPool = {
         "white", "orange", "magenta", "lightblue", "yellow", "lime", "pink", "gray", "lightgray", "cyan", "purple", "blue", "brown", "green", "red", "black", "oak", "spruce", "birch", "jungle", "acacia", "darkoak"
+    };
+    private static String[] durItemPool = {
+        "helmet", "tunic", "chestplate", "leggings", "boots", "axe", "shovel", "sword", "hoe"
     };
 
     @Getter
@@ -129,4 +132,13 @@ public class Item {
         final var dataStore = meta.getPersistentDataContainer();
         return !dataStore.has(new NamespacedKey(Main.getInstance(), "notsellable"), PersistentDataType.STRING);
     }
+
+    public boolean hasDurability() {
+        for(String s : durItemPool) {
+            if(getName().toLowerCase().endsWith(s)) {
+                return true;
+            }
+        }
+        return false;
+    } 
 }

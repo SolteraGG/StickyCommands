@@ -7,9 +7,10 @@ import java.util.List;
 import java.util.TreeMap;
 
 import com.dumbdogdiner.stickycommands.Main;
-import com.ristexsoftware.koffee.bukkit.command.AsyncCommand;
-import com.ristexsoftware.koffee.translation.LocaleProvider;
-import com.ristexsoftware.koffee.util.TimeUtil;
+import com.dumbdogdiner.stickyapi.bukkit.command.AsyncCommand;
+import com.dumbdogdiner.stickyapi.bukkit.command.ExitCode;
+import com.dumbdogdiner.stickyapi.common.translation.LocaleProvider;
+import com.dumbdogdiner.stickyapi.common.util.TimeUtil;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -29,13 +30,13 @@ public class Memory extends AsyncCommand {
     }
 
     @Override
-    public int executeCommand(CommandSender sender, String commandLabel, String[] args) {
+    public ExitCode executeCommand(CommandSender sender, String commandLabel, String[] args) {
         try {
             if (!sender.hasPermission("stickycommands.memory"))
-                return 2;
+                return ExitCode.EXIT_PERMISSION_DENIED;
             if (!(sender instanceof Player)) {
                 sender.sendMessage(locale.translate("must-be-player", new TreeMap<String, String>()));
-                return 0;
+                return ExitCode.EXIT_SUCCESS;
             }
             var player = (Player) sender;
             var df = new DecimalFormat("0.0");
@@ -62,9 +63,9 @@ public class Memory extends AsyncCommand {
             sender.sendMessage(locale.translate("memory-message", variables));
         } catch (Exception e) {
             e.printStackTrace();
-            return 1;
+            return ExitCode.EXIT_ERROR;
         }
-        return 0;
+        return ExitCode.EXIT_SUCCESS;
     }
 
     @Override

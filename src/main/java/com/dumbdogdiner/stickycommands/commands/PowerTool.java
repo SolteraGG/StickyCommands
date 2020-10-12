@@ -6,8 +6,9 @@ import java.util.TreeMap;
 
 import com.dumbdogdiner.stickycommands.Main;
 import com.google.common.base.Joiner;
-import com.ristexsoftware.koffee.bukkit.command.AsyncCommand;
-import com.ristexsoftware.koffee.translation.LocaleProvider;
+import com.dumbdogdiner.stickyapi.bukkit.command.AsyncCommand;
+import com.dumbdogdiner.stickyapi.bukkit.command.ExitCode;
+import com.dumbdogdiner.stickyapi.common.translation.LocaleProvider;
 
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -43,9 +44,9 @@ public class PowerTool extends AsyncCommand {
     }
 
     @Override
-    public int executeCommand(CommandSender sender, String commandLabel, String[] args) {
+    public ExitCode executeCommand(CommandSender sender, String commandLabel, String[] args) {
         if (!sender.hasPermission("stickycommands.powertool") || (!(sender instanceof Player)))
-            return 2;
+            return ExitCode.EXIT_PERMISSION_DENIED;
 
         var player = (Player) sender;
         variables.put("player", player.getName());
@@ -63,14 +64,14 @@ public class PowerTool extends AsyncCommand {
                     variables.put("item", player.getInventory().getItemInMainHand().getItemMeta().getDisplayName());
                     getPowerTool(player, s, false);
                     sender.sendMessage(locale.translate("powertool.assigned", variables));
-                    return 0;
+                    return ExitCode.EXIT_SUCCESS;
                 }
                 sender.sendMessage(locale.translate("powertool.cannot-bind-air", variables));
             }
         } catch (Exception e) {
-            return 1;
+            return ExitCode.EXIT_ERROR;
         }
-        return 0;
+        return ExitCode.EXIT_SUCCESS;
     }
 
     private ItemStack getPowerTool(Player player, String command, boolean clear) {

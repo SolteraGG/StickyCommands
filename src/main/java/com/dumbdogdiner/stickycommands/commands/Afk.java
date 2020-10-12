@@ -4,8 +4,9 @@ import java.util.TreeMap;
 
 import com.dumbdogdiner.stickycommands.Main;
 import com.dumbdogdiner.stickycommands.User;
-import com.ristexsoftware.koffee.bukkit.command.AsyncCommand;
-import com.ristexsoftware.koffee.translation.LocaleProvider;
+import com.dumbdogdiner.stickyapi.bukkit.command.AsyncCommand;
+import com.dumbdogdiner.stickyapi.bukkit.command.ExitCode;
+import com.dumbdogdiner.stickyapi.common.translation.LocaleProvider;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -26,24 +27,28 @@ public class Afk extends AsyncCommand {
         variables.put("syntax", "/afk");
     }
 
-    // TODO: Clean this up
     @Override
-    public int executeCommand(CommandSender sender, String commandLabel, String[] args) {
+    public ExitCode executeCommand(CommandSender sender, String commandLabel, String[] args) {
         if (!(sender instanceof Player))
-            return 2;
+            return ExitCode.EXIT_PERMISSION_DENIED;
         User user = Main.getInstance().getOnlineUser(((Player)sender).getUniqueId());
         variables.put("player", user.getName());
         variables.put("player_uuid", user.getUniqueId().toString());
         
         if (user.isAfk()) {
             user.setAfk(false);
-            Bukkit.broadcastMessage(locale.translate("not-afk-message", variables));
-            return 0;
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                p.sendMessage(Main.getInstance().getLocaleProvider().translate("not-afk-message", variables));
+            }
+            return ExitCode.EXIT_SUCCESS;
         }
         user.setAfk(true);
-        Bukkit.broadcastMessage(locale.translate("afk-message", variables));
+        // Bukkit is literally fucking retarded, and I can't use broadcastMessage because that magically doesn't work now! Who knew....
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            p.sendMessage(Main.getInstance().getLocaleProvider().translate("afk-message", variables));
+        }
         
-        return 0;
+        return ExitCode.EXIT_SUCCESS;
     }
 
     @Override
