@@ -57,7 +57,7 @@ public class Sell extends AsyncCommand {
         double percentage = 100.00;
         if(item.hasDurability()) {
             double maxDur = item.getAsItemStack().getType().getMaxDurability();
-            double currDur = maxDur - item.getAsItemStack().getDurability(); 
+            double currDur = maxDur - item.getAsItemStack().getDurability(); //TODO Change to use Damagables
             percentage = Math.round((currDur / maxDur) * 100.00) / 100.00;
 
             if((currDur / maxDur) < 0.4) {
@@ -71,7 +71,7 @@ public class Sell extends AsyncCommand {
         variables.put("hand_worth", Double.toString(worth * item.getAmount()));
         variables.put("inventory_worth", Double.toString(worth * inventoryAmount));
         
-        if (worth != 0.0) {
+        if (worth > 0.0) {
             if (!a.exists("sellMode") || a.get("sellMode").equalsIgnoreCase("hand")) {
                 variables.put("amount", String.valueOf(item.getAmount()));
                 variables.put("worth", String.valueOf(item.getWorth() * item.getAmount()));
