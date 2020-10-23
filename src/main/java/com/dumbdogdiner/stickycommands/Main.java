@@ -8,17 +8,7 @@ import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import com.dumbdogdiner.stickycommands.commands.Afk;
-import com.dumbdogdiner.stickycommands.commands.Jump;
-import com.dumbdogdiner.stickycommands.commands.Kill;
-import com.dumbdogdiner.stickycommands.commands.Memory;
-import com.dumbdogdiner.stickycommands.commands.PlayerTime;
-import com.dumbdogdiner.stickycommands.commands.PowerTool;
-import com.dumbdogdiner.stickycommands.commands.Seen;
-import com.dumbdogdiner.stickycommands.commands.Sell;
-import com.dumbdogdiner.stickycommands.commands.Speed;
-import com.dumbdogdiner.stickycommands.commands.Top;
-import com.dumbdogdiner.stickycommands.commands.Worth;
+import com.dumbdogdiner.stickycommands.commands.*;
 import com.dumbdogdiner.stickycommands.listeners.PlayerInteractionListener;
 import com.dumbdogdiner.stickycommands.listeners.PlayerJoinListener;
 import com.dumbdogdiner.stickycommands.runnables.AfkTimeRunnable;
@@ -182,6 +172,7 @@ public class Main extends JavaPlugin {
         commandList.add(new Speed(this));
         commandList.add(new PlayerTime(this));
         commandList.add(new Seen(this));
+        commandList.add(new Smite(this));
 
         CommandMap cmap = ReflectionUtil.getProtectedValue(Bukkit.getServer(), "commandMap");
         cmap.registerAll(this.getName().toLowerCase(), commandList);

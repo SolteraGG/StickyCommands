@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "com.dumbdogdiner"
-version = "2.8.3"
+version = "2.9.0-SMITEBETA"
 
 repositories {
     mavenCentral()
@@ -24,10 +24,8 @@ repositories {
         }
         url = "https://maven.pkg.github.com/DumbDogDiner/StickyAPI/" } */
 
-    flatDir {
-        dirs "E:\\DDD_DEV\\StickyAPI\\build\\libs"
-    }
-    }
+    flatDir { dirs "E:\\DDD_DEV\\StickyAPI\\build\\libs" }
+}
 
 dependencies {
     // java deps
@@ -51,7 +49,7 @@ tasks.withType(JavaCompile) {
 
 tasks.build.dependsOn tasks.shadowJar
 shadowJar {
-    archiveClassifier = ""
+    //archiveClassifier = ""
     project.configurations.implementation.canBeResolved = true
     configurations = [project.configurations.implementation]
 }
