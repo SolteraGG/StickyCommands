@@ -10,12 +10,13 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.LightningStrike;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.TreeMap;
 
 public class Smite extends AsyncCommand {
@@ -121,8 +122,28 @@ public class Smite extends AsyncCommand {
      */
 
     private void lightningOnCoord(Location location, World world) {
-        LightningStrike strike = world.strikeLightning(location);
 
-        world.createExplosion(location, EXPLOSION_STRENGTH, false, false, strike);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getInstance(), new Runnable() {
+            @Override
+            public void run() {
+                LightningStrike strike = world.strikeLightning(location);
+
+                world.createExplosion(location, EXPLOSION_STRENGTH, false, false, strike);
+            }
+        }, 1L);
+
+    }
+
+    @Override
+    public List<String> tabComplete(CommandSender sender, String alias, String[] args) {
+        ArrayList<String> tabComplete = new ArrayList<>();
+
+        if (args.length < 2) {
+            tabComplete.add("me");
+            tabComplete.add("target");
+            for (var player : Bukkit.getOnlinePlayers())
+                tabComplete.add(player.getName());
+        }
+        return tabComplete;
     }
 }
