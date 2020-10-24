@@ -65,6 +65,7 @@ smite:
   smite-message: "{prefix}&b Thou hast been smitten!"
   smite-not-a-player: "{prefix}&b {PLAYER} is not online!"
   smite-immune: "{prefix}&b {PLAYER} is immune to your wrath!"
+  yourself: "{prefix}&b You have smitten yourself!"
 
 whip:
   you-whipped: "{prefix}&bYou whipped &f{PLAYER}&b for &f{DAMAGE}&bhp &f{AMOUNT}&b times!"

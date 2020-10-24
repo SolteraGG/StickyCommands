@@ -31,7 +31,8 @@ public class Smite extends AsyncCommand {
     private static final String PERMISSION_USE = "stickycommands.smite";
     private static final String PERMISSION_IMMUNE = "stickycommands.smite.immune";
 
-    private static final float EXPLOSION_STRENGTH = 2.5F;
+    private static final float EXPLOSION_STRENGTH = 1.5F;
+    private static final int TARGET_RANGE = 255;
 
 
     public Smite(Plugin owner) {
@@ -50,6 +51,7 @@ public class Smite extends AsyncCommand {
         Arguments a = new Arguments(args);
         a.optionalString("smitetarget", "target");
 
+        variables.put("player", a.get("smitetarget"));
         String smiteTarget = a.get("smitetarget").toLowerCase();
         boolean isConsole = !(sender instanceof Player);
 
@@ -59,27 +61,27 @@ public class Smite extends AsyncCommand {
             } else {
                 if (smiteTarget.equals("me")) {
                     smiteMe((Player) sender);
-                    return ExitCode.EXIT_SUCCESS;
+                    return ExitCode.EXIT_SUCCESS.setMessage(locale.translate("smite.yourself", variables));
                 } else { // MUST be target
                     // TODO: Allow targetting an entity rather than a block
-                    Location toStrike = ((Player) sender).getTargetBlock(null, 5).getLocation();
+                    Location toStrike = ((Player) sender).getTargetBlock(null, TARGET_RANGE).getLocation();
                     World strikeWorld = ((Player) sender).getWorld();
                     variables.put("X", Integer.toString(toStrike.getBlockX()));
                     variables.put("Y", Integer.toString(toStrike.getBlockY()));
                     variables.put("Z", Integer.toString(toStrike.getBlockZ()));
                     variables.put("WORLD", strikeWorld.toString());
                     lightningOnCoord(toStrike, strikeWorld);
-                    return ExitCode.EXIT_SUCCESS.setMessage(locale.translate("smite-block", variables));
+                    return ExitCode.EXIT_SUCCESS.setMessage(locale.translate("smite.smite-block", variables));
                 }
             }
         } else {
             switch (smitePlayer(smiteTarget)) {
                 case SMITTEN:
-                    return ExitCode.EXIT_SUCCESS.setMessage(locale.translate("smite-other-player-success", variables));
+                    return ExitCode.EXIT_SUCCESS.setMessage(locale.translate("smite.smite-other-player-success", variables));
                 case NO_PLAYER:
-                    return ExitCode.EXIT_INVALID_SYNTAX.setMessage(locale.translate("smite-not-a-player", variables));
+                    return ExitCode.EXIT_INVALID_SYNTAX.setMessage(locale.translate("smite.smite-not-a-player", variables));
                 case PLAYER_IMMUNE:
-                    return ExitCode.EXIT_PERMISSION_DENIED.setMessage(locale.translate("smite-immune", variables));
+                    return ExitCode.EXIT_PERMISSION_DENIED.setMessage(locale.translate("smite.smite-immune", variables));
             }
         }
 
@@ -95,13 +97,13 @@ public class Smite extends AsyncCommand {
      */
     private SmiteStatus smitePlayer(String playerName) {
         Player player = Bukkit.getPlayer(playerName);
-        variables.put("player", playerName);
         if (player == null)
             return SmiteStatus.NO_PLAYER;
         if (player.hasPermission(PERMISSION_IMMUNE))
             return SmiteStatus.PLAYER_IMMUNE;
         lightningOnCoord(player.getLocation(), player.getWorld());
-        player.sendMessage(locale.translate("smite-message", variables));
+        player.sendMessage(locale.translate("smite.smite-message", variables));
+        System.out.println(locale.translate("smite.smite-message", variables));
         return SmiteStatus.SMITTEN;
     }
 
