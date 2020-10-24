@@ -17,14 +17,14 @@ repositories {
     maven { url = "https://papermc.io/repo/repository/maven-public/" }
     maven { url = "https://repo.extendedclip.com/content/repositories/placeholderapi/" }
     maven { url = "https://jitpack.io" }
-    /*maven {
+    maven {
         credentials {
             username "$ghUser"
             password "$ghPass"
         }
-        url = "https://maven.pkg.github.com/DumbDogDiner/StickyAPI/" } */
+        url = "https://maven.pkg.github.com/DumbDogDiner/StickyAPI/" }
 
-    flatDir { dirs "E:\\DDD_DEV\\StickyAPI\\build\\libs" }
+    //flatDir { dirs "E:\\DDD_DEV\\StickyAPI\\build\\libs" }
 }
 
 dependencies {
