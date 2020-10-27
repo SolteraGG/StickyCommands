@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "com.dumbdogdiner"
-version = "2.9.0-SMITEBETA"
+version = "2.9.0"
 
 repositories {
     mavenCentral()
@@ -41,6 +41,7 @@ dependencies {
     compileOnly "com.github.MilkBowl:VaultAPI:1.7"
     compileOnly "me.clip:placeholderapi:2.10.6"
     implementation "com.dumbdogdiner:stickyapi:1.4.4"
+    compileOnly 'net.luckperms:api:5.2'
 }
 
 tasks.withType(JavaCompile) {
