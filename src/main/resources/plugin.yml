@@ -1,5 +1,5 @@
 name: StickyCommands
-version: 3.1.5
+version: 3.1.5a
 main: com.dumbdogdiner.stickycommands.StickyCommands
 load: STARTUP
 authors:

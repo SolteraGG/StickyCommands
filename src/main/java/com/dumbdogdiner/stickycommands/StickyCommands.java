@@ -201,6 +201,7 @@ public class StickyCommands extends JavaPlugin {
         commandList.add(new Afk(this));
         commandList.add(new PlayerTime(this));
         commandList.add(new Smite(this));
+        commandList.add(new Hat(this));
 
         CommandUtil.registerCommands(getServer(), commandList);
         return true;
