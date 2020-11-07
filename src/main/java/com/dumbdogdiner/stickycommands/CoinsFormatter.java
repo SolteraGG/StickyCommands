@@ -11,11 +11,6 @@ import java.util.Locale;
  */
 public class CoinsFormatter extends NumberFormatProvider {
     
-
-
-
-
-
     @Override
     public NumberFormat getCurrencyInstance(Locale locale) {
         return null;
