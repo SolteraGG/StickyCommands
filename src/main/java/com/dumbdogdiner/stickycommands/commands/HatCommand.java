@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.TreeMap;
 
-public class Hat extends AsyncCommand{
+public class HatCommand extends AsyncCommand{
     private static LocaleProvider locale = StickyCommands.getInstance().getLocaleProvider();
     private TreeMap<String, String> variables = locale.newVariables();
     private static final  String HAT_PERMISSION = "stickycommands.hat";
@@ -23,7 +23,7 @@ public class Hat extends AsyncCommand{
     /**
      * Create a new command for the associated plugin
      */
-    public Hat(Plugin owner) {
+    public HatCommand(Plugin owner) {
         super("Hat", owner);
         setPermission(HAT_PERMISSION);
         setDescription("Wear an item as a hat (Swaps your helmet with what's in your offhand)");
