@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "com.dumbdogdiner"
-version = "3.1.5-hat"
+version = "3.3.0"
 
 repositories {
     mavenCentral()
@@ -31,7 +31,6 @@ repositories {
             password "$ghPass"
         }
         url = "https://maven.pkg.github.com/DumbDogDiner/closedsource-package-mirror" }
-    flatDir { dirs 'libs'}
 }
 
 dependencies {
