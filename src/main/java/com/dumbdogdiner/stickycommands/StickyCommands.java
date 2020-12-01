@@ -8,6 +8,7 @@ import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import com.dumbdogdiner.stickyapi.bukkit.plugin.StickyPlugin;
 import com.dumbdogdiner.stickycommands.commands.*;
 import com.dumbdogdiner.stickycommands.listeners.PlayerInteractionListener;
 import com.dumbdogdiner.stickycommands.listeners.PlayerJoinListener;
@@ -31,7 +32,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import lombok.Getter;
 import net.milkbowl.vault.economy.Economy;
 
-public class StickyCommands extends JavaPlugin {
+public class StickyCommands extends StickyPlugin {
 
     /**
      * The singleton instance of the plugin.
@@ -203,6 +204,9 @@ public class StickyCommands extends JavaPlugin {
     boolean registerCommands() {
         List<Command> commandList = new ArrayList<Command>();
         // Register economy based commands only if the economy provider is not null.
+
+        new AfkCommand().register();
+        new HatCommand().register();
         if (economy != null) {
             commandList.add(new SellCommand(this));
             commandList.add(new WorthCommand(this));
@@ -216,10 +220,9 @@ public class StickyCommands extends JavaPlugin {
         commandList.add(new MemoryCommand(this));
         commandList.add(new TopCommand(this));
         commandList.add(new PowerToolCommand(this));
-        commandList.add(new AfkCommand(this));
         commandList.add(new PlayerTimeCommand(this));
         commandList.add(new SmiteCommand(this));
-        commandList.add(new HatCommand(this));
+        ;
 
         CommandUtil.registerCommands(getServer(), commandList);
         return true;

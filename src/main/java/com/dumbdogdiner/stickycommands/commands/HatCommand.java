@@ -2,29 +2,36 @@ package com.dumbdogdiner.stickycommands.commands;
 
 import com.dumbdogdiner.stickyapi.bukkit.command.AsyncCommand;
 import com.dumbdogdiner.stickyapi.bukkit.command.ExitCode;
+import com.dumbdogdiner.stickyapi.bukkit.command.StickyPluginCommand;
 import com.dumbdogdiner.stickyapi.common.arguments.Arguments;
+import com.dumbdogdiner.stickyapi.common.command.ExitCode;
 import com.dumbdogdiner.stickyapi.common.translation.LocaleProvider;
 import com.dumbdogdiner.stickycommands.StickyCommands;
+import org.bukkit.command.CommandException;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 
-public class HatCommand extends AsyncCommand{
+public class HatCommand extends StickyPluginCommand {
     private static final LocaleProvider locale = StickyCommands.getInstance().getLocaleProvider();
-    private final TreeMap<String, String> variables = locale.newVariables();
     private static final  String HAT_PERMISSION = "stickycommands.hat";
     private static final String HAT_REMOVE_FLAG = "remove";
     private static final String HAT_OFFHAND_FLAG = "offhand";
 
+
     /**
      * Create a new command for the associated plugin
      */
-    public HatCommand(Plugin owner) {
-        super("hat", owner);
+    public HatCommand() {
+        super("hat", null, StickyCommands.getInstance());
         setPermission(HAT_PERMISSION);
         setDescription("Wear an item as a hat (Swaps your helmet with what's in your offhand)");
         variables.put("syntax", "/hat [remove | offhand]");
@@ -81,5 +88,15 @@ public class HatCommand extends AsyncCommand{
         } else {
             return ExitCode.EXIT_PERMISSION_DENIED;
         }
+    }
+
+    @Override
+    public ExitCode execute(@NotNull CommandSender commandSender, @NotNull String s, @NotNull Arguments arguments, @NotNull Map<String, String> map) {
+        return null;
+    }
+
+    @Override
+    public @NotNull List<String> tabComplete(@NotNull CommandSender commandSender, @NotNull String s, @NotNull String[] strings) throws IllegalArgumentException, CommandException {
+        return null;
     }
 }

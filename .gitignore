@@ -75,3 +75,4 @@ target/
 
 # Windows Thumbnail Cache
 thumbs.db
+/archive/
