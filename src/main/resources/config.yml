@@ -17,6 +17,9 @@ debug: false
 #The name of the server StickyCommands is running on
 server: "lobby"
 
+# If the rulebook is hosted online, put its URL here, otherwise, leave blank and rulebook.md in the config will be loaded.
+rulebook-url:
+
 database:
   host: localhost
   port: 3306

@@ -19,11 +19,14 @@ import org.commonmark.node.Document;
 import org.commonmark.parser.Parser;
 
 import java.io.*;
+import java.net.URL;
 import java.util.Collections;
 import java.util.List;
 
 public class RulesCommand {
     public static final String PERMISSION = "stickycommands.rules";
+    public static final String RULEBOOK_LOCAL_FILENAME = "rulebook.md";
+    public static final String RULEBOOK_URL_CONFIG_PATH = "rulebook-url";
 
     public static void build(Plugin owner) {
         new CommandBuilder("rules")
@@ -64,18 +67,23 @@ public class RulesCommand {
     }
 
     private static Reader getRulebookReader() {
-        StickyCommands plugin = StickyCommands.getInstance();
+        var plugin = StickyCommands.getInstance();
         try {
+            var configUrl = plugin.getConfig().getString(RULEBOOK_URL_CONFIG_PATH);
+            if (configUrl != null) {
+                var url = new URL(configUrl);
+                return new InputStreamReader(url.openStream());
+            }
             var dataFolder = plugin.getDataFolder();
             var rulebook = new File(dataFolder, "rulebook.md");
             if (!rulebook.exists()) {
-                plugin.saveResource("rulebook.md", true);
+                plugin.saveResource(RULEBOOK_LOCAL_FILENAME, true);
                 return new FileReader(rulebook);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        var resource = plugin.getResource("rulebook.md");
+        var resource = plugin.getResource(RULEBOOK_LOCAL_FILENAME);
         if (resource == null) {
             return new StringReader("The rulebook could not be loaded.");
         } else {
