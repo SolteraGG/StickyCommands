@@ -1,7 +1,9 @@
 package com.dumbdogdiner.stickycommands.commands;
 
-import com.dumbdogdiner.stickyapi.bukkit.command.builder.CommandBuilder;
+import com.dumbdogdiner.stickyapi.bukkit.command.StickyPluginCommand;
 import com.dumbdogdiner.stickyapi.bukkit.item.generator.BookGenerator;
+import com.dumbdogdiner.stickyapi.bukkit.plugin.StickyPlugin;
+import com.dumbdogdiner.stickyapi.common.arguments.Arguments;
 import com.dumbdogdiner.stickyapi.common.book.chat.JsonComponent;
 import com.dumbdogdiner.stickyapi.common.book.commonmarkextensions.JsonComponentWriter;
 import com.dumbdogdiner.stickyapi.common.book.commonmarkextensions.MCFormatExtension;
@@ -9,61 +11,36 @@ import com.dumbdogdiner.stickyapi.common.book.commonmarkextensions.MarkdownJsonR
 import com.dumbdogdiner.stickyapi.common.command.ExitCode;
 import com.dumbdogdiner.stickyapi.common.util.BookUtil;
 import com.dumbdogdiner.stickycommands.StickyCommands;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.command.CommandException;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.permissions.Permission;
 import org.commonmark.node.Document;
 import org.commonmark.parser.Parser;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
 import java.net.URL;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
-public class RulesCommand {
+public class RulesCommand extends StickyPluginCommand {
     public static final String PERMISSION = "stickycommands.rules";
     public static final String RULEBOOK_LOCAL_FILENAME = "rulebook.md";
     public static final String RULEBOOK_URL_CONFIG_PATH = "rulebook-url";
 
-    public static void build(Plugin owner) {
-        new CommandBuilder("rules")
-                .description("Get a copy of the the server's rules")
-                .permission(PERMISSION)
-                .alias("rulebook")
-                .requiresPlayer(true)
-                .onTabComplete((sender, s, arguments) -> Collections.emptyList())
-                .onExecute((sender, arguments, vars) -> {
-                    try {
-                        ((Player) sender).getInventory().addItem(generateDefault());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        return ExitCode.EXIT_ERROR;
-                    }
-
-                    return ExitCode.EXIT_SUCCESS;
-                })
-                .onError((exitCode, sender, arguments, vars) -> {
-                    var provider = StickyCommands.getInstance().getLocaleProvider();
-                    switch (exitCode) {
-                        case EXIT_PERMISSION_DENIED:
-                            sender.sendMessage(provider.translate("no-permission", vars));
-                            break;
-                        case EXIT_MUST_BE_PLAYER:
-                            sender.sendMessage(provider.translate("must-be-player", vars));
-                            break;
-                        case EXIT_ERROR:
-                            sender.sendMessage(provider.translate("server-error", vars));
-                            break;
-                        case EXIT_SUCCESS:
-                            break;
-                        default:
-                            sender.sendMessage(ChatColor.RED + "Exited with " + exitCode);
-                    }
-                })
-                .register(owner);
+    public RulesCommand(@NotNull StickyPlugin owner) {
+        super(
+                /* name:       */ "rules",
+                /* aliases:    */ Collections.singletonList("rulebook"),
+                /* owner:      */ owner,
+                /* permission: */ new Permission(PERMISSION)
+        );
+        // settings not settable in super call
+        requiresPlayer = true;
     }
 
     private static Reader getRulebookReader() {
@@ -115,5 +92,22 @@ public class RulesCommand {
         var writer = new JsonComponentWriter(component);
         new MarkdownJsonRenderer(writer).render(document);
         return component;
+    }
+
+    @Override
+    public ExitCode execute(@NotNull CommandSender commandSender, @NotNull String s, @NotNull Arguments arguments, @NotNull Map<String, String> map) {
+        try {
+            ((Player) commandSender).getInventory().addItem(generateDefault());
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ExitCode.EXIT_ERROR;
+        }
+
+        return ExitCode.EXIT_SUCCESS;
+    }
+
+    @Override
+    public @NotNull List<String> tabComplete(@NotNull CommandSender commandSender, @NotNull String s, @NotNull String[] strings) throws IllegalArgumentException, CommandException {
+        return Collections.emptyList();
     }
 }
