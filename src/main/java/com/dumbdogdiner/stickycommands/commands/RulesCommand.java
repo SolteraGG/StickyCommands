@@ -32,14 +32,6 @@ public class RulesCommand {
                 .requiresPlayer(true)
                 .onTabComplete((sender, s, arguments) -> Collections.emptyList())
                 .onExecute((sender, arguments, vars) -> {
-                    if (!sender.hasPermission(PERMISSION)) {
-                        return ExitCode.EXIT_PERMISSION_DENIED;
-                    }
-
-                    if (!(sender instanceof Player)) {
-                        return ExitCode.EXIT_MUST_BE_PLAYER;
-                    }
-
                     try {
                         ((Player) sender).getInventory().addItem(generateDefault());
                     } catch (IOException e) {
