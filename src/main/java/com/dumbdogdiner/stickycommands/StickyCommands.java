@@ -222,7 +222,7 @@ public class StickyCommands extends StickyPlugin {
         commandList.add(new PowerToolCommand(this));
         commandList.add(new PlayerTimeCommand(this));
         commandList.add(new SmiteCommand(this));
-        ;
+        RulesCommand.build(this);
 
         CommandUtil.registerCommands(getServer(), commandList);
         return true;
