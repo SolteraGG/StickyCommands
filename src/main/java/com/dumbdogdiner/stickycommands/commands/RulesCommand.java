@@ -22,7 +22,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class RulesCommand {
-    public static final String PERMISSION = "apitestplugin.rules";
+    public static final String PERMISSION = "stickycommands.rules";
 
     public static void build(Plugin owner) {
         new CommandBuilder("rules")
