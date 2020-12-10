@@ -14,6 +14,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.commonmark.node.Document;
 import org.commonmark.parser.Parser;
 
@@ -68,20 +69,7 @@ public class RulesCommand {
             var dataFolder = plugin.getDataFolder();
             var rulebook = new File(dataFolder, "rulebook.md");
             if (!rulebook.exists()) {
-                if (!dataFolder.mkdirs() || !rulebook.createNewFile()) {
-                    throw new IOException("Could not save default rulebook to data folder");
-                }
-                try (var writer = new FileOutputStream(rulebook)) {
-                    try (var defaultRulebook = plugin.getResource("rulebook.md")) {
-                        if (defaultRulebook == null) throw new IllegalStateException("No rulebook in the resources!");
-                        byte[] bytes;
-                        do {
-                            bytes = defaultRulebook.readNBytes(2048);
-                            writer.write(bytes);
-                        } while (bytes.length > 0);
-                        writer.write(defaultRulebook.read());
-                    }
-                }
+                plugin.saveResource("rulebook.md", true);
                 return new FileReader(rulebook);
             }
         } catch (Exception e) {
