@@ -3,12 +3,14 @@ package com.dumbdogdiner.stickycommands.commands;
 import com.dumbdogdiner.stickyapi.bukkit.command.StickyPluginCommand;
 import com.dumbdogdiner.stickyapi.bukkit.item.generator.BookGenerator;
 import com.dumbdogdiner.stickyapi.bukkit.plugin.StickyPlugin;
+import com.dumbdogdiner.stickyapi.bukkit.util.ServerUtil;
 import com.dumbdogdiner.stickyapi.common.arguments.Arguments;
 import com.dumbdogdiner.stickyapi.common.book.chat.JsonComponent;
 import com.dumbdogdiner.stickyapi.common.book.commonmarkextensions.JsonComponentWriter;
 import com.dumbdogdiner.stickyapi.common.book.commonmarkextensions.MCFormatExtension;
 import com.dumbdogdiner.stickyapi.common.book.commonmarkextensions.MarkdownJsonRenderer;
 import com.dumbdogdiner.stickyapi.common.command.ExitCode;
+import com.dumbdogdiner.stickyapi.common.translation.Translation;
 import com.dumbdogdiner.stickyapi.common.util.BookUtil;
 import com.dumbdogdiner.stickycommands.StickyCommands;
 import org.bukkit.Material;
@@ -69,8 +71,17 @@ public class RulesCommand extends StickyPluginCommand {
     }
 
     private static ItemStack generateDefault() throws IOException {
+        var config = StickyCommands.getInstance().getConfig();
+        var title = config.getString("rulebook-title");
+        if (title == null) title = "&ddddMC Survival Handbook";
+        var author = config.getString("rulebook-author");
+        if (author == null) author = "Stixil";
         try (var reader = getRulebookReader()) {
-            return generate(reader, "§ddddMC Survival Handbook", "Stixil");
+            return generate(
+                    reader,
+                    Translation.translateColors("&", title),
+                    Translation.translateColors("&", author)
+            );
         }
     }
 

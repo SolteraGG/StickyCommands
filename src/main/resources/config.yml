@@ -19,6 +19,10 @@ server: "lobby"
 
 # If the rulebook is hosted online, put its URL here, otherwise, leave blank and rulebook.md in the config will be loaded.
 rulebook-url:
+# The title of the rulebook
+rulebook-title: "&dddMC Survival Handbook"
+# The author of the rulebook
+rulebook-author: Stixil
 
 database:
   host: localhost
