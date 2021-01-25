@@ -65,7 +65,7 @@ dependencies {
     // plugin-specific deps
     compileOnly "com.github.MilkBowl:VaultAPI:1.7"
     compileOnly "me.clip:placeholderapi:2.10.6"
-    implementation "com.dumbdogdiner:stickyapi:1.5.0"
+    implementation "com.dumbdogdiner:stickyapi:2.1.0"
     compileOnly 'net.luckperms:api:5.2'
     compileOnly 'com.dumbdogdiner.closedsource-package-mirror:stafffacilities:4.8.5'
     //compileOnly 'me.xtomyserrax:StaffFacilities'
