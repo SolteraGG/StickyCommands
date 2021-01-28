@@ -41,7 +41,7 @@ tasks {
 
     spigot {
         name = "StickyCommands"
-        authors = mutableListOf("NotZachery")
+        authors = mutableListOf("ZachyFoxx")
         apiVersion = "1.16"
         softDepends = mutableListOf()
     }

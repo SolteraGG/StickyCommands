@@ -12,6 +12,10 @@ import org.jetbrains.annotations.Nullable;
 public abstract class PowertoolBuilder implements Cloneable {
 	private ItemStack item;
 
+	public PowertoolBuilder() {
+
+	}
+
 	/**
 	 * Create a powertool using the given item stack.
 	 * @param item The target item stack
