@@ -7,7 +7,7 @@ import org.bukkit.inventory.ItemStack
 import com.dumbdogdiner.stickycommands.api.item.PowertoolBuilder
 
 // snep
-class PowertoolBuilder(
+class StickyPowertoolBuilder(
     private var command: String,
     private val material: Material
 
@@ -19,7 +19,7 @@ class PowertoolBuilder(
     }
 
     override fun give(target: Player): Powertool {
-        val powertool = com.dumbdogdiner.stickycommands.item.Powertool(target, this.material, this.command, true)
+        val powertool = com.dumbdogdiner.stickycommands.item.StickyPowertool(target, this.material, this.command, true)
         target.inventory.addItem(ItemStack(this.material))
 
         return powertool

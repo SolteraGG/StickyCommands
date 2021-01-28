@@ -4,7 +4,7 @@ import com.dumbdogdiner.stickycommands.api.item.Powertool
 import org.bukkit.Material
 import org.bukkit.entity.Player
 
-class Powertool(
+class StickyPowertool(
     private val player: Player,
     private val material: Material,
     private var command: String,
