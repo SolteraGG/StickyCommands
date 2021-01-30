@@ -9,7 +9,10 @@ plugins {
 version = "1.0.0"
 
 dependencies {
+    // paper
     compileOnly(paper())
+
+    // Annotations
     implementation("org.jetbrains:annotations:16.0.2")
     compileOnly("org.projectlombok:lombok:1.18.16")
     annotationProcessor("org.projectlombok:lombok:1.18.12")
@@ -38,3 +41,4 @@ tasks {
         enabled = false
     }
 }
+

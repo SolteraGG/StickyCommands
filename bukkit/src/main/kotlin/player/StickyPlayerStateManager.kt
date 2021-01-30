@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2021 DumbDogDiner <dumbdogdiner.com>. All rights reserved.
+ * Licensed under the MIT license, see LICENSE for more information.
+ */
 package com.dumbdogdiner.stickycommands.player
 
 import com.dumbdogdiner.stickycommands.api.player.PlayerStateManager
@@ -11,7 +15,6 @@ class StickyPlayerStateManager : PlayerStateManager {
     }
 
     // is there a less ugly way to do this?
-    // FIXME: make this look more pretty, skye pls help <3
     private fun createPlayerState(player: Player): StickyPlayerState {
         val state = StickyPlayerState(player)
         this.playerStates[player] = state
@@ -20,6 +23,10 @@ class StickyPlayerStateManager : PlayerStateManager {
 
     override fun isPlayerAfk(player: Player): Boolean {
         return getPlayerState(player).isAfk
+    }
+
+    override fun isPlayerHidden(player: Player): Boolean {
+        return getPlayerState(player).isHidden
     }
 
     /**

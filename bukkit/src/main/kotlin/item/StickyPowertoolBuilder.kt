@@ -1,17 +1,21 @@
+/*
+ * Copyright (c) 2021 DumbDogDiner <dumbdogdiner.com>. All rights reserved.
+ * Licensed under the MIT license, see LICENSE for more information.
+ */
 package com.dumbdogdiner.stickycommands.item
 
 import com.dumbdogdiner.stickycommands.api.item.Powertool
+import com.dumbdogdiner.stickycommands.api.item.PowertoolBuilder
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
-import com.dumbdogdiner.stickycommands.api.item.PowertoolBuilder
 
 // snep
 class StickyPowertoolBuilder(
     private var command: String,
     private val material: Material
 
-): PowertoolBuilder() {
+) : PowertoolBuilder() {
 
     override fun setCommand(command: String): PowertoolBuilder {
         this.command = command
@@ -24,5 +28,4 @@ class StickyPowertoolBuilder(
 
         return powertool
     }
-
 }

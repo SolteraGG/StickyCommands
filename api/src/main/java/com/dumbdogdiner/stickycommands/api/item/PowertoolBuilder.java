@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2021 DumbDogDiner <dumbdogdiner.com>. All rights reserved.
+ * Licensed under the MIT license, see LICENSE for more information.
+ */
 package com.dumbdogdiner.stickycommands.api.item;
 
 import org.bukkit.Material;
@@ -10,40 +14,38 @@ import org.jetbrains.annotations.Nullable;
  * Utility class for the creation of player power tools.
  */
 public abstract class PowertoolBuilder implements Cloneable {
-	private ItemStack item;
+    private ItemStack item;
 
-	public PowertoolBuilder() {
+    public PowertoolBuilder() {}
 
-	}
+    /**
+     * Create a powertool using the given item stack.
+     * @param item The target item stack
+     */
+    public PowertoolBuilder(ItemStack item) {
+        this.item = item;
+    }
 
-	/**
-	 * Create a powertool using the given item stack.
-	 * @param item The target item stack
-	 */
-	public PowertoolBuilder(ItemStack item) {
-		this.item = item;
-	}
+    /**
+     * Create a powertool using the given material.
+     * @param material The target material
+     */
+    public PowertoolBuilder(Material material) {
+        this(new ItemStack(material));
+    }
 
-	/**
-	 * Create a powertool using the given material.
-	 * @param material The target material
-	 */
-	public PowertoolBuilder(Material material) {
-		this(new ItemStack(material));
-	}
+    /**
+     * Set the command of the powertool.
+     * @param command The command to run
+     * @return The {@link PowertoolBuilder}
+     */
+    public abstract PowertoolBuilder setCommand(@NotNull String command);
 
-	/**
-	 * Set the command of the powertool.
-	 * @param command The command to run
-	 * @return The {@link PowertoolBuilder}
-	 */
-	public abstract PowertoolBuilder setCommand(@NotNull String command);
-
-	/**
-	 * Give the target player the constructed powertool.
-	 * @param target The target player
-	 * @return A {@link Powertool} object
-	 */
-	@NotNull
-	public abstract Powertool give(@NotNull Player target);
+    /**
+     * Give the target player the constructed powertool.
+     * @param target The target player
+     * @return A {@link Powertool} object
+     */
+    @NotNull
+    public abstract Powertool give(@NotNull Player target);
 }

@@ -39,6 +39,7 @@ subprojects {
     repositories {
         jcenter()
         mavenCentral()
+        maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
     }
 
     tasks.withType<JavaCompile> {

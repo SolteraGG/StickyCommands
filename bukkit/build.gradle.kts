@@ -9,18 +9,37 @@ plugins {
 
 repositories {
     papermc()
-    maven {
-        url = uri("https://repo.extendedclip.com/content/repositories/placeholderapi/")
+    maven(uri("https://repo.extendedclip.com/content/repositories/placeholderapi/"))
+    maven(uri("https://jitpack.io"))
+
+    maven(url = "https://maven.pkg.github.com/DumbDogDiner/StickyAPI") {
+        credentials {
+            username = property("ghUser") as String
+            password = property("ghPass") as String
+        }
+    }
+    maven(url = "https://maven.pkg.github.com/DumbDogDiner/closedsource-package-mirror") {
+        credentials {
+            username = property("ghUser") as String
+            password = property("ghPass") as String
+        }
     }
 }
 
 dependencies {
     // jvm and kotlin dependencies
     implementation(kotlin("stdlib"))
-    implementation(project(":api"))
+    implementation(project(":StickyCommandsAPI"))
 
     // server dependencies
     compileOnly(paper())
+    implementation("com.dumbdogdiner:stickyapi:2.1.0")
+
+    // plugin depends
+    compileOnly("me.clip:placeholderapi:2.10.6")
+    compileOnly("com.github.MilkBowl:VaultAPI:1.7")
+    compileOnly("net.luckperms:api:5.2")
+    compileOnly("com.dumbdogdiner.closedsource-package-mirror:stafffacilities:4.8.5")
 }
 
 spotless {
@@ -41,8 +60,9 @@ tasks {
 
     spigot {
         name = "StickyCommands"
-        authors = mutableListOf("ZachyFoxx")
+        authors = mutableListOf("ZachyFoxx", "SkyezerFox", "Rodwuff")
         apiVersion = "1.16"
         softDepends = mutableListOf()
+        version = "1.0.0"
     }
 }

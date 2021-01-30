@@ -1,12 +1,18 @@
+/*
+ * Copyright (c) 2021 DumbDogDiner <dumbdogdiner.com>. All rights reserved.
+ * Licensed under the MIT license, see LICENSE for more information.
+ */
 package com.dumbdogdiner.stickycommands.player
 
+import com.dumbdogdiner.stickycommands.StickyCommands
 import com.dumbdogdiner.stickycommands.api.player.PlayerState
 import com.dumbdogdiner.stickycommands.api.player.SpeedType
+import me.xtomyserrax.StaffFacilities.SFAPI
 import org.bukkit.entity.Player
 
 class StickyPlayerState(
     private val player: Player
-    ): PlayerState {
+) : PlayerState {
 
     private var _afk: Boolean = false
 
@@ -16,6 +22,30 @@ class StickyPlayerState(
 
     override fun isAfk(): Boolean {
         return this._afk
+    }
+
+    override fun isHidden(): Boolean {
+        if (StickyCommands.staffFacilitiesEnabled) {
+            val player = getPlayer()
+        return SFAPI.isPlayerFakeleaved(player) ||
+                    SFAPI.isPlayerStaffVanished(player) ||
+                    SFAPI.isPlayerVanished(player) ||
+                    isVanished()
+        }
+        return false }
+
+    /**
+     * Checks if a given player is in a vanished state.
+     *
+     * @return Whether the user is vanished.
+     */
+    override fun isVanished(): Boolean {
+        for (meta in getPlayer().getMetadata("vanished")) {
+            if (meta.asBoolean()) {
+                return true
+            }
+        }
+        return false
     }
 
     override fun setAfk(isAfk: Boolean) {

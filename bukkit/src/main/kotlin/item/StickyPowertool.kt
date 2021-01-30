@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2021 DumbDogDiner <dumbdogdiner.com>. All rights reserved.
+ * Licensed under the MIT license, see LICENSE for more information.
+ */
 package com.dumbdogdiner.stickycommands.item
 
 import com.dumbdogdiner.stickycommands.api.item.Powertool
@@ -9,7 +13,7 @@ class StickyPowertool(
     private val material: Material,
     private var command: String,
     private var enabled: Boolean
-    ): Powertool {
+) : Powertool {
 
     override fun getPlayer(): Player {
         return this.player
@@ -39,11 +43,9 @@ class StickyPowertool(
         if (this.enabled) {
             if (this.command.startsWith("c:")) {
                 this.player.chat(this.command.replaceFirst("c:", ""))
-            }
-            else {
+            } else {
                 this.player.performCommand(command)
             }
         }
-
     }
 }
