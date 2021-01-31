@@ -62,7 +62,7 @@ tasks {
         name = "StickyCommands"
         authors = mutableListOf("ZachyFoxx", "SkyezerFox", "Rodwuff")
         apiVersion = "1.16"
-        softDepends = mutableListOf()
+        softDepends = mutableListOf("Vault", "LuckPerms", "StaffFacilities")
         version = "1.0.0"
     }
 }

@@ -32,6 +32,29 @@ public interface PlayerState {
     public void setAfk(@NotNull Boolean isAfk);
 
     /**
+     * Set the AFK state of this player.
+     * @param isAfk Whether this player is AFK
+     * @param broadcast Weather or not to broadcast the status of the player
+     */
+    public void setAfk(@NotNull Boolean isAfk, Boolean broadcast);
+
+    /**
+     * Get this player's AFK time (in seconds)
+     * @return this player's afk time
+     */
+    public Integer getAfkTime();
+
+    /**
+     * Increment the AFK time by 1
+     */
+    public void incrementAfkTime();
+
+    /**
+     * Reset this player's AFK time
+     */
+    public void resetAfkTime();
+
+    /**
      * Checks if a given player is hidden, vanished, staffvanished, or fakeleaved
      * @return Whether the user is hidden.
      */

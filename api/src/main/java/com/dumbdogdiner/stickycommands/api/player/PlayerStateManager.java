@@ -7,6 +7,8 @@ package com.dumbdogdiner.stickycommands.api.player;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
+
 public interface PlayerStateManager {
     /**
      * Get a player's current {@link PlayerState}
@@ -14,6 +16,21 @@ public interface PlayerStateManager {
      */
     @NotNull
     public PlayerState getPlayerState(@NotNull Player player);
+
+    /**
+     * Create a {@link PlayerState} from a {@link Player} object
+     * @param player to create the state of
+     * @return a {@link PlayerState} of this player
+     */
+    @NotNull
+    public PlayerState createPlayerState(@NotNull Player player);
+
+    /**
+     * Get all of the current player states
+     * @return a {@link HashMap<Player, PlayerState>} of the current player states
+     */
+    @NotNull
+    public HashMap<Player, PlayerState> getPlayerStates();
 
     /**
      * Get the Afk state of a {@link Player}

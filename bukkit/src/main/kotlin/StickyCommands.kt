@@ -8,8 +8,13 @@ import com.dumbdogdiner.stickyapi.bukkit.util.StartupUtil
 import com.dumbdogdiner.stickyapi.common.translation.LocaleProvider
 import com.dumbdogdiner.stickycommands.api.StickyCommands
 import com.dumbdogdiner.stickycommands.api.player.PlayerStateManager
+import com.dumbdogdiner.stickycommands.commands.AfkCommand
+import com.dumbdogdiner.stickycommands.listeners.AfkEventListener
+import com.dumbdogdiner.stickycommands.listeners.ConnectionListener
 import com.dumbdogdiner.stickycommands.player.StickyPlayerStateManager
+import com.dumbdogdiner.stickycommands.timers.AfkTimer
 import com.dumbdogdiner.stickycommands.util.StickyPlaceholders
+import java.util.Timer
 import kr.entree.spigradle.annotations.PluginMain
 import net.luckperms.api.LuckPerms
 import net.milkbowl.vault.economy.Economy
@@ -26,12 +31,13 @@ class StickyCommands : JavaPlugin(), StickyCommands {
         var localeProvider: LocaleProvider? = null
         var perms: LuckPerms? = null
         var staffFacilitiesEnabled = false
+        val _playerStateManager = StickyPlayerStateManager()
     }
-
-    private val playerStateManager = StickyPlayerStateManager()
+    lateinit var afkTimer: AfkTimer
 
     override fun onLoad() {
         instance = this
+        afkTimer = AfkTimer()
     }
 
     override fun onEnable() {
@@ -43,20 +49,38 @@ class StickyCommands : JavaPlugin(), StickyCommands {
             return
 
         if (!setupPlaceholders())
-            getLogger().severe("PlaceholderAPI is not availible, is it installed?")
+            getLogger().severe("PlaceholderAPI is not available, is it installed?")
 
         if (!setupEconomy())
             getLogger().severe("Disabled economy commands due to no Vault dependency found!")
 
         if (!setupLuckperms())
-            getLogger().severe("Disabled group listing/luckperms dependant features due to no Luckperms dependency found!")
+            getLogger().severe("Disabled group listing/LuckPerms dependant features due to no LuckPerms dependency found!")
 
         if (!setupStaffFacilities())
             getLogger().severe("StaffFacilities not found, disabling integration")
+
+        registerCommands()
+        registerListeners()
+        registerTimers()
     }
 
     override fun onDisable() {
         reloadConfig()
+        afkTimer.cancel()
+    }
+
+    private fun registerListeners() {
+        server.pluginManager.registerEvents(AfkEventListener(), this)
+        server.pluginManager.registerEvents(ConnectionListener(), this)
+    }
+
+    private fun registerCommands() {
+        AfkCommand.command.register(this)
+    }
+
+    private fun registerTimers() {
+        Timer().scheduleAtFixedRate(afkTimer, 1000L, 1000L)
     }
 
     /*
@@ -106,6 +130,6 @@ class StickyCommands : JavaPlugin(), StickyCommands {
     }
 
     override fun getPlayerStateManager(): PlayerStateManager {
-        return this.playerStateManager
+        return _playerStateManager
     }
 }

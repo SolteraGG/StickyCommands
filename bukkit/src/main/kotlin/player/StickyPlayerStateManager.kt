@@ -4,18 +4,26 @@
  */
 package com.dumbdogdiner.stickycommands.player
 
+import com.dumbdogdiner.stickycommands.api.player.PlayerState
 import com.dumbdogdiner.stickycommands.api.player.PlayerStateManager
+import com.dumbdogdiner.stickycommands.api.util.WithApi
 import org.bukkit.entity.Player
 
-class StickyPlayerStateManager : PlayerStateManager {
-    private val playerStates = HashMap<Player, StickyPlayerState>()
+class StickyPlayerStateManager : PlayerStateManager, WithApi {
+    companion object {
+        val playerStateManager = StickyPlayerStateManager()
+    }
+    private val playerStates = HashMap<Player, PlayerState>()
 
-    override fun getPlayerState(player: Player): StickyPlayerState {
+    override fun getPlayerState(player: Player): PlayerState {
         return playerStates[player] ?: createPlayerState(player)
     }
 
-    // is there a less ugly way to do this?
-    private fun createPlayerState(player: Player): StickyPlayerState {
+    override fun getPlayerStates(): HashMap<Player, PlayerState> {
+        return this.playerStates
+    }
+
+    override fun createPlayerState(player: Player): PlayerState {
         val state = StickyPlayerState(player)
         this.playerStates[player] = state
         return state

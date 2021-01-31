@@ -4,6 +4,7 @@
  */
 package com.dumbdogdiner.stickycommands.player
 
+import com.dumbdogdiner.stickyapi.bukkit.util.ServerUtil
 import com.dumbdogdiner.stickycommands.StickyCommands
 import com.dumbdogdiner.stickycommands.api.player.PlayerState
 import com.dumbdogdiner.stickycommands.api.player.SpeedType
@@ -15,6 +16,7 @@ class StickyPlayerState(
 ) : PlayerState {
 
     private var _afk: Boolean = false
+    private var _afkTime: Int = 0
 
     override fun getPlayer(): Player {
         return this.player
@@ -24,13 +26,25 @@ class StickyPlayerState(
         return this._afk
     }
 
+    override fun getAfkTime(): Int {
+        return this._afkTime
+    }
+
+    override fun incrementAfkTime() {
+        this._afkTime++
+    }
+
+    override fun resetAfkTime() {
+        this._afkTime = 0
+    }
+
     override fun isHidden(): Boolean {
         if (StickyCommands.staffFacilitiesEnabled) {
             val player = getPlayer()
         return SFAPI.isPlayerFakeleaved(player) ||
                     SFAPI.isPlayerStaffVanished(player) ||
                     SFAPI.isPlayerVanished(player) ||
-                    isVanished()
+                    isVanished
         }
         return false }
 
@@ -49,7 +63,28 @@ class StickyPlayerState(
     }
 
     override fun setAfk(isAfk: Boolean) {
+        setAfk(isAfk, false)
+    }
+
+    override fun setAfk(isAfk: Boolean, broadcast: Boolean) {
         this._afk = isAfk
+        // reset the time if we're unsetting their afk status
+        if (!isAfk) {
+            this._afkTime = 0
+            System.out.println("ghe")
+        }
+
+        if (broadcast) {
+            if (!isHidden) {
+                val node = if (isAfk) "afk.afk" else "afk.not-afk"
+                // TODO: Make method for getting all variables related to a user, such as location, username, uuid, etc
+                val vars = HashMap<String, String>()
+                vars.put("player", player.name)
+                vars.put("player_uuid", player.uniqueId.toString())
+
+                ServerUtil.broadcastMessage(StickyCommands.localeProvider!!.translate(node, vars))
+            }
+        }
     }
 
     override fun hasFlyModeEnabled(): Boolean {
