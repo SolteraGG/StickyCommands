@@ -4,10 +4,9 @@
  */
 package com.dumbdogdiner.stickycommands.api;
 
-import com.dumbdogdiner.stickycommands.api.player.PlayerState;
-import com.dumbdogdiner.stickycommands.api.player.PlayerStateManager;
+import com.dumbdogdiner.stickycommands.api.managers.PlayerStateManager;
+import com.dumbdogdiner.stickycommands.api.managers.PowertoolManager;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -69,4 +68,6 @@ public interface StickyCommands {
     Plugin getProvider();
 
     PlayerStateManager getPlayerStateManager();
+
+    PowertoolManager getPowertoolManager();
 }

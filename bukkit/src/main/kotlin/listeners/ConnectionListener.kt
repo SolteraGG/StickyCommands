@@ -21,10 +21,12 @@ class ConnectionListener : Listener {
     @EventHandler
     fun onLeave(event: PlayerQuitEvent) {
         StickyCommands._playerStateManager.removePlayerState(event.player)
+        StickyCommands.instance.powertoolManager.remove(event.player)
     }
 
     @EventHandler
     fun onKick(event: PlayerKickEvent) {
         StickyCommands._playerStateManager.removePlayerState(event.player)
+        StickyCommands.instance.powertoolManager.remove(event.player)
     }
 }

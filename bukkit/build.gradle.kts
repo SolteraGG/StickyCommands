@@ -40,6 +40,13 @@ dependencies {
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")
     compileOnly("net.luckperms:api:5.2")
     compileOnly("com.dumbdogdiner.closedsource-package-mirror:stafffacilities:4.8.5")
+
+    // Database dependencies
+    implementation("org.jetbrains.exposed", "exposed-core", "0.28.1")
+    implementation("org.jetbrains.exposed", "exposed-dao", "0.28.1")
+    implementation("org.jetbrains.exposed", "exposed-jdbc", "0.28.1")
+    implementation("org.postgresql", "postgresql", "42.2.18")
+    implementation("com.zaxxer", "HikariCP", "3.4.5")
 }
 
 spotless {

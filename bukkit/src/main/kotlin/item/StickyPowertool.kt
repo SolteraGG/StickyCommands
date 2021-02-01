@@ -35,17 +35,18 @@ class StickyPowertool(
         return this.enabled
     }
 
-    override fun setEnabled(enabled: Boolean) {
-        this.enabled = enabled
+    override fun setEnabled(disabled: Boolean) {
+        this.enabled = disabled
     }
 
-    fun execute() {
-        if (this.enabled) {
-            if (this.command.startsWith("c:")) {
-                this.player.chat(this.command.replaceFirst("c:", ""))
-            } else {
-                this.player.performCommand(command)
-            }
+    override fun execute() {
+        if (!this.enabled)
+            return
+
+        if (this.command.startsWith("c:")) {
+            this.player.chat(this.command.replaceFirst("c:", ""))
+        } else {
+            this.player.performCommand(command)
         }
     }
 }

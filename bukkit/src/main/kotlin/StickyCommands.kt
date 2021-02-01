@@ -7,11 +7,15 @@ package com.dumbdogdiner.stickycommands
 import com.dumbdogdiner.stickyapi.bukkit.util.StartupUtil
 import com.dumbdogdiner.stickyapi.common.translation.LocaleProvider
 import com.dumbdogdiner.stickycommands.api.StickyCommands
-import com.dumbdogdiner.stickycommands.api.player.PlayerStateManager
+import com.dumbdogdiner.stickycommands.api.managers.PlayerStateManager
+import com.dumbdogdiner.stickycommands.api.managers.PowertoolManager
 import com.dumbdogdiner.stickycommands.commands.AfkCommand
+import com.dumbdogdiner.stickycommands.commands.PowertoolCommand
 import com.dumbdogdiner.stickycommands.listeners.AfkEventListener
 import com.dumbdogdiner.stickycommands.listeners.ConnectionListener
-import com.dumbdogdiner.stickycommands.player.StickyPlayerStateManager
+import com.dumbdogdiner.stickycommands.listeners.PowertoolListener
+import com.dumbdogdiner.stickycommands.managers.StickyPlayerStateManager
+import com.dumbdogdiner.stickycommands.managers.StickyPowertoolManager
 import com.dumbdogdiner.stickycommands.timers.AfkTimer
 import com.dumbdogdiner.stickycommands.util.StickyPlaceholders
 import java.util.Timer
@@ -32,6 +36,7 @@ class StickyCommands : JavaPlugin(), StickyCommands {
         var perms: LuckPerms? = null
         var staffFacilitiesEnabled = false
         val _playerStateManager = StickyPlayerStateManager()
+        val _powertoolManager = StickyPowertoolManager()
     }
     lateinit var afkTimer: AfkTimer
 
@@ -73,10 +78,12 @@ class StickyCommands : JavaPlugin(), StickyCommands {
     private fun registerListeners() {
         server.pluginManager.registerEvents(AfkEventListener(), this)
         server.pluginManager.registerEvents(ConnectionListener(), this)
+        server.pluginManager.registerEvents(PowertoolListener(), this)
     }
 
     private fun registerCommands() {
         AfkCommand.command.register(this)
+        PowertoolCommand.command.register(this)
     }
 
     private fun registerTimers() {
@@ -131,5 +138,8 @@ class StickyCommands : JavaPlugin(), StickyCommands {
 
     override fun getPlayerStateManager(): PlayerStateManager {
         return _playerStateManager
+    }
+    override fun getPowertoolManager(): PowertoolManager {
+        return _powertoolManager
     }
 }

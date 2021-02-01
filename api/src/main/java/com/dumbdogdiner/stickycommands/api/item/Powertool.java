@@ -51,4 +51,9 @@ public interface Powertool {
      * @param enabled Whether this powertool is enabled.
      */
     public void setEnabled(@NotNull Boolean enabled);
+
+    /**
+     * Execute the powertool's command
+     */
+    public void execute();
 }

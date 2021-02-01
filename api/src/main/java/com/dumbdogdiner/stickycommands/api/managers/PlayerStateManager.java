@@ -2,13 +2,17 @@
  * Copyright (c) 2021 DumbDogDiner <dumbdogdiner.com>. All rights reserved.
  * Licensed under the MIT license, see LICENSE for more information.
  */
-package com.dumbdogdiner.stickycommands.api.player;
+package com.dumbdogdiner.stickycommands.api.managers;
 
+import com.dumbdogdiner.stickycommands.api.player.PlayerState;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
+/**
+ * An interface representing an implementation of the PlayerState manager
+ */
 public interface PlayerStateManager {
     /**
      * Get a player's current {@link PlayerState}

@@ -5,7 +5,7 @@
 package com.dumbdogdiner.stickycommands.api.util;
 
 import com.dumbdogdiner.stickycommands.api.StickyCommands;
-import com.dumbdogdiner.stickycommands.api.player.PlayerStateManager;
+import com.dumbdogdiner.stickycommands.api.managers.PlayerStateManager;
 import org.jetbrains.annotations.NotNull;
 
 public interface WithApi {

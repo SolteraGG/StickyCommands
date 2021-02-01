@@ -2,11 +2,12 @@
  * Copyright (c) 2021 DumbDogDiner <dumbdogdiner.com>. All rights reserved.
  * Licensed under the MIT license, see LICENSE for more information.
  */
-package com.dumbdogdiner.stickycommands.player
+package com.dumbdogdiner.stickycommands.managers
 
+import com.dumbdogdiner.stickycommands.api.managers.PlayerStateManager
 import com.dumbdogdiner.stickycommands.api.player.PlayerState
-import com.dumbdogdiner.stickycommands.api.player.PlayerStateManager
 import com.dumbdogdiner.stickycommands.api.util.WithApi
+import com.dumbdogdiner.stickycommands.player.StickyPlayerState
 import org.bukkit.entity.Player
 
 class StickyPlayerStateManager : PlayerStateManager, WithApi {
