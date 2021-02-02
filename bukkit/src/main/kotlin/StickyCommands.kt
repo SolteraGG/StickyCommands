@@ -7,7 +7,6 @@ package com.dumbdogdiner.stickycommands
 import com.dumbdogdiner.stickyapi.bukkit.util.StartupUtil
 import com.dumbdogdiner.stickyapi.common.translation.LocaleProvider
 import com.dumbdogdiner.stickycommands.api.StickyCommands
-import com.dumbdogdiner.stickycommands.api.managers.PlayerStateManager
 import com.dumbdogdiner.stickycommands.api.managers.PowertoolManager
 import com.dumbdogdiner.stickycommands.commands.AfkCommand
 import com.dumbdogdiner.stickycommands.commands.PowertoolCommand
@@ -16,8 +15,13 @@ import com.dumbdogdiner.stickycommands.listeners.ConnectionListener
 import com.dumbdogdiner.stickycommands.listeners.PowertoolListener
 import com.dumbdogdiner.stickycommands.managers.StickyPlayerStateManager
 import com.dumbdogdiner.stickycommands.managers.StickyPowertoolManager
+import com.dumbdogdiner.stickycommands.models.Transactions
+import com.dumbdogdiner.stickycommands.models.Users
 import com.dumbdogdiner.stickycommands.timers.AfkTimer
+import com.dumbdogdiner.stickycommands.util.ExposedLogger
 import com.dumbdogdiner.stickycommands.util.StickyPlaceholders
+import com.zaxxer.hikari.HikariConfig
+import com.zaxxer.hikari.HikariDataSource
 import java.util.Timer
 import kr.entree.spigradle.annotations.PluginMain
 import net.luckperms.api.LuckPerms
@@ -26,22 +30,27 @@ import org.bukkit.Bukkit
 import org.bukkit.plugin.Plugin
 import org.bukkit.plugin.RegisteredServiceProvider
 import org.bukkit.plugin.java.JavaPlugin
+import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.addLogger
+import org.jetbrains.exposed.sql.transactions.transaction
 
 @PluginMain
 class StickyCommands : JavaPlugin(), StickyCommands {
     companion object {
-        lateinit var instance: com.dumbdogdiner.stickycommands.StickyCommands
+        lateinit var plugin: com.dumbdogdiner.stickycommands.StickyCommands
         var economy: Economy? = null
         var localeProvider: LocaleProvider? = null
         var perms: LuckPerms? = null
         var staffFacilitiesEnabled = false
-        val _playerStateManager = StickyPlayerStateManager()
-        val _powertoolManager = StickyPowertoolManager()
     }
+    private val _playerStateManager = StickyPlayerStateManager()
+    private val _powertoolManager = StickyPowertoolManager()
     lateinit var afkTimer: AfkTimer
+    lateinit var db: Database
 
     override fun onLoad() {
-        instance = this
+        plugin = this
         afkTimer = AfkTimer()
     }
 
@@ -51,6 +60,9 @@ class StickyCommands : JavaPlugin(), StickyCommands {
 
         localeProvider = StartupUtil.setupLocale(this, localeProvider)
         if (localeProvider == null)
+            return
+
+        if (!setupDatabase())
             return
 
         if (!setupPlaceholders())
@@ -129,6 +141,41 @@ class StickyCommands : JavaPlugin(), StickyCommands {
         }
     }
 
+    private fun setupDatabase(): Boolean {
+        var success = true
+        this.logger.info("[SQL] Checking SQL database has been set up correctly...")
+
+        val config = HikariConfig().apply {
+            jdbcUrl = "jdbc:postgresql://${
+                config.getString("database.host")
+            }:${
+                config.getInt("database.port")
+            }/${
+                config.getString("database.database")
+            }?sslmode=disable"
+
+            driverClassName = "com.dumbdogdiner.stickycommands.libs.org.postgresql.Driver"
+            username = config.getString("database.username", "postgres")!!
+            password = config.getString("database.password")!!
+            maximumPoolSize = 2
+        }
+
+        val dataSource = HikariDataSource(config)
+        this.db = Database.connect(dataSource)
+
+        transaction(this.db) {
+            try {
+                addLogger(ExposedLogger())
+                SchemaUtils.createMissingTablesAndColumns(Transactions)
+                SchemaUtils.createMissingTablesAndColumns(Users)
+            } catch (e: Exception) {
+                logger.warning("[SQL] Failed to connect to SQL database - invalid connection info/database not up")
+                success = false
+            }
+        }
+        return success
+    }
+
     /*
 
     */
@@ -136,7 +183,7 @@ class StickyCommands : JavaPlugin(), StickyCommands {
         return this
     }
 
-    override fun getPlayerStateManager(): PlayerStateManager {
+    override fun getPlayerStateManager(): StickyPlayerStateManager {
         return _playerStateManager
     }
     override fun getPowertoolManager(): PowertoolManager {

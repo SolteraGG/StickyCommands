@@ -70,7 +70,7 @@ class AfkEventListener : Listener {
     }
 
     private fun checkAfk(event: PlayerEvent) {
-        val state = StickyCommands.instance.playerStateManager.getPlayerState(event.player)
+        val state = StickyCommands.plugin.playerStateManager.getPlayerState(event.player)
         state.resetAfkTime()
         if (state.isAfk) {
             state.setAfk(false, true)

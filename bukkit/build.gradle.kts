@@ -63,6 +63,9 @@ tasks {
 
     shadowJar {
         archiveClassifier.set("")
+        val pkg = "com.dumbdogdiner.stickycommands.libs."
+        relocate("com.zaxxer", "${pkg}com.zaxxer")
+        relocate("org.postgresql", "${pkg}org.postgresql")
     }
 
     spigot {

@@ -5,10 +5,9 @@
 package com.dumbdogdiner.stickycommands.api.managers;
 
 import com.dumbdogdiner.stickycommands.api.player.PlayerState;
+import java.util.HashMap;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.HashMap;
 
 /**
  * An interface representing an implementation of the PlayerState manager

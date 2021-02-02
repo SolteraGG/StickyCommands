@@ -15,7 +15,7 @@ import org.bukkit.entity.Player
 
 object AfkCommand {
     private val locale = StickyCommands.localeProvider!!
-    var command = BukkitCommandBuilder("afk")
+    val command = BukkitCommandBuilder("afk")
         .description("Let the server know you're afk!")
         .permission("stickycommands.afk")
         .requiresPlayer()
@@ -23,7 +23,7 @@ object AfkCommand {
 
         .onExecute { sender: CommandSender, _: Arguments?, _: HashMap<String, String>? ->
             val player = sender as Player
-            val state = StickyCommands.instance.playerStateManager.getPlayerState(player)
+            val state = StickyCommands.plugin.playerStateManager.getPlayerState(player)
             state.setAfk(!state.isAfk, true)
             ExitCode.EXIT_SUCCESS
         }

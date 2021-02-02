@@ -40,7 +40,7 @@ object PowertoolCommand {
                 }
                 vars["command"] = args.getString("command")
                 val powertool = StickyPowertool(player, player.inventory.itemInMainHand.type, args.getString("command"), true)
-                StickyCommands.instance.powertoolManager.add(powertool)
+                StickyCommands.plugin.powertoolManager.add(powertool)
 
                 sender.sendMessage(locale.translate("powertool.assigned", vars))
                 ExitCode.EXIT_SUCCESS
@@ -49,7 +49,6 @@ object PowertoolCommand {
         .onError { exitCode, _, _, vars ->
             onError(exitCode, vars)
         }
-
         .subCommand(
             BukkitCommandBuilder("clear")
                 .description("Clear your item of a command")
@@ -66,7 +65,6 @@ object PowertoolCommand {
                     onError(exitCode, vars)
                 }
         )
-
         .subCommand(
             BukkitCommandBuilder("toggle")
                 .description("Toggle your powertool")
@@ -79,12 +77,13 @@ object PowertoolCommand {
                     // can't assign your hand...
                     if (player.inventory.itemInMainHand.type == Material.AIR) {
                         sender.sendMessage(locale.translate("powertool.cannot-bind-air", vars))
-                        ExitCode.EXIT_EXPECTED_ERROR
+                        return@onExecute ExitCode.EXIT_EXPECTED_ERROR
                     }
-                    val powertool = StickyCommands.instance.powertoolManager.getPowerTool(player, player.inventory.itemInMainHand.type)
+
+                    val powertool = StickyCommands.plugin.powertoolManager.getPowerTool(player, player.inventory.itemInMainHand.type)
                     if (powertool == null) {
                         player.sendMessage(locale.translate("powertool.no-powertool", vars))
-                        ExitCode.EXIT_EXPECTED_ERROR
+                        return@onExecute ExitCode.EXIT_EXPECTED_ERROR
                     } else {
                         powertool.isEnabled = !powertool.isEnabled
                         vars["toggled"] = (powertool.isEnabled).toString()
@@ -107,7 +106,7 @@ object PowertoolCommand {
             list
         }
 
-    private fun clearTool(player: Player, vars: HashMap<String, String>): ExitCode {
+    internal fun clearTool(player: Player, vars: HashMap<String, String>): ExitCode {
         vars["syntax"] = "/powertool [command/clear/toggle]"
         vars.putAll(Variables(player, false).get())
         if (player.inventory.itemInMainHand.type == Material.AIR) {
@@ -116,15 +115,15 @@ object PowertoolCommand {
             return ExitCode.EXIT_EXPECTED_ERROR
         }
 
-        val powertool = StickyCommands.instance.powertoolManager.getPowerTool(player, player.inventory.itemInMainHand.type)
+        val powertool = StickyCommands.plugin.powertoolManager.getPowerTool(player, player.inventory.itemInMainHand.type)
         if (powertool != null) {
-            StickyCommands.instance.powertoolManager.remove(powertool)
+            StickyCommands.plugin.powertoolManager.remove(powertool)
         }
         player.sendMessage(locale.translate("powertool.cleared", vars))
         return ExitCode.EXIT_SUCCESS
     }
 
-    private fun onError(exitCode: ExitCode, vars: HashMap<String, String>): String {
+    internal fun onError(exitCode: ExitCode, vars: HashMap<String, String>): String {
         return when (exitCode) {
             ExitCode.EXIT_PERMISSION_DENIED -> locale.translate("no-permission", vars)
             ExitCode.EXIT_MUST_BE_PLAYER -> locale.translate("must-be-player", vars)

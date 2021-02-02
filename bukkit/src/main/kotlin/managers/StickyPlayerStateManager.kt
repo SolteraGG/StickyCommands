@@ -27,6 +27,8 @@ class StickyPlayerStateManager : PlayerStateManager, WithApi {
     override fun createPlayerState(player: Player): PlayerState {
         val state = StickyPlayerState(player)
         this.playerStates[player] = state
+
+
         return state
     }
 

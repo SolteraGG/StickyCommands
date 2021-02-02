@@ -15,18 +15,18 @@ class ConnectionListener : Listener {
 
     @EventHandler
     fun onJoin(event: PlayerJoinEvent) {
-        StickyCommands._playerStateManager.createPlayerState(event.player)
+        StickyCommands.plugin.playerStateManager.createPlayerState(event.player)
     }
 
     @EventHandler
     fun onLeave(event: PlayerQuitEvent) {
-        StickyCommands._playerStateManager.removePlayerState(event.player)
-        StickyCommands.instance.powertoolManager.remove(event.player)
+        StickyCommands.plugin.playerStateManager.removePlayerState(event.player)
+        StickyCommands.plugin.powertoolManager.remove(event.player)
     }
 
     @EventHandler
     fun onKick(event: PlayerKickEvent) {
-        StickyCommands._playerStateManager.removePlayerState(event.player)
-        StickyCommands.instance.powertoolManager.remove(event.player)
+        StickyCommands.plugin.playerStateManager.removePlayerState(event.player)
+        StickyCommands.plugin.powertoolManager.remove(event.player)
     }
 }

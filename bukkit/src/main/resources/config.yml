@@ -15,7 +15,7 @@ server: "lobby"
 
 database:
   host: localhost
-  port: 3306
+  port: 5432
   name: dbname
   username: root
   password: root

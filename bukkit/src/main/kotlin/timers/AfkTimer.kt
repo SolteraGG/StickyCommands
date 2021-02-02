@@ -13,10 +13,10 @@ import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 
 class AfkTimer : TimerTask() {
-    protected var AFK_TIMEOUT: Int = StickyCommands.instance.config.getInt("afk-timeout", 300)
+    protected var AFK_TIMEOUT: Int = StickyCommands.plugin.config.getInt("afk-timeout", 300)
 
     override fun run() {
-        for (playerState in StickyCommands.instance.playerStateManager.playerStates) {
+        for (playerState in StickyCommands.plugin.playerStateManager.playerStates) {
             val state = playerState.value
             state.incrementAfkTime()
             if (state.afkTime >= AFK_TIMEOUT) {
@@ -26,7 +26,7 @@ class AfkTimer : TimerTask() {
                     val variables = Variables(state.player, false).get()
                     variables.put("time", (state.afkTime * 1000L).toString())
                     // Bukkit doesn't like async stuff, so we have to run this 1 tick later
-                    Bukkit.getScheduler().scheduleSyncDelayedTask(StickyCommands.instance,
+                    Bukkit.getScheduler().scheduleSyncDelayedTask(StickyCommands.plugin,
                         {
                             state.player.kickPlayer(StickyCommands.localeProvider!!.translate("afk.afk-kick", variables))
                         }, 1L

@@ -20,15 +20,15 @@ class StickyPlaceholders : Placeholders, WithApi, PlaceholderExpansion() {
     }
 
     override fun getAuthor(): String {
-        return StickyCommands.instance.description.authors.toString()
+        return StickyCommands.plugin.description.authors.toString()
     }
 
     override fun getIdentifier(): String {
-        return StickyCommands.instance.name.toLowerCase()
+        return StickyCommands.plugin.name.toLowerCase()
     }
 
     override fun getVersion(): String {
-        return StickyCommands.instance.description.version
+        return StickyCommands.plugin.description.version
     }
 
     override fun onPlaceholderRequest(player: Player, identifier: String?): String? {

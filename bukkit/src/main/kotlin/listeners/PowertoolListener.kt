@@ -16,7 +16,7 @@ class PowertoolListener : Listener {
     fun onInteract(event: PlayerInteractEvent) {
         val player = event.player
         val item = player.inventory.itemInMainHand
-        val powertool = StickyCommands.instance.powertoolManager.getPowerTool(player, item.type)
+        val powertool = StickyCommands.plugin.powertoolManager.getPowerTool(player, item.type)
 
         if (item.type == Material.AIR || (powertool == null || !powertool.isEnabled))
             return

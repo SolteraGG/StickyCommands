@@ -8,12 +8,17 @@ import com.dumbdogdiner.stickyapi.bukkit.util.ServerUtil
 import com.dumbdogdiner.stickycommands.StickyCommands
 import com.dumbdogdiner.stickycommands.api.player.PlayerState
 import com.dumbdogdiner.stickycommands.api.player.SpeedType
+import com.dumbdogdiner.stickycommands.models.Users
+import com.dumbdogdiner.stickycommands.util.Variables
+import com.dumbdogdiner.stickycommands.util.WithPlugin
 import me.xtomyserrax.StaffFacilities.SFAPI
 import org.bukkit.entity.Player
+import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.update
 
 class StickyPlayerState(
     private val player: Player
-) : PlayerState {
+) : PlayerState, WithPlugin {
 
     private var _afk: Boolean = false
     private var _afkTime: Int = 0
@@ -78,9 +83,7 @@ class StickyPlayerState(
             if (!isHidden) {
                 val node = if (isAfk) "afk.afk" else "afk.not-afk"
                 // TODO: Make method for getting all variables related to a user, such as location, username, uuid, etc
-                val vars = HashMap<String, String>()
-                vars.put("player", player.name)
-                vars.put("player_uuid", player.uniqueId.toString())
+                val vars = Variables(player, false).get()
 
                 ServerUtil.broadcastMessage(StickyCommands.localeProvider!!.translate(node, vars))
             }
@@ -99,7 +102,7 @@ class StickyPlayerState(
     }
 
     override fun setSpeed(type: SpeedType, speed: Float) {
-        // we can't reassign vars, so we have to do this.
+        // we can't reassign params, so we have to do this.
         var _speed = speed
 
         // sanity checks to make sure bukkit doesn't complain
@@ -108,13 +111,22 @@ class StickyPlayerState(
 
         if (type === SpeedType.WALK) _speed = if (_speed + 0.1f > 1f) _speed else _speed + 0.1f
 
-        // TODO: Database implementation
         when (type) {
             SpeedType.FLY -> {
                 this.getPlayer().flySpeed = _speed
+                transaction(this.plugin.db) {
+                    Users.update({Users.player eq player.uniqueId.toString()}) {
+                        it[flySpeed] = _speed
+                    }
+                }
             }
             SpeedType.WALK -> {
                 this.getPlayer().walkSpeed = _speed
+                transaction(this.plugin.db) {
+                    Users.update({Users.player eq player.uniqueId.toString()}) {
+                        it[walkSpeed] = _speed
+                    }
+                }
             }
         }
     }
