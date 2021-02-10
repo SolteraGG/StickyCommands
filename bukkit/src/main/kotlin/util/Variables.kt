@@ -4,16 +4,19 @@
  */
 package com.dumbdogdiner.stickycommands.util
 
+import com.dumbdogdiner.stickyapi.common.util.StringUtil
+import com.dumbdogdiner.stickycommands.api.economy.Listing
 import org.bukkit.entity.Player
+import org.bukkit.inventory.PlayerInventory
 
 /**
  * Utility class for getting a variables map with all the information about a player
  */
-class Variables(private val target: Player, private val isTarget: Boolean) {
+class Variables() {
 
     private val variables = HashMap<String, String>()
 
-    init {
+    fun withPlayer(target: Player, isTarget: Boolean): Variables {
         val prefix = if (isTarget) "target" else "player"
         variables[prefix] = target.name
         variables["${prefix}_uuid"] = target.uniqueId.toString()
@@ -29,6 +32,18 @@ class Variables(private val target: Player, private val isTarget: Boolean) {
         variables["${prefix}_location_x"] = target.location.x.toString()
         variables["${prefix}_location_y"] = target.location.y.toString()
         variables["${prefix}_location_z"] = target.location.z.toString()
+
+        return this
+    }
+
+    fun withListing(listing: Listing, inventory: PlayerInventory): Variables {
+        variables["single_worth"] = (listing.price / listing.quantity).toString()
+        variables["hand_worth"] = ((listing.price / listing.quantity) * (inventory.itemInMainHand.amount)).toString()
+        variables["inventory_worth"] = ((listing.price / listing.quantity) * (InventoryUtil.count(inventory, listing.material))).toString()
+        variables["worth"] = (listing.price).toString()
+        variables["amount"] = (listing.quantity).toString()
+        variables["item"] = StringUtil.capitaliseSentence(listing.material.toString().replace("_", " "))
+        return this
     }
 
     fun get(): HashMap<String, String> {

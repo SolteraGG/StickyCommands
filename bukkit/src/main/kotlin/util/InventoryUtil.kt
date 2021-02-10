@@ -30,4 +30,17 @@ object InventoryUtil {
             }
         }
     }
+
+    @JvmStatic
+    fun count(inventory: Inventory, type: Material): Int {
+        var count = 0
+        val size = inventory.size
+        for (slot in 0 until size) {
+            val stack: ItemStack = inventory.getItem(slot) ?: continue
+            if (type == stack.type) {
+                count += stack.amount
+            }
+        }
+        return count
+    }
 }

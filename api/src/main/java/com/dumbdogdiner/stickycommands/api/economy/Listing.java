@@ -12,6 +12,8 @@ import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
+
 public class Listing {
     private final Market market = StickyCommands.getService().getMarket();
 
@@ -49,7 +51,17 @@ public class Listing {
     @NotNull
     public Integer id;
 
+    /**
+     * Create a new listing
+     * @param id of the listing, if null it will be auto generated
+     * @param player that listed this item
+     * @param material to list
+     * @param price to list at
+     * @param quantity of items to be listed
+     * @param buyer of this listing
+     */
     public Listing(
+        @Nullable Integer id,
         @NotNull OfflinePlayer player,
         @NotNull Material material,
         @NotNull Double price,
@@ -61,7 +73,23 @@ public class Listing {
         this.price = price * quantity;
         this.quantity = quantity;
         this.buyer = buyer;
-        this.id = market.latestId()+1;
+        this.id = Objects.requireNonNullElseGet(id, () -> market.latestId() + 1);
+    }
+
+    /**
+     * Create a new listing
+     * @param seller that listed this item
+     * @param material to list
+     * @param price to list at
+     * @param quantity of items to be listed
+     */
+    public Listing(
+        @NotNull OfflinePlayer seller,
+        @NotNull Material material,
+        @NotNull Double price,
+        @NotNull Integer quantity
+    ) {
+        this(null, seller, material, price, quantity, null);
     }
 
     /**
@@ -70,4 +98,6 @@ public class Listing {
     public void list() {
         market.add(this);
     }
+
+
 }

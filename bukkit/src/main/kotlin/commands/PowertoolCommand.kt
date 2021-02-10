@@ -106,9 +106,9 @@ object PowertoolCommand {
             list
         }
 
-    internal fun clearTool(player: Player, vars: HashMap<String, String>): ExitCode {
+    private fun clearTool(player: Player, vars: HashMap<String, String>): ExitCode {
         vars["syntax"] = "/powertool [command/clear/toggle]"
-        vars.putAll(Variables(player, false).get())
+        vars.putAll(Variables().withPlayer(player, false).get())
         if (player.inventory.itemInMainHand.type == Material.AIR) {
             // TODO: Move to messages
             player.sendMessage(locale.translate("prefix", vars) + ChatColor.RED + "You do not have a powertool in your hand!")
@@ -123,7 +123,7 @@ object PowertoolCommand {
         return ExitCode.EXIT_SUCCESS
     }
 
-    internal fun onError(exitCode: ExitCode, vars: HashMap<String, String>): String {
+    private fun onError(exitCode: ExitCode, vars: HashMap<String, String>): String {
         return when (exitCode) {
             ExitCode.EXIT_PERMISSION_DENIED -> locale.translate("no-permission", vars)
             ExitCode.EXIT_MUST_BE_PLAYER -> locale.translate("must-be-player", vars)

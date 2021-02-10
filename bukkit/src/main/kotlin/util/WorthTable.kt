@@ -47,8 +47,22 @@ class WorthTable : WithPlugin {
      * @return The worth of the ItemStack
      */
     fun getWorth(stack: ItemStack): Double {
+        var percentage = 100.00
         val name: String = stack.type.toString()
-        val worth = localConfig!!.getDouble(name, 0.0)
+        var worth = localConfig!!.getDouble(name, 0.0)
+
+        // Durability check
+        if (stack.durability > 0) {
+            val maxDur: Short = stack.type.maxDurability
+            val currDur: Int = maxDur - stack.durability // TODO Change to use Damagables
+            percentage = Math.round(currDur / maxDur * 100.00) / 100.00
+            worth = if (currDur / maxDur < 0.4) {
+                0.0
+            } else {
+                Math.round(worth * percentage * 100.00) / 100.00
+            }
+        }
+
         return if (!isSellable(stack)) 0.0 else decimalFormat.format(worth).toDouble()
     }
 

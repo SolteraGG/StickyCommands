@@ -44,6 +44,7 @@ class StickyMarket : Market, WithPlugin {
                 .iterator().forEach {
                     transactions.add(
                         Listing(
+                            it[Listings.id],
                             Bukkit.getOfflinePlayer(UUID.fromString(it[Listings.seller])),
                             Material.valueOf(it[Listings.item]),
                             it[Listings.value],
@@ -83,13 +84,16 @@ class StickyMarket : Market, WithPlugin {
         val selectionResult = transaction(this.plugin.db) {
             Listings.selectAll().firstOrNull()
         }
-        return if (selectionResult?.tryGet(Listings.id) == null) 1 else selectionResult?.tryGet(Listings.id)!!
+        return if (selectionResult?.getOrNull(Listings.id) == null) 1 else selectionResult.getOrNull(Listings.id)!!
     }
 
     override fun add(listing: Listing) {
 
         // FIXME Better way to do this pls
-        var i = 0
+        // doing this here could potentially mean that the player could somehow
+        // make this execute while offline and keep the items they have sold
+        // This is extremely unlikely but could in theory be possible so
+        // its worth noting
         if (this.config.getBoolean("auto-sell", true) && listing.seller.isOnline) {
             val player = listing.seller as Player
             InventoryUtil.removeItems(player.inventory, listing.material, listing.quantity)

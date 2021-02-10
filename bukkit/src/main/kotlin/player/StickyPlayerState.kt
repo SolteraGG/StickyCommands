@@ -82,7 +82,7 @@ class StickyPlayerState(
             if (!isHidden) {
                 val node = if (isAfk) "afk.afk" else "afk.not-afk"
                 // TODO: Make method for getting all variables related to a user, such as location, username, uuid, etc
-                val vars = Variables(player, false).get()
+                val vars = Variables().withPlayer(player, false).get()
 
                 ServerUtil.broadcastMessage(StickyCommands.localeProvider!!.translate(node, vars))
             }

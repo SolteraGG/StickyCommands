@@ -107,7 +107,7 @@ class StickyCommands : JavaPlugin(), StickyCommands {
     private fun registerCommands() {
         AfkCommand.command.register(this)
         PowertoolCommand.command.register(this)
-//        SellCommand.command.register(this)
+        SellCommand.command.register(this)
     }
 
     private fun registerTimers() {

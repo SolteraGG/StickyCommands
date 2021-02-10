@@ -32,9 +32,9 @@ reload:
 
 sell:
   cannot-sell: "{prefix}&cThis item cannot be sold!"
-  bad-worth: "{prefix}&f1 {item} &cis worth a negative amount &f(${single_worth}) &cand thusly cannot be sold &4(Please ask a developer)"
+  bad-worth: "{prefix}&f1 {item} &cis worth a negative amount &f(${single_worth}) &cand cannot be sold &4(Please ask a developer)"
   worth-message: "{prefix}&f1 {item} &bis worth &f${single_worth} &7(Hand: ${hand_worth}, Inventory: ${inventory_worth})"
-  sell-message: "{prefix}&bYou sold &f{amount} {item} &bfor &f${WORTH}&b!"
+  sell-message: "{prefix}&bYou sold &f{amount} {item} &bfor &f${worth}&b!"
   must-confirm: "{prefix}&cPlease confirm your sale by typing /sell [inventory/hand] confirm!"
   log:
     log-message: "{prefix}&bRecent sale logs"
