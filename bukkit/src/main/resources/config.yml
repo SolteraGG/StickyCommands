@@ -3,6 +3,8 @@ translation-file: "messages.en_us.yml"
 
 worth-file: "worth.yml"
 allow-selling: true
+# Whether or not to automatically sell an item once listed
+auto-sell: true
 
 # Amount of time before being put into AFK mode (in seconds)
 afk-timeout: 300

@@ -76,7 +76,6 @@ class StickyPlayerState(
         // reset the time if we're unsetting their afk status
         if (!isAfk) {
             this._afkTime = 0
-            System.out.println("ghe")
         }
 
         if (broadcast) {
@@ -115,7 +114,7 @@ class StickyPlayerState(
             SpeedType.FLY -> {
                 this.getPlayer().flySpeed = _speed
                 transaction(this.plugin.db) {
-                    Users.update({Users.player eq player.uniqueId.toString()}) {
+                    Users.update({ Users.player eq player.uniqueId.toString() }) {
                         it[flySpeed] = _speed
                     }
                 }
@@ -123,7 +122,7 @@ class StickyPlayerState(
             SpeedType.WALK -> {
                 this.getPlayer().walkSpeed = _speed
                 transaction(this.plugin.db) {
-                    Users.update({Users.player eq player.uniqueId.toString()}) {
+                    Users.update({ Users.player eq player.uniqueId.toString() }) {
                         it[walkSpeed] = _speed
                     }
                 }

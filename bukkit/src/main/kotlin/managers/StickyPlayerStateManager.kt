@@ -28,7 +28,6 @@ class StickyPlayerStateManager : PlayerStateManager, WithApi {
         val state = StickyPlayerState(player)
         this.playerStates[player] = state
 
-
         return state
     }
 

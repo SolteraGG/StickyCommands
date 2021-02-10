@@ -4,7 +4,6 @@
  */
 package com.dumbdogdiner.stickycommands.models
 
-import com.dumbdogdiner.stickycommands.StickyCommands
 import com.dumbdogdiner.stickycommands.util.WithPlugin
 import org.jetbrains.exposed.sql.Table
 

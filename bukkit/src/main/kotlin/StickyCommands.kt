@@ -7,19 +7,24 @@ package com.dumbdogdiner.stickycommands
 import com.dumbdogdiner.stickyapi.bukkit.util.StartupUtil
 import com.dumbdogdiner.stickyapi.common.translation.LocaleProvider
 import com.dumbdogdiner.stickycommands.api.StickyCommands
+import com.dumbdogdiner.stickycommands.api.economy.Market
 import com.dumbdogdiner.stickycommands.api.managers.PowertoolManager
 import com.dumbdogdiner.stickycommands.commands.AfkCommand
 import com.dumbdogdiner.stickycommands.commands.PowertoolCommand
+import com.dumbdogdiner.stickycommands.commands.SellCommand
+import com.dumbdogdiner.stickycommands.economy.StickyMarket
 import com.dumbdogdiner.stickycommands.listeners.AfkEventListener
 import com.dumbdogdiner.stickycommands.listeners.ConnectionListener
 import com.dumbdogdiner.stickycommands.listeners.PowertoolListener
 import com.dumbdogdiner.stickycommands.managers.StickyPlayerStateManager
 import com.dumbdogdiner.stickycommands.managers.StickyPowertoolManager
+import com.dumbdogdiner.stickycommands.models.Listings
 import com.dumbdogdiner.stickycommands.models.Transactions
 import com.dumbdogdiner.stickycommands.models.Users
 import com.dumbdogdiner.stickycommands.timers.AfkTimer
 import com.dumbdogdiner.stickycommands.util.ExposedLogger
 import com.dumbdogdiner.stickycommands.util.StickyPlaceholders
+import com.dumbdogdiner.stickycommands.util.WorthTable
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import java.util.Timer
@@ -46,15 +51,21 @@ class StickyCommands : JavaPlugin(), StickyCommands {
     }
     private val _playerStateManager = StickyPlayerStateManager()
     private val _powertoolManager = StickyPowertoolManager()
+    lateinit var _market: Market
     lateinit var afkTimer: AfkTimer
     lateinit var db: Database
+    lateinit var worthTable: WorthTable
 
     override fun onLoad() {
         plugin = this
         afkTimer = AfkTimer()
+        _market = StickyMarket()
+        worthTable = WorthTable()
     }
 
     override fun onEnable() {
+        StickyCommands.registerService(this, this)
+
         if (!StartupUtil.setupConfig(this))
             return
 
@@ -66,16 +77,16 @@ class StickyCommands : JavaPlugin(), StickyCommands {
             return
 
         if (!setupPlaceholders())
-            getLogger().severe("PlaceholderAPI is not available, is it installed?")
+            logger.severe("PlaceholderAPI is not available, is it installed?")
 
         if (!setupEconomy())
-            getLogger().severe("Disabled economy commands due to no Vault dependency found!")
+            logger.severe("Disabled economy commands due to no Vault dependency found!")
 
         if (!setupLuckperms())
-            getLogger().severe("Disabled group listing/LuckPerms dependant features due to no LuckPerms dependency found!")
+            logger.severe("Disabled group listing/LuckPerms dependant features due to no LuckPerms dependency found!")
 
         if (!setupStaffFacilities())
-            getLogger().severe("StaffFacilities not found, disabling integration")
+            logger.severe("StaffFacilities not found, disabling integration")
 
         registerCommands()
         registerListeners()
@@ -96,6 +107,7 @@ class StickyCommands : JavaPlugin(), StickyCommands {
     private fun registerCommands() {
         AfkCommand.command.register(this)
         PowertoolCommand.command.register(this)
+//        SellCommand.command.register(this)
     }
 
     private fun registerTimers() {
@@ -168,6 +180,7 @@ class StickyCommands : JavaPlugin(), StickyCommands {
                 addLogger(ExposedLogger())
                 SchemaUtils.createMissingTablesAndColumns(Transactions)
                 SchemaUtils.createMissingTablesAndColumns(Users)
+                SchemaUtils.createMissingTablesAndColumns(Listings)
             } catch (e: Exception) {
                 logger.warning("[SQL] Failed to connect to SQL database - invalid connection info/database not up")
                 success = false
@@ -188,5 +201,9 @@ class StickyCommands : JavaPlugin(), StickyCommands {
     }
     override fun getPowertoolManager(): PowertoolManager {
         return _powertoolManager
+    }
+
+    override fun getMarket(): Market {
+        return _market
     }
 }

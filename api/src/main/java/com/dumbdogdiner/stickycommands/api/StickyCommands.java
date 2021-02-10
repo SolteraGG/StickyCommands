@@ -4,6 +4,7 @@
  */
 package com.dumbdogdiner.stickycommands.api;
 
+import com.dumbdogdiner.stickycommands.api.economy.Market;
 import com.dumbdogdiner.stickycommands.api.managers.PlayerStateManager;
 import com.dumbdogdiner.stickycommands.api.managers.PowertoolManager;
 import org.bukkit.Bukkit;
@@ -70,4 +71,6 @@ public interface StickyCommands {
     PlayerStateManager getPlayerStateManager();
 
     PowertoolManager getPowertoolManager();
+
+    Market getMarket();
 }
