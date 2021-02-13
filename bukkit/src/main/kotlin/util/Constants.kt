@@ -18,6 +18,7 @@ object Constants {
         const val SELL = "$prefix.sell"
         const val SELL_HAND = "$prefix.sell.hand"
         const val SELL_INVENTORY = "$prefix.sell.inventory"
+        const val SELL_LOG = "$prefix.sell.log"
 
         const val WORTH = "$prefix.worth"
     }
@@ -51,7 +52,7 @@ object Constants {
         const val SELL_LOG_LOG = "sell.log.log"
         const val SELL_LOG_LOG_HOVER = "sell.log.log-hover"
         const val SELL_LOG_NO_SALES = "sell.log.no-sales"
-        const val SELL_LOG_PAGINATOR = "sell.lot.paginator"
+        const val SELL_LOG_PAGINATOR = "sell.log.paginator"
 
         const val AFK_MESSAGE = "afk.afk"
         const val NOT_AFK = "afk.not-afk"
@@ -85,7 +86,6 @@ object Constants {
 
         const val PLAYER_TIME_RESET = "player-time.time-reset"
         const val PLAYER_TIME_SET = "player-time.time-set"
-
     }
 
     object Descriptions {
@@ -93,6 +93,7 @@ object Constants {
 
         const val SELL = "Sell an item"
         const val SELL_INVENTORY = "Sell all of an item from your inventory"
+        const val SELL_LOG = "Check the logs of recent sales"
 
         const val WORTH = "Check the worth of an item."
 

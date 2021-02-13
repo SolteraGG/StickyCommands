@@ -5,6 +5,8 @@
 package com.dumbdogdiner.stickycommands.api.economy;
 
 import com.dumbdogdiner.stickycommands.api.StickyCommands;
+import java.time.Instant;
+import java.util.Date;
 import java.util.Objects;
 import lombok.Getter;
 import lombok.Setter;
@@ -50,6 +52,15 @@ public class Listing {
     @NotNull
     public Integer id;
 
+    @Getter
+    @NotNull
+    public Date listedAt;
+
+    @Getter
+    @Setter
+    @Nullable
+    public Date purchasedAt;
+
     /**
      * Create a new listing
      * @param id of the listing, if null it will be auto generated
@@ -58,6 +69,7 @@ public class Listing {
      * @param price to list at
      * @param quantity of items to be listed
      * @param buyer of this listing
+     * @param listedAt time of listing
      */
     public Listing(
         @Nullable Integer id,
@@ -65,15 +77,19 @@ public class Listing {
         @NotNull Material material,
         @NotNull Double price,
         @NotNull Integer quantity,
-        @Nullable OfflinePlayer buyer
+        @Nullable OfflinePlayer buyer,
+        @NotNull Date listedAt
     ) {
         this.seller = player;
         this.material = material;
-        this.price = price * quantity;
+        this.price =
+            (double) Math.round((price * quantity) * (long) Math.pow(10, 2)) /
+            (long) Math.pow(10, 2); // Prevents dumb computer from printing dumb 9.9999999999999999999999999991
         this.quantity = quantity;
         this.buyer = buyer;
         this.id =
             Objects.requireNonNullElseGet(id, () -> market.latestId() + 1);
+        this.listedAt = listedAt;
     }
 
     /**
@@ -89,7 +105,15 @@ public class Listing {
         @NotNull Double price,
         @NotNull Integer quantity
     ) {
-        this(null, seller, material, price, quantity, null);
+        this(
+            null,
+            seller,
+            material,
+            price,
+            quantity,
+            null,
+            Date.from(Instant.now())
+        );
     }
 
     /**

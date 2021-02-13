@@ -43,6 +43,8 @@ class Variables() {
         variables["worth"] = (listing.price).toString()
         variables["amount"] = (listing.quantity).toString()
         variables["item"] = StringUtil.capitaliseSentence(listing.material.toString().replace("_", " "))
+        variables["item_enum"] = listing.material.toString()
+        variables["date"] = listing.listedAt.time.toString()
         return this
     }
 

@@ -7,13 +7,14 @@ package com.dumbdogdiner.stickycommands.timers
 import com.dumbdogdiner.stickyapi.common.util.NumberUtil
 import com.dumbdogdiner.stickycommands.StickyCommands
 import com.dumbdogdiner.stickycommands.api.player.PlayerState
+import com.dumbdogdiner.stickycommands.util.Constants
 import com.dumbdogdiner.stickycommands.util.Variables
 import java.util.TimerTask
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 
 class AfkTimer : TimerTask() {
-    protected var AFK_TIMEOUT: Int = StickyCommands.plugin.config.getInt("afk-timeout", 300)
+    protected var AFK_TIMEOUT: Int = StickyCommands.plugin.config.getInt(Constants.SettingsPaths.AFK_TIMEOUT, 300)
 
     override fun run() {
         for (playerState in StickyCommands.plugin.playerStateManager.playerStates) {
@@ -24,11 +25,11 @@ class AfkTimer : TimerTask() {
                     state.setAfk(!state.isAfk, true)
                 } else if (exceedsPermittedTime(state, state.afkTime - AFK_TIMEOUT)) {
                     val variables = Variables().withPlayer(state.player, false).get()
-                    variables.put("time", (state.afkTime * 1000L).toString())
+                    variables["time"] = (state.afkTime * 1e3).toString()
                     // Bukkit doesn't like async stuff, so we have to run this 1 tick later
                     Bukkit.getScheduler().scheduleSyncDelayedTask(StickyCommands.plugin,
                         {
-                            state.player.kickPlayer(StickyCommands.localeProvider!!.translate("afk.afk-kick", variables))
+                            state.player.kickPlayer(StickyCommands.localeProvider!!.translate(Constants.LanguagePaths.AFK_KICK, variables))
                         }, 1L
                     )
                 }

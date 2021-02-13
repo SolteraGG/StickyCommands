@@ -14,7 +14,6 @@ import com.dumbdogdiner.stickycommands.commands.PowertoolCommand
 import com.dumbdogdiner.stickycommands.commands.SellCommand
 import com.dumbdogdiner.stickycommands.commands.WorthCommand
 import com.dumbdogdiner.stickycommands.database.tables.Listings
-import com.dumbdogdiner.stickycommands.database.tables.Transactions
 import com.dumbdogdiner.stickycommands.database.tables.Users
 import com.dumbdogdiner.stickycommands.economy.StickyMarket
 import com.dumbdogdiner.stickycommands.listeners.AfkEventListener
@@ -183,7 +182,7 @@ class StickyCommands : JavaPlugin(), StickyCommands {
         transaction(this.db) {
             try {
                 addLogger(ExposedLogger())
-                SchemaUtils.createMissingTablesAndColumns(Transactions, Users, Listings)
+                SchemaUtils.createMissingTablesAndColumns(Users, Listings)
             } catch (e: Exception) {
                 logger.warning("[SQL] Failed to connect to SQL database - invalid connection info/database not up")
                 success = false

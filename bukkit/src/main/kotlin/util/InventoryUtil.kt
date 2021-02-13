@@ -10,7 +10,6 @@ import org.bukkit.inventory.ItemStack
 
 object InventoryUtil {
 
-    @JvmStatic
     fun removeItems(inventory: Inventory, type: Material, amount: Int) {
         var _amount = amount
         if (_amount <= 0) return
@@ -31,7 +30,6 @@ object InventoryUtil {
         }
     }
 
-    @JvmStatic
     fun count(inventory: Inventory, type: Material): Int {
         var count = 0
         val size = inventory.size

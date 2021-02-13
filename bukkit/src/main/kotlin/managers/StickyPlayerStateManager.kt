@@ -11,6 +11,8 @@ import com.dumbdogdiner.stickycommands.database.tables.Users
 import com.dumbdogdiner.stickycommands.player.StickyPlayerState
 import com.dumbdogdiner.stickycommands.util.WithPlugin
 import org.bukkit.entity.Player
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import pw.forst.exposed.insertOrUpdate
 
@@ -64,10 +66,23 @@ class StickyPlayerStateManager : PlayerStateManager, WithApi, WithPlugin {
                 it[uniqueId] = player.uniqueId.toString()
                 it[ipAddress] = player.address.address.toString()
                 it[lastSeen] = (System.currentTimeMillis() / 1000L)
+                it[firstSeen] = getFirstSeen(player)
                 it[lastServer] = plugin.config.getString("server") ?: "unknown"
                 it[isOnline] = !leaving
             }
             commit()
         }
+    }
+
+    // Workaround for some stupid shit above.
+    // FIXME find a better way.
+    private fun getFirstSeen(player: Player): Long {
+        var time: Long? = null
+        transaction(plugin.db) {
+            Users.select { (Users.uniqueId eq player.uniqueId.toString()) }.firstOrNull()?.let {
+                time = it[Users.firstSeen]
+            }
+        }
+        return time ?: (player.firstPlayed / 1000L)
     }
 }

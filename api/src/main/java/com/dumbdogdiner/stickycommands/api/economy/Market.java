@@ -5,14 +5,23 @@
 package com.dumbdogdiner.stickycommands.api.economy;
 
 import java.util.List;
+import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 
 public interface Market {
-    final int PAGE_MAX = 10;
+    @Getter
+    public final int PAGE_MAX = 10;
 
     public Integer latestId();
+
+    /**
+     * Get the number of listings on the market
+     * @return The number of listings as a {@link Long}
+     */
+    @NotNull
+    public Long getListingCount();
 
     /**
      * Get all current listings
