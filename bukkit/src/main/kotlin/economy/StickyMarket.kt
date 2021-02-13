@@ -7,7 +7,7 @@ package com.dumbdogdiner.stickycommands.economy
 import com.dumbdogdiner.stickycommands.StickyCommands
 import com.dumbdogdiner.stickycommands.api.economy.Listing
 import com.dumbdogdiner.stickycommands.api.economy.Market
-import com.dumbdogdiner.stickycommands.models.Listings
+import com.dumbdogdiner.stickycommands.database.tables.Listings
 import com.dumbdogdiner.stickycommands.util.InventoryUtil
 import com.dumbdogdiner.stickycommands.util.WithPlugin
 import java.util.UUID

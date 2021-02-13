@@ -28,8 +28,6 @@ reload:
   database-success: "{prefix}&aReloaded configuration and messages successfully!"
   error: "{prefix}&cThere was an error reloading StickyCommands, please see console for details!"
 
-
-
 sell:
   cannot-sell: "{prefix}&cThis item cannot be sold!"
   bad-worth: "{prefix}&f1 {item} &cis worth a negative amount &f(${single_worth}) &cand cannot be sold &4(Please ask a developer)"
@@ -62,7 +60,7 @@ kill:
   suicide: "{prefix}&bYou magically died!"
 
 smite:
-  smite-other-player-success: "{prefix}&bYour fury reigns down on {is_group|empty_if_false:\"&fthe group \"}&f{player}&b!"
+  smite-other-player: "{prefix}&bYour fury reigns down on {is_group|empty_if_false:\"&fthe group \"}&f{player}&b!"
   smite-block: "{prefix}&bYour fury reigns down on the block at &f{X}, {Y}, {Z} &bof world &f{world}"
   smite-message: "{prefix}&bThou hast been smitten!"
   smite-immune: "{prefix}&f{player}&b is immune to your wrath!"
@@ -81,4 +79,4 @@ powertool:
 
 player-time:
   time-reset: "{prefix}&bYour time has been synced with the server &f({time} ticks)&b!"
-  time-set: "{prefix}&bYour time has been set to &f{time} ticks&b{relative|empty_if_false:\" relative to server time\"}!"
+  time-set: "{prefix}&bYour time has been set to &f{time} ticks&b{r elative|empty_if_false:\" relative to server time\"}!"

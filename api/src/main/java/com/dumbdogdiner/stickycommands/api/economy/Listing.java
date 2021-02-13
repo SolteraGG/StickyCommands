@@ -5,14 +5,13 @@
 package com.dumbdogdiner.stickycommands.api.economy;
 
 import com.dumbdogdiner.stickycommands.api.StickyCommands;
+import java.util.Objects;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Objects;
 
 public class Listing {
     private final Market market = StickyCommands.getService().getMarket();
@@ -73,7 +72,8 @@ public class Listing {
         this.price = price * quantity;
         this.quantity = quantity;
         this.buyer = buyer;
-        this.id = Objects.requireNonNullElseGet(id, () -> market.latestId() + 1);
+        this.id =
+            Objects.requireNonNullElseGet(id, () -> market.latestId() + 1);
     }
 
     /**
@@ -98,6 +98,4 @@ public class Listing {
     public void list() {
         market.add(this);
     }
-
-
 }

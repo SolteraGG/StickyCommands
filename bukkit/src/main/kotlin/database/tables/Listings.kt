@@ -2,11 +2,13 @@
  * Copyright (c) 2021 DumbDogDiner <dumbdogdiner.com>. All rights reserved.
  * Licensed under the MIT license, see LICENSE for more information.
  */
-package com.dumbdogdiner.stickycommands.models
+package com.dumbdogdiner.stickycommands.database.tables
 
+import com.dumbdogdiner.stickycommands.StickyCommands
+import com.dumbdogdiner.stickycommands.util.Constants
 import org.jetbrains.exposed.sql.Table
 
-object Listings : Table() {
+object Listings : Table(StickyCommands.plugin.config.getString(Constants.SettingsPaths.DATABASE_TABLE_PREFIX) + "listings") {
     val id = integer("id").autoIncrement()
 
     var date = long("time_listed").clientDefault { System.currentTimeMillis() / 1000L }

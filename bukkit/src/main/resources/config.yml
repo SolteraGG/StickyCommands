@@ -18,11 +18,11 @@ server: "lobby"
 database:
   host: localhost
   port: 5432
-  name: dbname
+  database: dbname
   username: root
   password: root
   table-prefix: stickycommands_
   # Maximum number of times mysql will try to reconnect before giving up.
   max-reconnects: 5
   # Use SSL?
-  use-ssl: false
+  use-ssl: disabled

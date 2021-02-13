@@ -11,6 +11,7 @@ import com.dumbdogdiner.stickycommands.StickyCommands
 import java.io.File
 import java.io.IOException
 import java.text.DecimalFormat
+import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
@@ -63,7 +64,7 @@ class WorthTable : WithPlugin {
             }
         }
 
-        return if (!isSellable(stack)) 0.0 else decimalFormat.format(worth).toDouble()
+        return decimalFormat.format(worth).toDouble()
     }
 
     /**
@@ -72,8 +73,12 @@ class WorthTable : WithPlugin {
      * @return True if the item can be sold
      */
     fun isSellable(stack: ItemStack): Boolean {
-        val meta = stack.itemMeta
-        val dataStore = meta.persistentDataContainer
-        return !dataStore.has(NamespacedKey(StickyCommands.plugin, "notsellable"), PersistentDataType.STRING)
+        val dataStore = stack.itemMeta?.persistentDataContainer
+        val condition1 = if (dataStore == null) true else (!dataStore.has(NamespacedKey(
+            StickyCommands.plugin, "notsellable"), PersistentDataType.STRING))
+
+        val condition2 = (stack.type != Material.AIR || getWorth(stack) > 0.0)
+
+        return (condition1 && condition2)
     }
 }

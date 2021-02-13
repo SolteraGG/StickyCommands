@@ -4,11 +4,10 @@
  */
 package com.dumbdogdiner.stickycommands.api.economy;
 
+import java.util.List;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 public interface Market {
     final int PAGE_MAX = 10;

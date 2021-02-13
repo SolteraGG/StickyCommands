@@ -8,7 +8,8 @@ import com.dumbdogdiner.stickyapi.bukkit.util.ServerUtil
 import com.dumbdogdiner.stickycommands.StickyCommands
 import com.dumbdogdiner.stickycommands.api.player.PlayerState
 import com.dumbdogdiner.stickycommands.api.player.SpeedType
-import com.dumbdogdiner.stickycommands.models.Users
+import com.dumbdogdiner.stickycommands.database.tables.Users
+import com.dumbdogdiner.stickycommands.util.Constants
 import com.dumbdogdiner.stickycommands.util.Variables
 import com.dumbdogdiner.stickycommands.util.WithPlugin
 import me.xtomyserrax.StaffFacilities.SFAPI
@@ -51,7 +52,8 @@ class StickyPlayerState(
                     SFAPI.isPlayerVanished(player) ||
                     isVanished
         }
-        return false }
+        return false
+    }
 
     /**
      * Checks if a given player is in a vanished state.
@@ -80,7 +82,7 @@ class StickyPlayerState(
 
         if (broadcast) {
             if (!isHidden) {
-                val node = if (isAfk) "afk.afk" else "afk.not-afk"
+                val node = if (isAfk) Constants.LanguagePaths.AFK_MESSAGE else Constants.LanguagePaths.NOT_AFK
                 // TODO: Make method for getting all variables related to a user, such as location, username, uuid, etc
                 val vars = Variables().withPlayer(player, false).get()
 
@@ -114,17 +116,19 @@ class StickyPlayerState(
             SpeedType.FLY -> {
                 this.getPlayer().flySpeed = _speed
                 transaction(this.plugin.db) {
-                    Users.update({ Users.player eq player.uniqueId.toString() }) {
+                    Users.update({ Users.uniqueId eq player.uniqueId.toString() }) {
                         it[flySpeed] = _speed
                     }
+                    commit()
                 }
             }
             SpeedType.WALK -> {
                 this.getPlayer().walkSpeed = _speed
                 transaction(this.plugin.db) {
-                    Users.update({ Users.player eq player.uniqueId.toString() }) {
+                    Users.update({ Users.uniqueId eq player.uniqueId.toString() }) {
                         it[walkSpeed] = _speed
                     }
+                    commit()
                 }
             }
         }

@@ -2,11 +2,12 @@
  * Copyright (c) 2021 DumbDogDiner <dumbdogdiner.com>. All rights reserved.
  * Licensed under the MIT license, see LICENSE for more information.
  */
-package com.dumbdogdiner.stickycommands.models
+package com.dumbdogdiner.stickycommands.database.tables
 
+import com.dumbdogdiner.stickycommands.StickyCommands
 import org.jetbrains.exposed.sql.Table
 
-object Transactions : Table() {
+object Transactions : Table(StickyCommands.plugin.config.getString("database.table-prefix") + "transactions") {
     val id = integer("id").autoIncrement()
 
     var date = long("time_sold").clientDefault { System.currentTimeMillis() / 1000L }

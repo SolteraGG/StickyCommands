@@ -12,16 +12,18 @@ import com.dumbdogdiner.stickycommands.api.managers.PowertoolManager
 import com.dumbdogdiner.stickycommands.commands.AfkCommand
 import com.dumbdogdiner.stickycommands.commands.PowertoolCommand
 import com.dumbdogdiner.stickycommands.commands.SellCommand
+import com.dumbdogdiner.stickycommands.commands.WorthCommand
+import com.dumbdogdiner.stickycommands.database.tables.Listings
+import com.dumbdogdiner.stickycommands.database.tables.Transactions
+import com.dumbdogdiner.stickycommands.database.tables.Users
 import com.dumbdogdiner.stickycommands.economy.StickyMarket
 import com.dumbdogdiner.stickycommands.listeners.AfkEventListener
 import com.dumbdogdiner.stickycommands.listeners.ConnectionListener
 import com.dumbdogdiner.stickycommands.listeners.PowertoolListener
 import com.dumbdogdiner.stickycommands.managers.StickyPlayerStateManager
 import com.dumbdogdiner.stickycommands.managers.StickyPowertoolManager
-import com.dumbdogdiner.stickycommands.models.Listings
-import com.dumbdogdiner.stickycommands.models.Transactions
-import com.dumbdogdiner.stickycommands.models.Users
 import com.dumbdogdiner.stickycommands.timers.AfkTimer
+import com.dumbdogdiner.stickycommands.util.Constants
 import com.dumbdogdiner.stickycommands.util.ExposedLogger
 import com.dumbdogdiner.stickycommands.util.StickyPlaceholders
 import com.dumbdogdiner.stickycommands.util.WorthTable
@@ -105,8 +107,10 @@ class StickyCommands : JavaPlugin(), StickyCommands {
     }
 
     private fun registerCommands() {
+        logger.fine("Registering commands")
         AfkCommand.command.register(this)
         PowertoolCommand.command.register(this)
+
         SellCommand.command.register(this)
     }
 
@@ -159,16 +163,16 @@ class StickyCommands : JavaPlugin(), StickyCommands {
 
         val config = HikariConfig().apply {
             jdbcUrl = "jdbc:postgresql://${
-                config.getString("database.host")
+                config.getString(Constants.SettingsPaths.DATABASE_HOST)
             }:${
-                config.getInt("database.port")
+                config.getInt(Constants.SettingsPaths.DATABASE_PORT)
             }/${
-                config.getString("database.database")
-            }?sslmode=disable"
+                config.getString(Constants.SettingsPaths.DATABASE_DATABASE)
+            }?sslmode=${config.getString(Constants.SettingsPaths.DATABASE_USE_SSL, "disabled")}"
 
             driverClassName = "com.dumbdogdiner.stickycommands.libs.org.postgresql.Driver"
-            username = config.getString("database.username", "postgres")!!
-            password = config.getString("database.password")!!
+            username = config.getString(Constants.SettingsPaths.DATABASE_USERNAME, "postgres")!!
+            password = config.getString(Constants.SettingsPaths.DATABASE_PASSWORD)!!
             maximumPoolSize = 2
         }
 
@@ -178,9 +182,7 @@ class StickyCommands : JavaPlugin(), StickyCommands {
         transaction(this.db) {
             try {
                 addLogger(ExposedLogger())
-                SchemaUtils.createMissingTablesAndColumns(Transactions)
-                SchemaUtils.createMissingTablesAndColumns(Users)
-                SchemaUtils.createMissingTablesAndColumns(Listings)
+                SchemaUtils.createMissingTablesAndColumns(Transactions, Users, Listings)
             } catch (e: Exception) {
                 logger.warning("[SQL] Failed to connect to SQL database - invalid connection info/database not up")
                 success = false

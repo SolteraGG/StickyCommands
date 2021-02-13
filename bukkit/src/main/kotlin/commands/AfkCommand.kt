@@ -8,6 +8,7 @@ import com.dumbdogdiner.stickyapi.bukkit.command.BukkitCommandBuilder
 import com.dumbdogdiner.stickyapi.common.arguments.Arguments
 import com.dumbdogdiner.stickyapi.common.command.ExitCode
 import com.dumbdogdiner.stickycommands.StickyCommands
+import com.dumbdogdiner.stickycommands.util.Constants
 import com.google.common.collect.ImmutableList
 import java.util.HashMap
 import org.bukkit.command.CommandSender
@@ -16,8 +17,8 @@ import org.bukkit.entity.Player
 object AfkCommand {
     private val locale = StickyCommands.localeProvider!!
     val command = BukkitCommandBuilder("afk")
-        .description("Let the server know you're afk!")
-        .permission("stickycommands.afk")
+        .description(Constants.Descriptions.AFK)
+        .permission(Constants.Permissions.AFK)
         .requiresPlayer()
         .playSound()
 
@@ -28,12 +29,12 @@ object AfkCommand {
             ExitCode.EXIT_SUCCESS
         }
 
-        .onError { exitCode, _, _, vars ->
+        .onError { exitCode, sender, _, vars ->
             when (exitCode) {
-                ExitCode.EXIT_PERMISSION_DENIED -> locale.translate("no-permission", vars)
-                ExitCode.EXIT_MUST_BE_PLAYER -> locale.translate("must-be-player", vars)
-                ExitCode.EXIT_ERROR -> locale.translate("server-error", vars)
-                ExitCode.EXIT_INVALID_SYNTAX -> locale.translate("invalid-syntax", vars)
+                ExitCode.EXIT_PERMISSION_DENIED -> sender.sendMessage(locale.translate(Constants.LanguagePaths.NO_PERMISSION, vars))
+                ExitCode.EXIT_MUST_BE_PLAYER -> sender.sendMessage(locale.translate(Constants.LanguagePaths.MUST_BE_PLAYER, vars))
+                ExitCode.EXIT_ERROR -> sender.sendMessage(locale.translate(Constants.LanguagePaths.SERVER_ERROR, vars))
+                else -> ""
             }
         }
 
