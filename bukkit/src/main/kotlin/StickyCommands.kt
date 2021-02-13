@@ -112,6 +112,7 @@ class StickyCommands : JavaPlugin(), StickyCommands {
         PowertoolCommand.command.register(this)
 
         SellCommand.command.register(this)
+        WorthCommand.command.register(this)
     }
 
     private fun registerTimers() {
