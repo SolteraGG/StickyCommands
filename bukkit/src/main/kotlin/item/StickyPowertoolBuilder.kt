@@ -23,7 +23,7 @@ class StickyPowertoolBuilder(
     }
 
     override fun give(target: Player): Powertool {
-        val powertool = com.dumbdogdiner.stickycommands.item.StickyPowertool(target, this.material, this.command, true)
+        val powertool = StickyPowertool(target, this.material, this.command, true)
         target.inventory.addItem(ItemStack(this.material))
 
         return powertool

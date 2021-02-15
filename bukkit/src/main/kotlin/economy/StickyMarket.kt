@@ -4,11 +4,9 @@
  */
 package com.dumbdogdiner.stickycommands.economy
 
-import com.dumbdogdiner.stickycommands.StickyCommands
 import com.dumbdogdiner.stickycommands.api.economy.Listing
 import com.dumbdogdiner.stickycommands.api.economy.Market
 import com.dumbdogdiner.stickycommands.database.tables.Listings
-import com.dumbdogdiner.stickycommands.util.InventoryUtil
 import com.dumbdogdiner.stickycommands.util.WithPlugin
 import java.time.Instant
 import java.util.Date
@@ -16,7 +14,6 @@ import java.util.UUID
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.OfflinePlayer
-import org.bukkit.entity.Player
 import org.jetbrains.exposed.sql.Expression
 import org.jetbrains.exposed.sql.Query
 import org.jetbrains.exposed.sql.SortOrder
@@ -84,7 +81,6 @@ class StickyMarket : Market, WithPlugin {
     }
 
     override fun latestId(): Int {
-        var int: Int = 1
         val selectionResult = transaction(this.plugin.db) {
             Listings.selectAll().firstOrNull()
         }
@@ -100,18 +96,6 @@ class StickyMarket : Market, WithPlugin {
     }
 
     override fun add(listing: Listing) {
-
-        // FIXME Better way to do this pls
-        // doing this here could potentially mean that the player could somehow
-        // make this execute while offline and keep the items they have sold
-        // This is extremely unlikely but could in theory be possible so
-        // its worth noting
-        if (this.config.getBoolean("auto-sell", true) && listing.seller.isOnline) {
-            val player = listing.seller as Player
-            InventoryUtil.removeItems(player.inventory, listing.material, listing.quantity)
-            StickyCommands.economy!!.depositPlayer(player, listing.price)
-        }
-
         transaction(this.plugin.db) {
             Listings.insert {
                 it[seller] = listing.seller.uniqueId.toString()

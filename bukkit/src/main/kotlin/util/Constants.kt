@@ -6,6 +6,8 @@ package com.dumbdogdiner.stickycommands.util
 
 object Constants {
     private const val prefix = "stickycommands"
+    const val DEFAULT_WALKING_SPEED = 0.2f // 0.1 is sneak, supposedly.
+    const val DEFAULT_FLYING_SPEED = 0.1f // according to google
 
     object Permissions {
         const val AFK = "$prefix.afk"
@@ -21,6 +23,8 @@ object Constants {
         const val SELL_LOG = "$prefix.sell.log"
 
         const val WORTH = "$prefix.worth"
+
+        const val SPEED = "stickycommands.speed"
     }
 
     object LanguagePaths {
@@ -100,6 +104,7 @@ object Constants {
         const val POWERTOOL = "Bind an item to a command"
         const val POWERTOOL_CLEAR = "Clear your item of a command"
         const val POWERTOOL_TOGGLE = "Toggle your powertool"
+        const val SPEED = "Change your fly or walk speed"
     }
 
     object SettingsPaths {

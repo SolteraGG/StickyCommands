@@ -5,6 +5,7 @@
 package com.dumbdogdiner.stickycommands.util
 
 import com.dumbdogdiner.stickyapi.common.util.StringUtil
+import com.dumbdogdiner.stickyapi.common.util.TimeUtil
 import com.dumbdogdiner.stickycommands.api.economy.Listing
 import org.bukkit.entity.Player
 import org.bukkit.inventory.PlayerInventory
@@ -32,7 +33,21 @@ class Variables() {
         variables["${prefix}_location_x"] = target.location.x.toString()
         variables["${prefix}_location_y"] = target.location.y.toString()
         variables["${prefix}_location_z"] = target.location.z.toString()
+        return this
+    }
 
+    fun withListing(listing: Listing): Variables {
+        variables["worth"] = (listing.price).toString()
+        variables["amount"] = (listing.quantity).toString()
+        variables["item"] = StringUtil.capitaliseSentence(listing.material.toString().replace("_", " "))
+        variables["item_enum"] = listing.material.toString()
+        variables["date"] = listing.listedAt.time.toString()
+        variables["log_player"] = listing.seller.name.toString()
+        variables["saleid"] = listing.id.toString()
+        variables["amount"] = listing.quantity.toString()
+        variables["price"] = (listing.price).toString()
+        variables["short_date"] = TimeUtil.significantDurationString(System.currentTimeMillis() - listing.listedAt.time) // dumb but whatever
+        variables["date_duration"] = TimeUtil.expirationTime(System.currentTimeMillis() - listing.listedAt.time)
         return this
     }
 
@@ -40,11 +55,7 @@ class Variables() {
         variables["single_worth"] = (listing.price / listing.quantity).toString()
         variables["hand_worth"] = ((listing.price / listing.quantity) * (inventory.itemInMainHand.amount)).toString()
         variables["inventory_worth"] = ((listing.price / listing.quantity) * (InventoryUtil.count(inventory, listing.material))).toString()
-        variables["worth"] = (listing.price).toString()
-        variables["amount"] = (listing.quantity).toString()
-        variables["item"] = StringUtil.capitaliseSentence(listing.material.toString().replace("_", " "))
-        variables["item_enum"] = listing.material.toString()
-        variables["date"] = listing.listedAt.time.toString()
+        withListing(listing)
         return this
     }
 

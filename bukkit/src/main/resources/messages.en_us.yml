@@ -37,7 +37,7 @@ sell:
   log:
     log-message: "{prefix}&bRecent sale logs"
     log: "{newline}&7({short_date}) &f{log_player} &bsold &f{amount} {item} &bfor &f${price}"
-    log-hover: "&bSale &f#{saleid}\n&8&l» &bItem Sold:&f {item_enum}\n&8&l» &bAmount Sold:&f {amount}\n&8&l» &bNew Balance:&f &2(+${balance_change})\n&8&l» &bSold:&f {date_duration}\n&8&l» &bTransaction ID:&f {saleid}"
+    log-hover: "&bSale &f#{saleid}\n&8&l» &bItem Sold:&f {item_enum}\n&8&l» &bAmount Sold:&f {amount}\n&8&l» &bNew Balance:&f &2(+${price})\n&8&l» &bSold:&f {date_duration}\n&8&l» &bTransaction ID:&f {saleid}"
     no-sales: "{prefix}&bThere have been no sales!"
     paginator: "{prefix}&bpage &f{current}&b/&f{total}"
 

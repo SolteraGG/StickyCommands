@@ -14,7 +14,7 @@ import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 
 class AfkTimer : TimerTask() {
-    protected var AFK_TIMEOUT: Int = StickyCommands.plugin.config.getInt(Constants.SettingsPaths.AFK_TIMEOUT, 300)
+    private var AFK_TIMEOUT: Int = StickyCommands.plugin.config.getInt(Constants.SettingsPaths.AFK_TIMEOUT, 300)
 
     override fun run() {
         for (playerState in StickyCommands.plugin.playerStateManager.playerStates) {
@@ -38,21 +38,19 @@ class AfkTimer : TimerTask() {
     }
 
     private fun exceedsPermittedTime(state: PlayerState, time: Int): Boolean {
-        val player: Player? = state.player
-        if (player == null) {
-            System.err.println("Error in exceedsPermissionTime: Player was null. Defaulting to false.")
+        val player: Player = state.player
+        if (state.isHidden || state.isVanished)
             return false
-        }
-        if (state.isHidden || state.isVanished) return false
-        for (permission in player.effectivePermissions) {
-            if (!permission.permission
-                    .contains("stickycommands.afk.autokick")
-            ) continue // We don't care about other permissions
-            val afkArr = permission.permission.split(".")
-            val afkPerm = if (afkArr.size == 4) afkArr[3] else "unlimited" // We only care about the time!
-            if (!NumberUtil.isNumeric(afkPerm) || afkPerm == "unlimited") return false
-            val permTime = afkPerm.toInt()
-            return permTime <= time
+
+        player.effectivePermissions.forEach {
+            if (it.permission.contains("stickycommands.afk.autokick")) {
+                // We don't care about other permissions
+                val split = it.permission.split(".")
+                val permittedTime = if (split.size == 4) split[3] else "unlimited" // We only care about the time!
+                if (!NumberUtil.isNumeric(permittedTime) || permittedTime == "unlimited") return false
+                val permTime = permittedTime.toInt()
+                return permTime <= time
+            }
         }
         return false
     }

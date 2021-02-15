@@ -14,7 +14,6 @@ object Users : Table(StickyCommands.plugin.config.getString("database.table-pref
 
     val ipAddress = varchar("ip_address", 45)
 
-//    val firstSeen = datetime("first_seen").defaultExpression(CurrentDateTime())
     val firstSeen = long("first_seen").clientDefault { System.currentTimeMillis() / 1000L }
 
     val lastSeen = long("last_seen")

@@ -9,10 +9,11 @@ import com.dumbdogdiner.stickyapi.common.translation.LocaleProvider
 import com.dumbdogdiner.stickycommands.api.StickyCommands
 import com.dumbdogdiner.stickycommands.api.economy.Market
 import com.dumbdogdiner.stickycommands.api.managers.PowertoolManager
-import com.dumbdogdiner.stickycommands.commands.AfkCommand
-import com.dumbdogdiner.stickycommands.commands.PowertoolCommand
-import com.dumbdogdiner.stickycommands.commands.SellCommand
-import com.dumbdogdiner.stickycommands.commands.WorthCommand
+import com.dumbdogdiner.stickycommands.commands.afkCommand
+import com.dumbdogdiner.stickycommands.commands.powertoolCommand
+import com.dumbdogdiner.stickycommands.commands.sellCommand
+import com.dumbdogdiner.stickycommands.commands.speedCommand
+import com.dumbdogdiner.stickycommands.commands.worthCommand
 import com.dumbdogdiner.stickycommands.database.tables.Listings
 import com.dumbdogdiner.stickycommands.database.tables.Users
 import com.dumbdogdiner.stickycommands.economy.StickyMarket
@@ -107,11 +108,11 @@ class StickyCommands : JavaPlugin(), StickyCommands {
 
     private fun registerCommands() {
         logger.fine("Registering commands")
-        AfkCommand.command.register(this)
-        PowertoolCommand.command.register(this)
+        afkCommand.register(this)
+        powertoolCommand.register(this)
 
-        SellCommand.command.register(this)
-        WorthCommand.command.register(this)
+        sellCommand.register(this)
+        worthCommand.register(this)
     }
 
     private fun registerTimers() {
