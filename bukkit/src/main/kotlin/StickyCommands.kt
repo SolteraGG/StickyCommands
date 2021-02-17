@@ -113,6 +113,7 @@ class StickyCommands : JavaPlugin(), StickyCommands {
 
         sellCommand.register(this)
         worthCommand.register(this)
+        speedCommand.register(this)
     }
 
     private fun registerTimers() {

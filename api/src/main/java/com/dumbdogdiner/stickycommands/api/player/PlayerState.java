@@ -93,8 +93,15 @@ public interface PlayerState {
     /**
      * Set the fly or walking speed of this player
      * @param type The target speed type
+     * @param speed to set
      */
     public void setSpeed(@NotNull SpeedType type, @NotNull Float speed);
+
+    /**
+     * Set the fly or walking speed of this player
+     * @param speed to set
+     */
+    public void setSpeed(@NotNull Float speed);
 
     /**
      * Get the walk speed for this player.

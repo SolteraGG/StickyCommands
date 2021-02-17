@@ -22,7 +22,7 @@ invalid-group: "{prefix}&cError! Group {GROUP} is invalid!"
 seen-message: "{prefix}&bUser data for {data_player}\n{newline}&b{online|yesno:'&aOnline,&cOffline'} &bsince: &f{lastlogin|expiry}\n{newline}&bIP: &f{ipaddress}\n{newline}&bFirst Login: &f{firstlogin|datetime:\"EEE, MMM d yyyy HH:mm:ss\"}\n{newline}&bLast Login: &f{lastlogin|datetime:\"EEE, MMM d yyyy HH:mm:ss\"}\n{newline}&bLast Server: &f{server}\n{newline}&bTimes Connected: &f{timesconnected}\n{newline}&bFly/Walk: &f{fly_speed}&b / &f{walk_speed}"
 top-message: "{prefix}&bWoosh! You're at the top!"
 jump-message: "{prefix}&bWEEEEE!!!"
-speed-message: "{prefix}&bYour speed has been set to &f{SPEED}&b!"
+speed-message: "{prefix}&bYour {speed_type} speed has been set to &f{speed}&b!"
 reload:
   configs-success: "{prefix}&aReloaded configuration and messages successfully!"
   database-success: "{prefix}&aReloaded configuration and messages successfully!"

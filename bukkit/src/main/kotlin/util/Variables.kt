@@ -33,6 +33,10 @@ class Variables() {
         variables["${prefix}_location_x"] = target.location.x.toString()
         variables["${prefix}_location_y"] = target.location.y.toString()
         variables["${prefix}_location_z"] = target.location.z.toString()
+        variables["${prefix}_fly_speed"] = target.flySpeed.toString()
+        variables["${prefix}_walk_speed"] = target.walkSpeed.toString()
+        variables["${prefix}_speed"] = if (target.isFlying) target.flySpeed.toString() else target.walkSpeed.toString()
+        variables["${prefix}_allow_flight"] = target.allowFlight.toString()
         return this
     }
 

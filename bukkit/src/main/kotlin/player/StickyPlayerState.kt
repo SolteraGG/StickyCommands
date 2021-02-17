@@ -102,6 +102,13 @@ class StickyPlayerState(
         }
     }
 
+    override fun setSpeed(speed: Float) {
+        if (this.player.isFlying)
+            setSpeed(SpeedType.FLY, speed)
+        else
+            setSpeed(SpeedType.WALK, speed)
+    }
+
     override fun setSpeed(type: SpeedType, speed: Float) {
         // we can't reassign params, so we have to do this.
         var _speed = speed
