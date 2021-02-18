@@ -41,8 +41,5 @@ val speedCommand = commandStub("speed", Constants.Descriptions.SPEED, Constants.
         ExitCode.EXIT_SUCCESS
     }
     .onTabComplete { _, _, _ ->
-        // I wanted to use intrange but I couldn't think of a nice way to make them all strings
-        // so we'll go with this ig... If someone knows a *pretty* way of doing what I want
-        // please show me - zachery
-        return@onTabComplete listOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "10")
+        return@onTabComplete (1..10).map(Int::toString)
     }
