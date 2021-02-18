@@ -6,12 +6,12 @@ package com.dumbdogdiner.stickycommands.player
 
 import com.dumbdogdiner.stickyapi.bukkit.util.ServerUtil
 import com.dumbdogdiner.stickycommands.StickyCommands
+import com.dumbdogdiner.stickycommands.WithPlugin
 import com.dumbdogdiner.stickycommands.api.player.PlayerState
 import com.dumbdogdiner.stickycommands.api.player.SpeedType
 import com.dumbdogdiner.stickycommands.database.tables.Users
 import com.dumbdogdiner.stickycommands.util.Constants
 import com.dumbdogdiner.stickycommands.util.Variables
-import com.dumbdogdiner.stickycommands.WithPlugin
 import me.xtomyserrax.StaffFacilities.SFAPI
 import org.bukkit.entity.Player
 import org.jetbrains.exposed.sql.transactions.transaction

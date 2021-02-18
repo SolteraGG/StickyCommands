@@ -4,16 +4,12 @@
  */
 package com.dumbdogdiner.stickycommands.managers
 
+import com.dumbdogdiner.stickycommands.WithPlugin
 import com.dumbdogdiner.stickycommands.api.managers.PlayerStateManager
 import com.dumbdogdiner.stickycommands.api.player.PlayerState
 import com.dumbdogdiner.stickycommands.api.util.WithApi
-import com.dumbdogdiner.stickycommands.database.tables.Users
 import com.dumbdogdiner.stickycommands.player.StickyPlayerState
-import com.dumbdogdiner.stickycommands.WithPlugin
 import org.bukkit.entity.Player
-import org.jetbrains.exposed.sql.select
-import org.jetbrains.exposed.sql.transactions.transaction
-import pw.forst.exposed.insertOrUpdate
 
 class StickyPlayerStateManager : PlayerStateManager, WithApi, WithPlugin {
     companion object {
@@ -60,6 +56,4 @@ class StickyPlayerStateManager : PlayerStateManager, WithApi, WithPlugin {
     private fun update(player: Player, leaving: Boolean) {
         this.plugin.postgresHandler.updateUser(player, leaving)
     }
-
-
 }

@@ -5,8 +5,8 @@
 package com.dumbdogdiner.stickycommands.database.tables
 
 import com.dumbdogdiner.stickycommands.StickyCommands
-import com.dumbdogdiner.stickycommands.util.Constants
 import com.dumbdogdiner.stickycommands.WithPlugin
+import com.dumbdogdiner.stickycommands.util.Constants
 import org.jetbrains.exposed.sql.Table
 
 object Users : Table(StickyCommands.plugin.config.getString(Constants.SettingsPaths.DATABASE_TABLE_PREFIX) + "users"),

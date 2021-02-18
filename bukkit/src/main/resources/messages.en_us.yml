@@ -23,7 +23,7 @@ whois-message: "{prefix}&bWhois data for {target_player}\n{newline}&b{online|yes
 seen-message: "{prefix}&f{target_player} &bhas been {online|yesno:'&aOnline,&cOffline'}\n{newline} &bSince: &f{last_login|expiry}\n{newline} &bOn: &f{last_server}"
 top-message: "{prefix}&bWoosh! You're at the top!"
 jump-message: "{prefix}&bWEEEEE!!!"
-speed-message: "{prefix}&bYour {speed_type} speed has been set to &f{speed}&b!"
+speed-message: "{prefix}&bYour {player_flying|yesno:'fly,walk'} speed has been set to &f{player_speed}&b!"
 reload:
   configs-success: "{prefix}&aReloaded configuration and messages successfully!"
   database-success: "{prefix}&aReloaded configuration and messages successfully!"

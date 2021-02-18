@@ -5,6 +5,7 @@
 package com.dumbdogdiner.stickycommands.util.sticky
 
 import com.dumbdogdiner.stickycommands.StickyCommands
+import com.dumbdogdiner.stickycommands.WithPlugin
 import com.dumbdogdiner.stickycommands.commands.afkCommand
 import com.dumbdogdiner.stickycommands.commands.powertoolCommand
 import com.dumbdogdiner.stickycommands.commands.sellCommand
@@ -14,7 +15,6 @@ import com.dumbdogdiner.stickycommands.listeners.AfkEventListener
 import com.dumbdogdiner.stickycommands.listeners.ConnectionListener
 import com.dumbdogdiner.stickycommands.listeners.PowertoolListener
 import com.dumbdogdiner.stickycommands.tasks.StickyTask
-import com.dumbdogdiner.stickycommands.WithPlugin
 import java.util.Timer
 import net.luckperms.api.LuckPerms
 import net.milkbowl.vault.economy.Economy

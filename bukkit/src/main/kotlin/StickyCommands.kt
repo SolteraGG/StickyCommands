@@ -14,8 +14,8 @@ import com.dumbdogdiner.stickycommands.economy.StickyMarket
 import com.dumbdogdiner.stickycommands.managers.StickyPlayerStateManager
 import com.dumbdogdiner.stickycommands.managers.StickyPowertoolManager
 import com.dumbdogdiner.stickycommands.timers.AfkTimer
-import com.dumbdogdiner.stickycommands.util.sticky.StickyStartupUtil
 import com.dumbdogdiner.stickycommands.util.WorthTable
+import com.dumbdogdiner.stickycommands.util.sticky.StickyStartupUtil
 import kr.entree.spigradle.annotations.PluginMain
 import net.luckperms.api.LuckPerms
 import net.milkbowl.vault.economy.Economy

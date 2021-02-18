@@ -4,8 +4,6 @@
  */
 package com.dumbdogdiner.stickycommands
 
-import com.dumbdogdiner.stickycommands.StickyCommands
-
 interface WithPlugin {
     val plugin
         get() = StickyCommands.plugin

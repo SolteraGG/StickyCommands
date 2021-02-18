@@ -4,21 +4,14 @@
  */
 package com.dumbdogdiner.stickycommands.economy
 
+import com.dumbdogdiner.stickycommands.WithPlugin
 import com.dumbdogdiner.stickycommands.api.economy.Listing
 import com.dumbdogdiner.stickycommands.api.economy.Market
 import com.dumbdogdiner.stickycommands.database.tables.Listings
-import com.dumbdogdiner.stickycommands.WithPlugin
-import java.time.Instant
-import java.util.Date
-import java.util.UUID
-import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.OfflinePlayer
-import org.jetbrains.exposed.sql.Expression
 import org.jetbrains.exposed.sql.Query
-import org.jetbrains.exposed.sql.SortOrder
 import org.jetbrains.exposed.sql.deleteWhere
-import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction

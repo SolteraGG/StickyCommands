@@ -4,13 +4,16 @@
  */
 package com.dumbdogdiner.stickycommands.database
 
+import com.dumbdogdiner.stickycommands.WithPlugin
+import com.dumbdogdiner.stickycommands.api.economy.Listing
 import com.dumbdogdiner.stickycommands.database.tables.Listings
 import com.dumbdogdiner.stickycommands.database.tables.Users
 import com.dumbdogdiner.stickycommands.util.Constants
-import com.dumbdogdiner.stickycommands.WithPlugin
-import com.dumbdogdiner.stickycommands.api.economy.Listing
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
+import java.time.Instant
+import java.util.Date
+import java.util.UUID
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -24,8 +27,6 @@ import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import pw.forst.exposed.insertOrUpdate
-import java.time.Instant
-import java.util.*
 
 class PostgresHandler() : WithPlugin {
     lateinit var db: Database
@@ -79,8 +80,8 @@ class PostgresHandler() : WithPlugin {
                     info["last_seen"] = it[Users.lastSeen].toString()
                     info["last_server"] = it[Users.lastServer].toString()
                     info["ipaddress"] = it[Users.ipAddress].toString()
-                    info["fly_speed"] = (it[Users.flySpeed]*10).toString()
-                    info["walk_speed"] = (it[Users.walkSpeed]*10).toString()
+                    info["fly_speed"] = (it[Users.flySpeed] * 10).toString()
+                    info["walk_speed"] = (it[Users.walkSpeed] * 10).toString()
                 }
         }
         return info

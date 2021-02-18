@@ -6,5 +6,4 @@ package com.dumbdogdiner.stickycommands.tasks
 
 import java.util.TimerTask
 
-
 abstract class StickyTask(val delay: Long, val period: Long) : TimerTask()
