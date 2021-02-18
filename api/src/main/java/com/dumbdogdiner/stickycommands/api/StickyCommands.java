@@ -68,9 +68,18 @@ public interface StickyCommands {
      */
     Plugin getProvider();
 
+    /**
+     * Get the player state manager instance
+     */
     PlayerStateManager getPlayerStateManager();
 
+    /**
+     * Get the powertool manager instance
+     */
     PowertoolManager getPowertoolManager();
 
+    /**
+     * Get the Market instance
+     */
     Market getMarket();
 }

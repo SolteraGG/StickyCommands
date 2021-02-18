@@ -23,5 +23,7 @@ object Listings : Table(StickyCommands.plugin.config.getString(Constants.Setting
 
     var buyer = varchar("buyer", 36).nullable()
 
+    var sold = bool("sold").default(false)
+
     override val primaryKey = PrimaryKey(id)
 }

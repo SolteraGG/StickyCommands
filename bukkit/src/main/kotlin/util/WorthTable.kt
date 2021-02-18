@@ -8,6 +8,7 @@ import com.dumbdogdiner.stickyapi.common.configuration.InvalidConfigurationExcep
 import com.dumbdogdiner.stickyapi.common.configuration.file.FileConfiguration
 import com.dumbdogdiner.stickyapi.common.configuration.file.YamlConfiguration
 import com.dumbdogdiner.stickycommands.StickyCommands
+import com.dumbdogdiner.stickycommands.WithPlugin
 import java.io.File
 import java.io.IOException
 import java.text.DecimalFormat

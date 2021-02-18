@@ -11,7 +11,7 @@ import com.dumbdogdiner.stickycommands.api.player.SpeedType
 import com.dumbdogdiner.stickycommands.database.tables.Users
 import com.dumbdogdiner.stickycommands.util.Constants
 import com.dumbdogdiner.stickycommands.util.Variables
-import com.dumbdogdiner.stickycommands.util.WithPlugin
+import com.dumbdogdiner.stickycommands.WithPlugin
 import me.xtomyserrax.StaffFacilities.SFAPI
 import org.bukkit.entity.Player
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -122,7 +122,7 @@ class StickyPlayerState(
         when (type) {
             SpeedType.FLY -> {
                 this.getPlayer().flySpeed = _speed
-                transaction(this.plugin.db) {
+                transaction(this.plugin.postgresHandler.db) {
                     Users.update({ Users.uniqueId eq player.uniqueId.toString() }) {
                         it[flySpeed] = _speed
                     }
@@ -131,7 +131,7 @@ class StickyPlayerState(
             }
             SpeedType.WALK -> {
                 this.getPlayer().walkSpeed = _speed
-                transaction(this.plugin.db) {
+                transaction(this.plugin.postgresHandler.db) {
                     Users.update({ Users.uniqueId eq player.uniqueId.toString() }) {
                         it[walkSpeed] = _speed
                     }

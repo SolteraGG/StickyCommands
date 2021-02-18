@@ -2,8 +2,9 @@
  * Copyright (c) 2021 DumbDogDiner <dumbdogdiner.com>. All rights reserved.
  * Licensed under the MIT license, see LICENSE for more information.
  */
-package com.dumbdogdiner.stickycommands.util
+package com.dumbdogdiner.stickycommands.database
 
+import com.dumbdogdiner.stickycommands.WithPlugin
 import org.jetbrains.exposed.sql.SqlLogger
 import org.jetbrains.exposed.sql.Transaction
 import org.jetbrains.exposed.sql.statements.StatementContext

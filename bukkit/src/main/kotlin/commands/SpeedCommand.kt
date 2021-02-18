@@ -37,7 +37,7 @@ val speedCommand = commandStub("speed", Constants.Descriptions.SPEED, Constants.
 
         vars["speed"] = if (args.exists("speed")) args.getString("speed") else "1"
         vars["speed_type"] = if (sender.isFlying) "fly" else "walk"
-        sender.sendMessage(locale.translate("speed-message", vars))
+        sender.sendMessage(locale.translate(Constants.LanguagePaths.SPEED_MESSAGE, vars))
         ExitCode.EXIT_SUCCESS
     }
     .onTabComplete { _, _, _ ->

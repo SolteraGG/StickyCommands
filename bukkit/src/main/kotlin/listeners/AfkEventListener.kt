@@ -34,9 +34,9 @@ class AfkEventListener : Listener {
             (!player.isSwimming || !player.isInsideVehicle || !player.isGliding || !player.isInBubbleColumn) &&
             from.block.type != Material.WATER &&
             (!nearbyContainsPlayer(player))) {
-            // Reset their AFK status
-            checkAfk(event)
-        }
+                // Reset their AFK status
+                checkAfk(event)
+            }
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

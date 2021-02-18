@@ -9,9 +9,8 @@ import com.dumbdogdiner.stickycommands.api.player.PlayerState
 import com.dumbdogdiner.stickycommands.api.util.WithApi
 import com.dumbdogdiner.stickycommands.database.tables.Users
 import com.dumbdogdiner.stickycommands.player.StickyPlayerState
-import com.dumbdogdiner.stickycommands.util.WithPlugin
+import com.dumbdogdiner.stickycommands.WithPlugin
 import org.bukkit.entity.Player
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import pw.forst.exposed.insertOrUpdate
@@ -59,30 +58,8 @@ class StickyPlayerStateManager : PlayerStateManager, WithApi, WithPlugin {
      */
     // I don't see why this would be used outside of this class.
     private fun update(player: Player, leaving: Boolean) {
-        transaction(plugin.db) {
-            // FIXME WHY DOES THIS UPDATE A COLUMN NOT LISTED BELOW?!
-            // firstSeen updates when they join, this should not happen.
-            Users.insertOrUpdate(Users.uniqueId) {
-                it[uniqueId] = player.uniqueId.toString()
-                it[ipAddress] = player.address.address.toString()
-                it[lastSeen] = (System.currentTimeMillis() / 1000L)
-                it[firstSeen] = getFirstSeen(player)
-                it[lastServer] = plugin.config.getString("server") ?: "unknown"
-                it[isOnline] = !leaving
-            }
-            commit()
-        }
+        this.plugin.postgresHandler.updateUser(player, leaving)
     }
 
-    // Workaround for some stupid shit above.
-    // FIXME find a better way.
-    private fun getFirstSeen(player: Player): Long {
-        var time: Long? = null
-        transaction(plugin.db) {
-            Users.select { (Users.uniqueId eq player.uniqueId.toString()) }.firstOrNull()?.let {
-                time = it[Users.firstSeen]
-            }
-        }
-        return time ?: (player.firstPlayed / 1000L)
-    }
+
 }

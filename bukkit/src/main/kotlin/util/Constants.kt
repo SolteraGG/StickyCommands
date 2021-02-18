@@ -12,19 +12,23 @@ object Constants {
         const val AFK = "$prefix.afk"
 
         const val POWERTOOL = "$prefix.powertool"
-        const val POWERTOOL_CLEAR = "$prefix.powertool.clear"
-        const val POWERTOOL_TOGGLE = "$prefix.powertool.toggle"
-        const val POWERTOOL_VIEW_ALL_COMMANDS = "$prefix.powertool.viewallcommands"
+        const val POWERTOOL_CLEAR = "$POWERTOOL.clear"
+        const val POWERTOOL_TOGGLE = "$POWERTOOL.toggle"
+        const val POWERTOOL_VIEW_ALL_COMMANDS = "$POWERTOOL.viewallcommands"
 
         const val SELL = "$prefix.sell"
-        const val SELL_HAND = "$prefix.sell.hand"
-        const val SELL_INVENTORY = "$prefix.sell.inventory"
-        const val SELL_LOG = "$prefix.sell.log"
+        const val SELL_HAND = "$SELL.hand"
+        const val SELL_INVENTORY = "$SELL.inventory"
+        const val SELL_LOG = "$SELL.log"
 
         const val WORTH = "$prefix.worth"
 
         const val SPEED = "$prefix.speed"
+
+        const val SEEN = "$prefix.seen"
     }
+        const val WHOIS = "$prefix.whois"
+        const val WHOIS_IP = "$WHOIS.ip"
 
     object LanguagePaths {
         const val PREFIX = "prefix"
@@ -38,6 +42,7 @@ object Constants {
         const val INVALID_GROUP = "invalid-group"
 
         const val SEEN_MESSAGE = "seen-message"
+        const val WHOIS_MESSAGE = "whois-message"
         const val TOP_MESSAGE = "top-message"
         const val JUMP_MESSAGE = "jump-message"
         const val SPEED_MESSAGE = "speed-message"
@@ -103,7 +108,12 @@ object Constants {
         const val POWERTOOL = "Bind an item to a command"
         const val POWERTOOL_CLEAR = "Clear your item of a command"
         const val POWERTOOL_TOGGLE = "Toggle your powertool"
+
         const val SPEED = "Change your fly or walk speed"
+
+        const val SEEN = "Check when a player was last online"
+
+        const val WHOIS = "Lookup a player"
     }
 
     object SettingsPaths {

@@ -9,38 +9,18 @@ import com.dumbdogdiner.stickyapi.common.translation.LocaleProvider
 import com.dumbdogdiner.stickycommands.api.StickyCommands
 import com.dumbdogdiner.stickycommands.api.economy.Market
 import com.dumbdogdiner.stickycommands.api.managers.PowertoolManager
-import com.dumbdogdiner.stickycommands.commands.afkCommand
-import com.dumbdogdiner.stickycommands.commands.powertoolCommand
-import com.dumbdogdiner.stickycommands.commands.sellCommand
-import com.dumbdogdiner.stickycommands.commands.speedCommand
-import com.dumbdogdiner.stickycommands.commands.worthCommand
-import com.dumbdogdiner.stickycommands.database.tables.Listings
-import com.dumbdogdiner.stickycommands.database.tables.Users
+import com.dumbdogdiner.stickycommands.database.PostgresHandler
 import com.dumbdogdiner.stickycommands.economy.StickyMarket
-import com.dumbdogdiner.stickycommands.listeners.AfkEventListener
-import com.dumbdogdiner.stickycommands.listeners.ConnectionListener
-import com.dumbdogdiner.stickycommands.listeners.PowertoolListener
 import com.dumbdogdiner.stickycommands.managers.StickyPlayerStateManager
 import com.dumbdogdiner.stickycommands.managers.StickyPowertoolManager
 import com.dumbdogdiner.stickycommands.timers.AfkTimer
-import com.dumbdogdiner.stickycommands.util.Constants
-import com.dumbdogdiner.stickycommands.util.ExposedLogger
-import com.dumbdogdiner.stickycommands.util.StickyPlaceholders
+import com.dumbdogdiner.stickycommands.util.sticky.StickyStartupUtil
 import com.dumbdogdiner.stickycommands.util.WorthTable
-import com.zaxxer.hikari.HikariConfig
-import com.zaxxer.hikari.HikariDataSource
-import java.util.Timer
 import kr.entree.spigradle.annotations.PluginMain
 import net.luckperms.api.LuckPerms
 import net.milkbowl.vault.economy.Economy
-import org.bukkit.Bukkit
 import org.bukkit.plugin.Plugin
-import org.bukkit.plugin.RegisteredServiceProvider
 import org.bukkit.plugin.java.JavaPlugin
-import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.SchemaUtils
-import org.jetbrains.exposed.sql.addLogger
-import org.jetbrains.exposed.sql.transactions.transaction
 
 @PluginMain
 class StickyCommands : JavaPlugin(), StickyCommands {
@@ -51,18 +31,19 @@ class StickyCommands : JavaPlugin(), StickyCommands {
         var perms: LuckPerms? = null
         var staffFacilitiesEnabled = false
     }
-    private val _playerStateManager = StickyPlayerStateManager()
-    private val _powertoolManager = StickyPowertoolManager()
-    lateinit var _market: Market
-    lateinit var afkTimer: AfkTimer
-    lateinit var db: Database
+
+    val postgresHandler = PostgresHandler()
     lateinit var worthTable: WorthTable
+    lateinit var afkTimer: AfkTimer
+
+    private val stickyPlayerStateManager = StickyPlayerStateManager()
+    private val stickyPowertoolManager = StickyPowertoolManager()
+    private val stickyMarket = StickyMarket()
 
     override fun onLoad() {
         plugin = this
-        afkTimer = AfkTimer()
-        _market = StickyMarket()
         worthTable = WorthTable()
+        afkTimer = AfkTimer()
     }
 
     override fun onEnable() {
@@ -75,24 +56,24 @@ class StickyCommands : JavaPlugin(), StickyCommands {
         if (localeProvider == null)
             return
 
-        if (!setupDatabase())
+        if (!postgresHandler.init())
             return
 
-        if (!setupPlaceholders())
+        if (!StickyStartupUtil.setupPlaceholders())
             logger.severe("PlaceholderAPI is not available, is it installed?")
 
-        if (!setupEconomy())
+        if (!StickyStartupUtil.setupEconomy())
             logger.severe("Disabled economy commands due to no Vault dependency found!")
 
-        if (!setupLuckperms())
+        if (!StickyStartupUtil.setupLuckperms())
             logger.severe("Disabled group listing/LuckPerms dependant features due to no LuckPerms dependency found!")
 
-        if (!setupStaffFacilities())
+        if (!StickyStartupUtil.setupStaffFacilities())
             logger.severe("StaffFacilities not found, disabling integration")
 
-        registerCommands()
-        registerListeners()
-        registerTimers()
+        StickyStartupUtil.registerCommands()
+        StickyStartupUtil.registerListeners()
+        StickyStartupUtil.registerTimers(afkTimer)
     }
 
     override fun onDisable() {
@@ -100,114 +81,18 @@ class StickyCommands : JavaPlugin(), StickyCommands {
         afkTimer.cancel()
     }
 
-    private fun registerListeners() {
-        server.pluginManager.registerEvents(AfkEventListener(), this)
-        server.pluginManager.registerEvents(ConnectionListener(), this)
-        server.pluginManager.registerEvents(PowertoolListener(), this)
-    }
-
-    private fun registerCommands() {
-        logger.fine("Registering commands")
-        afkCommand.register(this)
-        powertoolCommand.register(this)
-
-        sellCommand.register(this)
-        worthCommand.register(this)
-        speedCommand.register(this)
-    }
-
-    private fun registerTimers() {
-        Timer().scheduleAtFixedRate(afkTimer, 1000L, 1000L)
-    }
-
-    /*
-        Setup utils
-    */
-    private fun setupStaffFacilities(): Boolean {
-        staffFacilitiesEnabled = Bukkit.getPluginManager().getPlugin("StaffFacilities") != null
-        return staffFacilitiesEnabled
-    }
-
-    private fun setupPlaceholders(): Boolean {
-        return if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            Bukkit.getLogger().info("Registering PlaceholderAPI placeholders")
-
-            StickyPlaceholders.instance.register()
-            true
-        } else false
-    }
-
-    private fun setupEconomy(): Boolean {
-        if (server.pluginManager.getPlugin("Vault") == null) {
-            return false
-        }
-        val rsp: RegisteredServiceProvider<Economy> = server.servicesManager.getRegistration(Economy::class.java)
-            ?: return false
-        economy = rsp.provider
-        return economy != null
-    }
-
-    private fun setupLuckperms(): Boolean {
-        val provider = Bukkit.getServicesManager().getRegistration(
-            LuckPerms::class.java
-        )
-        return if (provider != null) {
-            perms = provider.provider
-            true
-        } else {
-            false
-        }
-    }
-
-    private fun setupDatabase(): Boolean {
-        var success = true
-        this.logger.info("[SQL] Checking SQL database has been set up correctly...")
-
-        val config = HikariConfig().apply {
-            jdbcUrl = "jdbc:postgresql://${
-                config.getString(Constants.SettingsPaths.DATABASE_HOST)
-            }:${
-                config.getInt(Constants.SettingsPaths.DATABASE_PORT)
-            }/${
-                config.getString(Constants.SettingsPaths.DATABASE_DATABASE)
-            }?sslmode=${config.getString(Constants.SettingsPaths.DATABASE_USE_SSL, "disabled")}"
-
-            driverClassName = "com.dumbdogdiner.stickycommands.libs.org.postgresql.Driver"
-            username = config.getString(Constants.SettingsPaths.DATABASE_USERNAME, "postgres")!!
-            password = config.getString(Constants.SettingsPaths.DATABASE_PASSWORD)!!
-            maximumPoolSize = 2
-        }
-
-        val dataSource = HikariDataSource(config)
-        this.db = Database.connect(dataSource)
-
-        transaction(this.db) {
-            try {
-                addLogger(ExposedLogger())
-                SchemaUtils.createMissingTablesAndColumns(Users, Listings)
-            } catch (e: Exception) {
-                logger.warning("[SQL] Failed to connect to SQL database - invalid connection info/database not up")
-                success = false
-            }
-        }
-        return success
-    }
-
-    /*
-
-    */
     override fun getProvider(): Plugin {
         return this
     }
 
     override fun getPlayerStateManager(): StickyPlayerStateManager {
-        return _playerStateManager
+        return stickyPlayerStateManager
     }
     override fun getPowertoolManager(): PowertoolManager {
-        return _powertoolManager
+        return stickyPowertoolManager
     }
 
     override fun getMarket(): Market {
-        return _market
+        return stickyMarket
     }
 }

@@ -5,10 +5,12 @@
 package com.dumbdogdiner.stickycommands.database.tables
 
 import com.dumbdogdiner.stickycommands.StickyCommands
-import com.dumbdogdiner.stickycommands.util.WithPlugin
+import com.dumbdogdiner.stickycommands.util.Constants
+import com.dumbdogdiner.stickycommands.WithPlugin
 import org.jetbrains.exposed.sql.Table
 
-object Users : Table(StickyCommands.plugin.config.getString("database.table-prefix") + "users"), WithPlugin {
+object Users : Table(StickyCommands.plugin.config.getString(Constants.SettingsPaths.DATABASE_TABLE_PREFIX) + "users"),
+    WithPlugin {
 
     val uniqueId = varchar("unique_id", 36)
 
