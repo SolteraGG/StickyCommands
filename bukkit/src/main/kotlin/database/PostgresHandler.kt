@@ -69,22 +69,35 @@ class PostgresHandler() : WithPlugin {
         BEGIN USER UTILS
      **********************/
 
-    fun getUserInfo(uniqueId: UUID): Map<String, String> {
+    fun getUserInfo(username: String, isTarget: Boolean): Map<String, String> {
+        return transaction {
+            val result = Users.select { Users.name eq username }.limit(1).firstOrNull()
+            return@transaction (if (result == null) mapOf() else getUserInfo(UUID.fromString(result[Users.uniqueId]), isTarget))
+        }
+    }
+
+    fun getUserInfo(uniqueId: UUID, isTarget: Boolean): Map<String, String> {
         val info = mutableMapOf<String, String>()
+        val prefix = if (isTarget) "target" else "player"
         transaction(db) {
             Users.select { Users.uniqueId eq uniqueId.toString() }
                 .forEach {
-                    info["target_uuid"] = it[Users.uniqueId].toString()
-                    info["online"] = it[Users.isOnline].toString()
-                    info["first_seen"] = it[Users.firstSeen].toString()
-                    info["last_seen"] = it[Users.lastSeen].toString()
-                    info["last_server"] = it[Users.lastServer].toString()
-                    info["ipaddress"] = it[Users.ipAddress].toString()
-                    info["fly_speed"] = (it[Users.flySpeed] * 10).toString()
-                    info["walk_speed"] = (it[Users.walkSpeed] * 10).toString()
+                    info[prefix] = it[Users.name]
+                    info["${prefix}_uuid"] = it[Users.uniqueId].toString()
+                    info["${prefix}_online"] = it[Users.isOnline].toString()
+                    info["${prefix}_first_seen"] = it[Users.firstSeen].toString()
+                    info["${prefix}_last_seen"] = it[Users.lastSeen].toString()
+                    info["${prefix}_last_server"] = it[Users.lastServer].toString()
+                    info["${prefix}_ipaddress"] = it[Users.ipAddress].toString()
+                    info["${prefix}_fly_speed"] = (it[Users.flySpeed] * 10).toString()
+                    info["${prefix}_walk_speed"] = (it[Users.walkSpeed] * 10).toString()
                 }
         }
         return info
+    }
+
+    fun getUserInfo(uniqueId: UUID): Map<String, String> {
+        return getUserInfo(uniqueId, false)
     }
 
     // Workaround for some stupid shit below.
@@ -96,7 +109,7 @@ class PostgresHandler() : WithPlugin {
                 time = it[Users.firstSeen]
             }
         }
-        return time ?: (player.firstPlayed / 1000L)
+        return time ?: (player.firstPlayed)
     }
 
     fun updateUser(player: Player, leaving: Boolean) {
@@ -104,9 +117,10 @@ class PostgresHandler() : WithPlugin {
             // FIXME WHY DOES THIS UPDATE A COLUMN NOT LISTED BELOW?!
             // firstSeen updates when they join, this should not happen.
             Users.insertOrUpdate(Users.uniqueId) {
+                it[name] = player.name
                 it[uniqueId] = player.uniqueId.toString()
                 it[ipAddress] = player.address.address.toString()
-                it[lastSeen] = (System.currentTimeMillis() / 1000L)
+                it[lastSeen] = (System.currentTimeMillis())
                 it[firstSeen] = getFirstSeen(player)
                 it[lastServer] = plugin.config.getString("server") ?: "unknown"
                 it[isOnline] = !leaving

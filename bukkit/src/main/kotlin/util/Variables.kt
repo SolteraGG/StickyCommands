@@ -6,19 +6,22 @@ package com.dumbdogdiner.stickycommands.util
 
 import com.dumbdogdiner.stickyapi.common.util.StringUtil
 import com.dumbdogdiner.stickyapi.common.util.TimeUtil
+import com.dumbdogdiner.stickycommands.WithPlugin
 import com.dumbdogdiner.stickycommands.api.economy.Listing
+import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 import org.bukkit.inventory.PlayerInventory
 
 /**
  * Utility class for getting a variables map with all the information about a player
  */
-class Variables() {
+class Variables() : WithPlugin {
 
     private val variables = HashMap<String, String>()
 
     fun withPlayer(target: Player, isTarget: Boolean): Variables {
         val prefix = if (isTarget) "target" else "player"
+        withOfflinePlayer(target, isTarget)
         variables[prefix] = target.name
         variables["${prefix}_uuid"] = target.uniqueId.toString()
         variables["${prefix}_exp"] = target.exp.toString()
@@ -41,17 +44,25 @@ class Variables() {
         return this
     }
 
+    fun withOfflinePlayer(target: OfflinePlayer, isTarget: Boolean): Variables {
+        val prefix = if (isTarget) "target" else "player"
+        variables[prefix] = target.name ?: "unknown"
+        variables["${prefix}_uuid"] = target.uniqueId.toString()
+        variables.putAll(this.plugin.postgresHandler.getUserInfo(target.uniqueId, isTarget))
+        return this
+    }
+
     fun withListing(listing: Listing): Variables {
         variables["worth"] = (listing.price).toString()
         variables["amount"] = (listing.quantity).toString()
         variables["item"] = StringUtil.capitaliseSentence(listing.material.toString().replace("_", " "))
         variables["item_enum"] = listing.material.toString()
-        variables["date"] = listing.listedAt.time.toString()
+        variables["date"] = (listing.listedAt.time).toString()
         variables["log_player"] = listing.seller.name.toString()
         variables["saleid"] = listing.id.toString()
         variables["amount"] = listing.quantity.toString()
         variables["price"] = (listing.price).toString()
-        variables["short_date"] = TimeUtil.significantDurationString(System.currentTimeMillis() - listing.listedAt.time) // dumb but whatever
+        variables["short_date"] = TimeUtil.significantDurationString(System.currentTimeMillis() - listing.listedAt.time / 1000L) // dumb but whatever
         variables["date_duration"] = TimeUtil.expirationTime(System.currentTimeMillis() - listing.listedAt.time)
         return this
     }

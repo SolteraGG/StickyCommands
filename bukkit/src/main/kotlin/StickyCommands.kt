@@ -49,27 +49,25 @@ class StickyCommands : JavaPlugin(), StickyCommands {
     override fun onEnable() {
         StickyCommands.registerService(this, this)
 
-        if (!StartupUtil.setupConfig(this))
-            return
+        if (!StartupUtil.setupConfig(this)) return
 
         localeProvider = StartupUtil.setupLocale(this, localeProvider)
-        if (localeProvider == null)
-            return
+        if (localeProvider == null) return
 
-        if (!postgresHandler.init())
-            return
+        if (!postgresHandler.init()) return
 
         if (!StickyStartupUtil.setupPlaceholders())
-            logger.severe("PlaceholderAPI is not available, is it installed?")
+                logger.severe("PlaceholderAPI is not available, is it installed?")
 
         if (!StickyStartupUtil.setupEconomy())
-            logger.severe("Disabled economy commands due to no Vault dependency found!")
+                logger.severe("Disabled economy commands due to no Vault dependency found!")
 
         if (!StickyStartupUtil.setupLuckperms())
-            logger.severe("Disabled group listing/LuckPerms dependant features due to no LuckPerms dependency found!")
+                logger.severe(
+                        "Disabled group listing/LuckPerms dependant features due to no LuckPerms dependency found!")
 
         if (!StickyStartupUtil.setupStaffFacilities())
-            logger.severe("StaffFacilities not found, disabling integration")
+                logger.severe("StaffFacilities not found, disabling integration")
 
         StickyStartupUtil.registerCommands()
         StickyStartupUtil.registerListeners()

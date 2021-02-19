@@ -77,7 +77,7 @@ val sellCommand = commandStub("sell", Constants.Descriptions.SELL, Constants.Per
             return@onTabComplete when (args.rawArgs[0]) {
                 "inventory" -> listOf("confirm")
                 "hand" -> listOf("confirm")
-                "log" -> listOf((1..(market.listingCount / 8)).toString())
+                "log" -> (1..(market.listingCount / 8)).map(Long::toString)
                 else -> listOf()
             }
         }

@@ -11,7 +11,7 @@ import org.jetbrains.exposed.sql.Table
 object Listings : Table(StickyCommands.plugin.config.getString(Constants.SettingsPaths.DATABASE_TABLE_PREFIX) + "listings") {
     val id = integer("id").autoIncrement()
 
-    var listedAt = long("listed_at").clientDefault { System.currentTimeMillis() / 1000L }
+    var listedAt = long("listed_at").clientDefault { System.currentTimeMillis() }
 
     var seller = varchar("seller", 36)
 

@@ -14,9 +14,11 @@ object Users : Table(StickyCommands.plugin.config.getString(Constants.SettingsPa
 
     val uniqueId = varchar("unique_id", 36)
 
+    val name = varchar("name", 16)
+
     val ipAddress = varchar("ip_address", 45)
 
-    val firstSeen = long("first_seen").clientDefault { System.currentTimeMillis() / 1000L }
+    val firstSeen = long("first_seen").clientDefault { System.currentTimeMillis() }
 
     val lastSeen = long("last_seen")
 

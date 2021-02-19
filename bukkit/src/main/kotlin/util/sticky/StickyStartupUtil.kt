@@ -8,6 +8,7 @@ import com.dumbdogdiner.stickycommands.StickyCommands
 import com.dumbdogdiner.stickycommands.WithPlugin
 import com.dumbdogdiner.stickycommands.commands.afkCommand
 import com.dumbdogdiner.stickycommands.commands.powertoolCommand
+import com.dumbdogdiner.stickycommands.commands.seenCommand
 import com.dumbdogdiner.stickycommands.commands.sellCommand
 import com.dumbdogdiner.stickycommands.commands.speedCommand
 import com.dumbdogdiner.stickycommands.commands.worthCommand
@@ -24,22 +25,24 @@ import org.bukkit.plugin.RegisteredServiceProvider
 object StickyStartupUtil : WithPlugin {
 
     fun registerCommands() {
-        logger.fine("Registering commands")
+        logger.fine("Registering commands...")
         afkCommand.register(plugin)
         powertoolCommand.register(plugin)
-
         sellCommand.register(plugin)
         worthCommand.register(plugin)
         speedCommand.register(plugin)
+        seenCommand.register(plugin)
     }
 
     fun registerListeners() {
+        logger.fine("Registering listeners...")
         plugin.server.pluginManager.registerEvents(AfkEventListener(), plugin)
         plugin.server.pluginManager.registerEvents(ConnectionListener(), plugin)
         plugin.server.pluginManager.registerEvents(PowertoolListener(), plugin)
     }
 
     fun registerTimers(vararg timers: StickyTask) {
+        logger.fine("Starting timers...")
         timers.forEach { Timer().scheduleAtFixedRate(it, it.delay, it.period) }
     }
 

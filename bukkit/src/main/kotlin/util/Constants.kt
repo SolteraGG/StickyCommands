@@ -3,6 +3,7 @@
  * Licensed under the MIT license, see LICENSE for more information.
  */
 package com.dumbdogdiner.stickycommands.util
+
 object Constants {
     private const val prefix = "stickycommands"
     const val DEFAULT_WALKING_SPEED = 0.2f // 0.1 is sneak, supposedly.
@@ -26,9 +27,9 @@ object Constants {
         const val SPEED = "$prefix.speed"
 
         const val SEEN = "$prefix.seen"
-    }
         const val WHOIS = "$prefix.whois"
         const val WHOIS_IP = "$WHOIS.ip"
+    }
 
     object LanguagePaths {
         const val PREFIX = "prefix"
