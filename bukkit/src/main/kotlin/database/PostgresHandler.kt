@@ -19,6 +19,7 @@ import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.Expression
+import org.jetbrains.exposed.sql.LowerCase
 import org.jetbrains.exposed.sql.Query
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.SortOrder
@@ -71,7 +72,7 @@ class PostgresHandler() : WithPlugin {
 
     fun getUserInfo(username: String, isTarget: Boolean): Map<String, String> {
         return transaction {
-            val result = Users.select { Users.name eq username }.limit(1).firstOrNull()
+            val result = Users.select { LowerCase(Users.name) eq username.toLowerCase() }.limit(1).firstOrNull()
             return@transaction (if (result == null) mapOf() else getUserInfo(UUID.fromString(result[Users.uniqueId]), isTarget))
         }
     }
