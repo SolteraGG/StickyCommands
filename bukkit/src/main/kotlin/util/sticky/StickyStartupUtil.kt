@@ -11,6 +11,7 @@ import com.dumbdogdiner.stickycommands.commands.powertoolCommand
 import com.dumbdogdiner.stickycommands.commands.seenCommand
 import com.dumbdogdiner.stickycommands.commands.sellCommand
 import com.dumbdogdiner.stickycommands.commands.speedCommand
+import com.dumbdogdiner.stickycommands.commands.stickyCommand
 import com.dumbdogdiner.stickycommands.commands.whoisCommand
 import com.dumbdogdiner.stickycommands.commands.worthCommand
 import com.dumbdogdiner.stickycommands.listeners.AfkEventListener
@@ -34,6 +35,7 @@ object StickyStartupUtil : WithPlugin {
         speedCommand.register(plugin)
         seenCommand.register(plugin)
         whoisCommand.register(plugin)
+        stickyCommand.register(plugin)
     }
 
     fun registerListeners() {

@@ -15,6 +15,7 @@ internal val locale = StickyCommands.localeProvider!!
 internal val worthTable = StickyCommands.plugin.worthTable
 internal val market = StickyCommands.plugin.market
 internal val postgresHandler = StickyCommands.plugin.postgresHandler
+internal val plugin = StickyCommands.plugin
 
 internal fun printError(exitCode: ExitCode, sender: CommandSender, vars: HashMap<String, String>) {
     when (exitCode) {
