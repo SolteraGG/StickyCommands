@@ -20,5 +20,5 @@ val afkCommand = commandStub("afk", Constants.Descriptions.AFK, Constants.Permis
         ExitCode.EXIT_SUCCESS
     }
     .onTabComplete { _, _, _ ->
-        listOf("")
+        listOf()
     }

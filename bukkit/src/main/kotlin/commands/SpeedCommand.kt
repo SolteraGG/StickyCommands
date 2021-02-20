@@ -44,8 +44,10 @@ val speedCommand =
                             locale.translate(Constants.LanguagePaths.SPEED_MESSAGE, vars))
                     ExitCode.EXIT_SUCCESS
                 }
-                .onTabComplete { _, _, _ ->
-                    return@onTabComplete (1..10).map(Int::toString)
+                .onTabComplete { _, _, args ->
+                    return@onTabComplete (1..10).map(Int::toString).filter {
+                        it.startsWith(args.rawArgs[0], true)
+                    }
                 }
 
     /*

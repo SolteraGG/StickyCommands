@@ -63,7 +63,7 @@ class Variables() : WithPlugin {
         variables["amount"] = listing.quantity.toString()
         variables["price"] = (listing.price).toString()
         variables["short_date"] = TimeUtil.significantDurationString(System.currentTimeMillis() - listing.listedAt.time / 1000L) // dumb but whatever
-        variables["date_duration"] = TimeUtil.expirationTime(System.currentTimeMillis() - listing.listedAt.time)
+        variables["date_duration"] = TimeUtil.expirationTime(System.currentTimeMillis() - listing.listedAt.time / 1000L)
         return this
     }
 

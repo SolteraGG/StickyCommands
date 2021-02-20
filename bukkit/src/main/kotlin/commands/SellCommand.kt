@@ -34,6 +34,9 @@ val sellCommand = commandStub("sell", Constants.Descriptions.SELL, Constants.Per
                     return@onExecute ExitCode.EXIT_EXPECTED_ERROR
                 return@onExecute ExitCode.EXIT_SUCCESS
             }
+            .onTabComplete { _, _, _ ->
+                listOf()
+            }
 
     )
 
@@ -70,19 +73,26 @@ val sellCommand = commandStub("sell", Constants.Descriptions.SELL, Constants.Per
                 sender.sendMessage(locale.translate(Constants.LanguagePaths.SELL_LOG_PAGINATOR, vars))
                 return@onExecute ExitCode.EXIT_SUCCESS
             }
+            .onTabComplete { _, _, _ ->
+                listOf()
+            }
     )
 
     .onTabComplete { _, _, args ->
-        if (args.rawArgs.size > 0) {
+        if (args.rawArgs.size > 1) {
             return@onTabComplete when (args.rawArgs[0]) {
                 "inventory" -> listOf("confirm")
                 "hand" -> listOf("confirm")
-                "log" -> (1..(market.listingCount / 8)).map(Long::toString)
+                "log" -> (1..((market.listingCount / 8) + 1)).map(Long::toString).filter {
+                    it.startsWith(args.rawArgs[1], true)
+                }
                 else -> listOf()
             }
         }
 
-        return@onTabComplete listOf("hand", "inventory", "confirm")
+        return@onTabComplete listOf("hand", "inventory", "confirm", "log").filter {
+            it.startsWith(args.rawArgs[0], true)
+        }
     }
 
 private fun execute(sender: CommandSender, args: Arguments, vars: HashMap<String, String>, inventory: Boolean): Boolean {

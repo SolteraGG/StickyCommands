@@ -28,3 +28,6 @@ val worthCommand = commandStub("worth", Constants.Descriptions.WORTH, Constants.
         sender.sendMessage(locale.translate(Constants.LanguagePaths.WORTH_MESSAGE, vars))
         ExitCode.EXIT_SUCCESS
     }
+    .onTabComplete { _, _, _ ->
+        listOf()
+    }

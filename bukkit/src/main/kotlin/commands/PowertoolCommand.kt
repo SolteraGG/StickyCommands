@@ -71,13 +71,14 @@ val powertoolCommand = commandStub("powertool", Constants.Descriptions.POWERTOOL
         }
     )
 
-    .onTabComplete { sender, _, _ ->
+    .onTabComplete { sender, _, args ->
         val list = mutableListOf<String>()
         for (command in Bukkit.getCommandMap().knownCommands) {
-            if (sender.hasPermission(command.value.permission ?: Constants.Permissions.POWERTOOL_VIEW_ALL_COMMANDS))
+            if (sender.hasPermission(command.value.permission ?: Constants.Permissions.POWERTOOL_VIEW_ALL_COMMANDS) && command.value.name.startsWith(args.rawArgs[0], true)) {
                 list.add(command.value.name)
+            }
         }
-        list
+        return@onTabComplete if (args.rawArgs.size > 1) listOf() else list
     }
 
 private fun bindingAir(sender: Player, vars: HashMap<String, String>): Boolean {

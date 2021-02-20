@@ -8,6 +8,7 @@ import com.dumbdogdiner.stickyapi.bukkit.command.BukkitCommandBuilder
 import com.dumbdogdiner.stickyapi.common.command.ExitCode
 import com.dumbdogdiner.stickycommands.StickyCommands
 import com.dumbdogdiner.stickycommands.util.Constants
+import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 
 internal val locale = StickyCommands.localeProvider!!
@@ -35,4 +36,14 @@ internal fun commandStub(name: String, description: String, permission: String):
             printError(exitCode, sender, vars)
         }
         .onExecute { _, _, _ -> ExitCode.EXIT_INVALID_SYNTAX }
+        .onTabComplete { _, _, args ->
+            val list = mutableListOf<String>()
+            if (args.rawArgs.size == 1) {
+                Bukkit.getOnlinePlayers().forEach {
+                    if (it.name.startsWith(args.rawArgs[0], true))
+                        list.add(it.name)
+                }
+            }
+            return@onTabComplete list
+        }
 }
