@@ -61,7 +61,7 @@ class StickyMarket : Market, WithPlugin {
     }
 
     override fun add(listing: Listing) {
-        this.plugin.postgresHandler.insetListing(listing)
+        this.plugin.postgresHandler.addListing(listing)
     }
 
     override fun remove(listing: Listing) {

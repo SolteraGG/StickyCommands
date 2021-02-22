@@ -114,6 +114,12 @@ class PostgresHandler() : WithPlugin {
     }
 
     fun updateUser(player: Player, leaving: Boolean) {
+        if (!leaving) {
+            val info = getUserInfo(player.uniqueId)
+            player.flySpeed = (info["player_fly_speed"]!!.toFloat()/10)
+            player.walkSpeed = (info["player_walk_speed"]!!.toFloat()/10)
+        }
+
         transaction(this.plugin.postgresHandler.db) {
             // FIXME WHY DOES THIS UPDATE A COLUMN NOT LISTED BELOW?!
             // firstSeen updates when they join, this should not happen.
@@ -147,7 +153,7 @@ class PostgresHandler() : WithPlugin {
         Listing.SortBy.ITEM -> Listings.item to SortOrder.ASC
     }
 
-    fun insetListing(listing: Listing) {
+    fun addListing(listing: Listing) {
         transaction(db) {
             Listings.insert {
                 it[seller] = listing.seller.uniqueId.toString()
