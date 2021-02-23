@@ -116,8 +116,8 @@ class PostgresHandler() : WithPlugin {
     fun updateUser(player: Player, leaving: Boolean) {
         if (!leaving) {
             val info = getUserInfo(player.uniqueId)
-            player.flySpeed = (info["player_fly_speed"]!!.toFloat()/10)
-            player.walkSpeed = (info["player_walk_speed"]!!.toFloat()/10)
+            player.flySpeed = (info["player_fly_speed"]!!.toFloat() / 10)
+            player.walkSpeed = (info["player_walk_speed"]!!.toFloat() / 10)
         }
 
         transaction(this.plugin.postgresHandler.db) {

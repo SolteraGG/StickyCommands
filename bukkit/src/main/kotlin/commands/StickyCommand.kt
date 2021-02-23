@@ -4,20 +4,20 @@
  */
 package com.dumbdogdiner.stickycommands.commands
 
-import com.dumbdogdiner.stickyapi.common.command.ExitCode
+import com.dumbdogdiner.stickyapi.bukkit.util.SoundUtil
+import dev.jorel.commandapi.executors.CommandExecutor
 import org.bukkit.ChatColor
+import org.bukkit.entity.Player
 
-val stickyCommand = commandStub("stickycommands", "StickyCommands configuration command", "stickycommands.stickycommands")
-    .onTabComplete { _, _, args ->
-        listOf("reload")
-    }
-    .onExecute { sender, args, vars ->
+val stickyCommand = commandStub("stickycommands", "stickycommands.stickycommands")
+    .executes(CommandExecutor { sender, _ ->
         sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&b&lStickyCommands &8&l» &bRunning version &av&l${plugin.description.version}"))
-        ExitCode.EXIT_SUCCESS
-    }
-    .subCommand(
-        commandStub("reload", "Reload StickyCommands", "stickycommands.reload")
-            .onExecute { sender, args, vars ->
+        if (sender is Player)
+            SoundUtil.sendSuccess(sender)
+    })
+    .withSubcommand(
+        commandStub("reload", "stickycommands.reload")
+            .executes(CommandExecutor { sender, _ ->
                 plugin.reloadConfig()
 
                 // maybe move this to StickyAPI?
@@ -25,6 +25,7 @@ val stickyCommand = commandStub("stickycommands", "StickyCommands configuration 
                 locale.loadAllLocales()
 
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&b&lStickyCommands &8&l» &aSuccessfully reloaded config & messages!"))
-                ExitCode.EXIT_SUCCESS
-            }
+                if (sender is Player)
+                    SoundUtil.sendSuccess(sender)
+            })
     )

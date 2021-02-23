@@ -24,6 +24,8 @@ repositories {
             password = property("ghPass") as String
         }
     }
+    maven(url = "https://raw.githubusercontent.com/JorelAli/CommandAPI/mvn-repo/")
+    maven(url = "https://repo.codemc.org/repository/maven-public/")
 }
 
 dependencies {
@@ -49,7 +51,10 @@ dependencies {
     implementation("org.postgresql", "postgresql", "42.2.18")
     implementation("pw.forst", "exposed-upsert", "1.0")
     implementation("com.zaxxer", "HikariCP", "3.4.5")
+
+    implementation("dev.jorel" , "commandapi-shade", "5.6")
 }
+
 
 spotless {
     kotlin {
