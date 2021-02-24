@@ -4,21 +4,14 @@
  */
 package com.dumbdogdiner.stickycommands.commands
 
-import com.dumbdogdiner.stickyapi.common.arguments.Arguments
-import com.dumbdogdiner.stickyapi.common.command.ExitCode
+import com.dumbdogdiner.stickyapi.bukkit.util.SoundUtil
 import com.dumbdogdiner.stickycommands.StickyCommands
 import com.dumbdogdiner.stickycommands.util.Constants
-import java.util.HashMap
-import org.bukkit.command.CommandSender
-import org.bukkit.entity.Player
+import dev.jorel.commandapi.executors.PlayerCommandExecutor
 
-val afkCommand = commandStub("afk", Constants.Descriptions.AFK, Constants.Permissions.AFK)
-    .requiresPlayer()
-    .onExecute { sender: CommandSender, _: Arguments?, _: HashMap<String, String>? ->
-        val state = StickyCommands.plugin.playerStateManager.getPlayerState(sender as Player)
+val afkCommand = commandStub("afk", Constants.Permissions.AFK)
+    .executesPlayer(PlayerCommandExecutor { player, _ ->
+        val state = StickyCommands.plugin.playerStateManager.getPlayerState(player)
         state.setAfk(!state.isAfk, true)
-        ExitCode.EXIT_SUCCESS
-    }
-    .onTabComplete { _, _, _ ->
-        listOf()
-    }
+        SoundUtil.sendSuccess(player)
+    })

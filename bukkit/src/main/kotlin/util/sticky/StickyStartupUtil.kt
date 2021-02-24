@@ -28,14 +28,14 @@ object StickyStartupUtil : WithPlugin {
 
     fun registerCommands() {
         logger.fine("Registering commands...")
-        afkCommand.register(plugin)
-        powertoolCommand.register(plugin)
-        sellCommand.register(plugin)
-        worthCommand.register(plugin)
-        speedCommand.register(plugin)
-        seenCommand.register(plugin)
-        whoisCommand.register(plugin)
-        stickyCommand.register(plugin)
+        afkCommand.register()
+        seenCommand.register()
+        whoisCommand.register()
+        powertoolCommand.register()
+        sellCommand.register()
+        speedCommand.register()
+        stickyCommand.register()
+        worthCommand.register()
     }
 
     fun registerListeners() {
@@ -71,8 +71,7 @@ object StickyStartupUtil : WithPlugin {
         if (plugin.server.pluginManager.getPlugin("Vault") == null) {
             return false
         }
-        val rsp: RegisteredServiceProvider<Economy> = plugin.server.servicesManager.getRegistration(Economy::class.java)
-            ?: return false
+        val rsp: RegisteredServiceProvider<Economy> = plugin.server.servicesManager.getRegistration(Economy::class.java) ?: return false
         StickyCommands.economy = rsp.provider
         return StickyCommands.economy != null
     }

@@ -78,7 +78,7 @@ class WorthTable : WithPlugin {
         val condition1 = if (dataStore == null) true else (!dataStore.has(NamespacedKey(
             StickyCommands.plugin, "notsellable"), PersistentDataType.STRING))
 
-        val condition2 = (stack.type != Material.AIR || getWorth(stack) > 0.0)
+        val condition2 = (stack.type != Material.AIR && getWorth(stack) > 0.0)
 
         return (condition1 && condition2)
     }

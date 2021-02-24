@@ -4,10 +4,15 @@
  */
 package com.dumbdogdiner.stickycommands.commands
 
-import com.dumbdogdiner.stickyapi.bukkit.command.BukkitCommandBuilder
 import com.dumbdogdiner.stickyapi.common.command.ExitCode
 import com.dumbdogdiner.stickycommands.StickyCommands
 import com.dumbdogdiner.stickycommands.util.Constants
+import dev.jorel.commandapi.CommandAPICommand
+import dev.jorel.commandapi.arguments.Argument
+import dev.jorel.commandapi.arguments.CustomArgument
+import dev.jorel.commandapi.arguments.CustomArgument.CustomArgumentException
+import dev.jorel.commandapi.arguments.CustomArgument.CustomArgumentParser
+import dev.jorel.commandapi.arguments.CustomArgument.MessageBuilder
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 
@@ -27,24 +32,17 @@ internal fun printError(exitCode: ExitCode, sender: CommandSender, vars: HashMap
     }
 }
 
-internal fun commandStub(name: String, description: String, permission: String): BukkitCommandBuilder {
-    return BukkitCommandBuilder(name)
-        .synchronous(false)
-        .description(description)
-        .permission(permission)
-        .playSound()
-        .onError { exitCode, sender, _, vars ->
-            printError(exitCode, sender, vars)
+internal fun commandStub(name: String, permission: String): CommandAPICommand = CommandAPICommand(name).withPermission(permission)
+
+internal fun commandArgument(node: String?): Argument {
+    return CustomArgument(node, CustomArgumentParser { input: String ->
+        val command = Bukkit.getCommandMap().getCommand(input)
+        if (command == null) {
+            throw CustomArgumentException(MessageBuilder("Unknown command: ").appendArgInput())
+        } else {
+            return@CustomArgumentParser command
         }
-        .onExecute { _, _, _ -> ExitCode.EXIT_INVALID_SYNTAX }
-        .onTabComplete { _, _, args ->
-            val list = mutableListOf<String>()
-            if (args.rawArgs.size == 1) {
-                Bukkit.getOnlinePlayers().forEach {
-                    if (it.name.startsWith(args.rawArgs[0], true))
-                        list.add(it.name)
-                }
-            }
-            return@onTabComplete list
-        }
+    }).overrideSuggestions { sender: CommandSender ->
+        Bukkit.getCommandMap().knownCommands.filter { sender.hasPermission(it.value.permission.toString()) }.entries.map { it.key }.toTypedArray()
+    }
 }
