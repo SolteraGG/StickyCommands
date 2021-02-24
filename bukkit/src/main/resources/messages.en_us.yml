@@ -47,13 +47,11 @@ afk:
   afk: "&7&o* {player} is now AFK!"
   afk-kick: "&cYou have been AFK for {time|duration} and have been kicked!"
 
-
 hat:
   no-hat: "{prefix}&bYou do not have a hat!"
   new-hat: "{prefix}&bEnjoy your new hat!"
   remove-hat: "{prefix}&bYour hat has been removed!"
 item-message: "{prefix}&bGave you &f{amount} {item}&b!"
-memory-message: "{prefix}&bServer performance \n{newline}&bWorld: &f{world}\n{newline}&bEntities: &f{entities}\n{newline}&bLoaded Chunks: &f{loaded_chunks}\n{newline}&bTPS: &f{tps_1m}, {tps_5m}, {tps_15m} (1m, 5m, 15m)\n{newline}&bMemory: {memory_bar}\n{newline}&bUptime: &f{uptime|duration}"
 
 kill:
   you-were-killed: "{prefix}&bThou hast been slain!"
@@ -61,15 +59,15 @@ kill:
   suicide: "{prefix}&bYou magically died!"
 
 smite:
-  smite-other-player: "{prefix}&bYour fury reigns down on {is_group|empty_if_false:\"&fthe group \"}&f{player}&b!"
-  smite-block: "{prefix}&bYour fury reigns down on the block at &f{X}, {Y}, {Z} &bof world &f{world}"
+  smite-other-player: "{prefix}&bYour fury reigns down on &f{player}&b!"
+  smite-block: "{prefix}&bYour fury reigns down on the block at &f{location_x}, {location_y}, {location_z} &bof world &f{world}"
   smite-message: "{prefix}&bThou hast been smitten!"
-  smite-immune: "{prefix}&f{player}&b is immune to your wrath!"
+  smite-immune: "{prefix}&f{target}&c is immune to your wrath!"
   yourself: "{prefix}&bYou have smitten yourself!"
 
 whip:
-  you-whipped: "{prefix}&bYou whipped &f{player}&b for &f{DAMAGE}&bhp &f{amount}&b times!"
-  were-whipped: "{prefix}&bOWWW!! That hurts!!!"
+  you-whipped: "{prefix}&bYou whipped &f{player}&b for &f{damage}&bhp &f{amount}&b times!"
+  you-were-whipped: "{prefix}&bOWWW!! That hurts!!!"
 
 powertool:
   cleared: "{prefix}&bCleared your powertool!"
@@ -80,4 +78,4 @@ powertool:
 
 player-time:
   time-reset: "{prefix}&bYour time has been synced with the server &f({time} ticks)&b!"
-  time-set: "{prefix}&bYour time has been set to &f{time} ticks&b{r elative|empty_if_false:\" relative to server time\"}!"
+  time-set: "{prefix}&bYour time has been set to &f{time} ticks&b{relative|empty_if_false:\" relative to server time\"}!"

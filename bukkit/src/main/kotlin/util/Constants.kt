@@ -8,6 +8,8 @@ object Constants {
     private const val prefix = "stickycommands"
     const val DEFAULT_WALKING_SPEED = 0.2f // 0.1 is sneak, supposedly.
     const val DEFAULT_FLYING_SPEED = 0.1f // according to google
+    const val SMITE_EXPLOSION_STRENGTH = 1.5f
+    const val SMITE_TARGET_RANGE = 100
 
     object Permissions {
         const val AFK = "$prefix.afk"
@@ -17,18 +19,22 @@ object Constants {
         const val POWERTOOL_TOGGLE = "$POWERTOOL.toggle"
         const val POWERTOOL_VIEW_ALL_COMMANDS = "$POWERTOOL.viewallcommands"
 
+        const val SEEN = "$prefix.seen"
+
         const val SELL = "$prefix.sell"
         const val SELL_HAND = "$SELL.hand"
         const val SELL_INVENTORY = "$SELL.inventory"
         const val SELL_LOG = "$SELL.log"
 
-        const val WORTH = "$prefix.worth"
+        const val SMITE = "$prefix.smite"
+        const val SMITE_IMMUNE = "$prefix.immune"
 
         const val SPEED = "$prefix.speed"
 
-        const val SEEN = "$prefix.seen"
         const val WHOIS = "$prefix.whois"
         const val WHOIS_IP = "$WHOIS.ip"
+
+        const val WORTH = "$prefix.worth"
     }
 
     object LanguagePaths {
@@ -78,11 +84,12 @@ object Constants {
         const val YOU_KILLED = "kill.you-killed"
         const val SUICIDE = "kill.suicide"
 
-        const val SMITE_OTHER_PLAYER = "smite.smite-other-player"
-        const val SMITE_BLOCK = "smite.smite-block"
-        const val SMITE_MESSAGE = "smite.smite-message"
-        const val SMITE_IMMUNE = "smite.smite-immune"
-        const val SMITE_YOURSELF = "smite.yourself"
+        private const val smite_prefix = "smite"
+        const val SMITE_OTHER = "$smite_prefix.smite-other-player"
+        const val SMITE_BLOCK = "$smite_prefix.smite-block"
+        const val SMITE_MESSAGE = "$smite_prefix.smite-message"
+        const val SMITE_IMMUNE = "$smite_prefix.immune"
+        const val SMITE_YOURSELF = "$smite_prefix.yourself"
 
         const val YOU_WHIPPED = "whip.you-whipped"
         const val YOU_WERE_WHIPPED = "whip.where-whipped"

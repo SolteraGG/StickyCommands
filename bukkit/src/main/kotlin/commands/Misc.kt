@@ -43,6 +43,6 @@ internal fun commandArgument(node: String?): Argument {
             return@CustomArgumentParser command
         }
     }).overrideSuggestions { sender: CommandSender ->
-        Bukkit.getCommandMap().knownCommands.filter { sender.hasPermission(it.value.permission.toString()) }.entries.map { it.key }.toTypedArray()
+        Bukkit.getCommandMap().knownCommands.filter { sender.hasPermission(it.value.permission ?: Constants.Permissions.POWERTOOL_VIEW_ALL_COMMANDS) }.entries.map { it.key }.toTypedArray()
     }
 }

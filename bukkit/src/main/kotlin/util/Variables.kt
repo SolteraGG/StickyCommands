@@ -8,6 +8,7 @@ import com.dumbdogdiner.stickyapi.common.util.StringUtil
 import com.dumbdogdiner.stickyapi.common.util.TimeUtil
 import com.dumbdogdiner.stickycommands.WithPlugin
 import com.dumbdogdiner.stickycommands.api.economy.Listing
+import org.bukkit.Location
 import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 import org.bukkit.inventory.PlayerInventory
@@ -72,6 +73,17 @@ class Variables() : WithPlugin {
         variables["hand_worth"] = ((listing.price / listing.quantity) * (inventory.itemInMainHand.amount)).toString()
         variables["inventory_worth"] = ((listing.price / listing.quantity) * (InventoryUtil.count(inventory, listing.material))).toString()
         withListing(listing)
+        return this
+    }
+
+    fun withLocation(location: Location): Variables {
+        variables["location"] = "${location.x}, ${location.y}, ${location.z}"
+        variables["location_x"] = location.x.toString()
+        variables["location_y"] = location.y.toString()
+        variables["location_z"] = location.z.toString()
+        variables["world"] = location.world.name
+        variables["pitch"] = location.pitch.toString()
+        variables["yaw"] = location.yaw.toString()
         return this
     }
 

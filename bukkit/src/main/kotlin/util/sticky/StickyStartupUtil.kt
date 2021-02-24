@@ -10,6 +10,7 @@ import com.dumbdogdiner.stickycommands.commands.afkCommand
 import com.dumbdogdiner.stickycommands.commands.powertoolCommand
 import com.dumbdogdiner.stickycommands.commands.seenCommand
 import com.dumbdogdiner.stickycommands.commands.sellCommand
+import com.dumbdogdiner.stickycommands.commands.smiteCommand
 import com.dumbdogdiner.stickycommands.commands.speedCommand
 import com.dumbdogdiner.stickycommands.commands.stickyCommand
 import com.dumbdogdiner.stickycommands.commands.whoisCommand
@@ -36,6 +37,7 @@ object StickyStartupUtil : WithPlugin {
         speedCommand.register()
         stickyCommand.register()
         worthCommand.register()
+        smiteCommand.register()
     }
 
     fun registerListeners() {
