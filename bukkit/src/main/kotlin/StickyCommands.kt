@@ -16,6 +16,7 @@ import com.dumbdogdiner.stickycommands.managers.StickyPowertoolManager
 import com.dumbdogdiner.stickycommands.timers.AfkTimer
 import com.dumbdogdiner.stickycommands.util.WorthTable
 import com.dumbdogdiner.stickycommands.util.sticky.StickyStartupUtil
+import dev.jorel.commandapi.CommandAPI
 import kr.entree.spigradle.annotations.PluginMain
 import net.luckperms.api.LuckPerms
 import net.milkbowl.vault.economy.Economy
@@ -42,12 +43,10 @@ class StickyCommands : JavaPlugin(), StickyCommands {
 
     override fun onLoad() {
         plugin = this
+
+        CommandAPI.onLoad(true)
         worthTable = WorthTable()
         afkTimer = AfkTimer()
-    }
-
-    override fun onEnable() {
-        StickyCommands.registerService(this, this)
 
         if (!StartupUtil.setupConfig(this)) return
 
@@ -55,6 +54,10 @@ class StickyCommands : JavaPlugin(), StickyCommands {
         if (localeProvider == null) return
 
         if (!postgresHandler.init()) return
+    }
+
+    override fun onEnable() {
+        StickyCommands.registerService(this, this)
 
         if (!StickyStartupUtil.setupPlaceholders())
                 logger.severe("PlaceholderAPI is not available, is it installed?")
@@ -72,6 +75,8 @@ class StickyCommands : JavaPlugin(), StickyCommands {
         StickyStartupUtil.registerCommands()
         StickyStartupUtil.registerListeners()
         StickyStartupUtil.registerTimers(afkTimer)
+
+        CommandAPI.onEnable(this)
     }
 
     override fun onDisable() {

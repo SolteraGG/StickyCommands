@@ -4,129 +4,114 @@
  */
 package com.dumbdogdiner.stickycommands.commands
 
-import com.dumbdogdiner.stickyapi.common.arguments.Arguments
+import com.dumbdogdiner.stickyapi.bukkit.util.SoundUtil
 import com.dumbdogdiner.stickyapi.common.chat.ChatMessage
-import com.dumbdogdiner.stickyapi.common.command.ExitCode
-import com.dumbdogdiner.stickyapi.common.util.NumberUtil
 import com.dumbdogdiner.stickycommands.StickyCommands
 import com.dumbdogdiner.stickycommands.api.economy.Listing
 import com.dumbdogdiner.stickycommands.util.Constants
 import com.dumbdogdiner.stickycommands.util.InventoryUtil
 import com.dumbdogdiner.stickycommands.util.Variables
-import java.util.HashMap
+import dev.jorel.commandapi.arguments.IntegerArgument
+import dev.jorel.commandapi.arguments.StringArgument
+import dev.jorel.commandapi.executors.PlayerCommandExecutor
 import kotlin.math.roundToInt
-import org.bukkit.command.CommandSender
+import org.bukkit.Bukkit
 import org.bukkit.entity.Player
-import org.bukkit.inventory.ItemStack
 
-val sellCommand = commandStub("sell", Constants.Descriptions.SELL, Constants.Permissions.SELL)
-            .requiresPlayer()
-            .onExecute { sender, args, vars ->
-                if (!execute(sender, args, vars, false))
-                    return@onExecute ExitCode.EXIT_EXPECTED_ERROR
-                return@onExecute ExitCode.EXIT_SUCCESS
-    }
-    .subCommand(
-        commandStub("log", Constants.Descriptions.SELL_INVENTORY, Constants.Permissions.SELL_INVENTORY)
-            .requiresPlayer()
-            .onExecute { sender, args, vars ->
-                if (!execute(sender, args, vars, true))
-                    return@onExecute ExitCode.EXIT_EXPECTED_ERROR
-                return@onExecute ExitCode.EXIT_SUCCESS
-            }
-            .onTabComplete { _, _, _ ->
-                listOf()
-            }
-
+val sellCommand = commandStub("sell", Constants.Permissions.SELL)
+    .executesPlayer(PlayerCommandExecutor { sender, args ->
+        sender.sendMessage(locale.translate(Constants.LanguagePaths.SELL_MUST_CONFIRM, Variables().withPlayer(sender, false).get()))
+    })
+    .withSubcommand(
+        commandStub("confirm", Constants.Permissions.SELL_INVENTORY)
+            .executesPlayer(PlayerCommandExecutor { sender, args ->
+                execute(sender, false)
+            })
+    )
+    .withSubcommand(
+        commandStub("inventory", Constants.Permissions.SELL_INVENTORY)
+            .executesPlayer(PlayerCommandExecutor { sender, args ->
+                execute(sender, true)
+            })
+    )
+    .withSubcommand(
+        commandStub("log", Constants.Permissions.SELL_LOG)
+        .executesPlayer(PlayerCommandExecutor { sender, args ->
+            executeLog(sender, 1, null)
+        })
+    )
+    .withSubcommand(
+        commandStub("log", Constants.Permissions.SELL_LOG)
+            .withArguments(IntegerArgument("page"))
+            .executesPlayer(PlayerCommandExecutor { sender, args ->
+                executeLog(sender, args[0] as Int, null)
+            })
+    )
+    .withSubcommand(
+        commandStub("log", Constants.Permissions.SELL_LOG)
+            .withArguments(StringArgument("player"))
+            .executesPlayer(PlayerCommandExecutor { sender, args ->
+                executeLog(sender, 1, Bukkit.getPlayer(args[0].toString()))
+            })
+    ).withSubcommand(
+        commandStub("log", Constants.Permissions.SELL_LOG)
+            .withArguments(StringArgument("player"))
+            .withArguments(IntegerArgument("page"))
+            .executesPlayer(PlayerCommandExecutor { sender, args ->
+                executeLog(sender, args[1] as Int, Bukkit.getPlayer(args[0].toString()))
+            })
     )
 
-    // TODO Clean this sh*t up, omg -zach
-    .subCommand(
-        commandStub("log", Constants.Descriptions.SELL_LOG, Constants.Permissions.SELL_LOG)
-            .requiresPlayer()
-            .onExecute { sender, args, vars ->
-                args.optionalString("page") // so F*CKING DUMB but optionalInt is broken and we have to do this.
-                val page = if (!args.exists("page") || !NumberUtil.isNumeric(args.getString("page"))) 1
-                else args.getString("page").toInt() // The arguments class is honestly dumb and we need to rewrite it, maybe validators?
+private fun execute(sender: Player, inventory: Boolean): Boolean {
+    val vars = Variables().withPlayer(sender, false).get()
 
-                val listings = market.getListings(Listing.SortBy.DATE_ASCENDING, page, 8)
-                sender.sendMessage(locale.translate(Constants.LanguagePaths.SELL_LOG_MESSAGE, vars))
-
-                var listingCount = 0
-                listings.forEach {
-                    vars.putAll(Variables().withListing(it).get())
-                    sender.spigot().sendMessage(ChatMessage(locale.translate(Constants.LanguagePaths.SELL_LOG_LOG, vars)).setHoverMessage(
-                        locale.translate(Constants.LanguagePaths.SELL_LOG_LOG_HOVER, vars)).component)
-                    ++listingCount
-                }
-
-                val tmpPages = market.listingCount.toDouble() / 8
-                val pages = if (tmpPages > tmpPages.roundToInt()) Math.round(tmpPages + 1).toDouble() else tmpPages // ew but it works??
-
-                if (listingCount < 1 || page > pages) {
-                    sender.sendMessage(locale.translate(Constants.LanguagePaths.SELL_LOG_NO_SALES, vars))
-                    return@onExecute ExitCode.EXIT_SUCCESS
-                }
-
-                vars["current"] = page.toString()
-                vars["total"] = pages.toInt().toString()
-                sender.sendMessage(locale.translate(Constants.LanguagePaths.SELL_LOG_PAGINATOR, vars))
-                return@onExecute ExitCode.EXIT_SUCCESS
-            }
-            .onTabComplete { _, _, _ ->
-                listOf()
-            }
-    )
-
-    .onTabComplete { _, _, args ->
-        if (args.rawArgs.size > 1) {
-            return@onTabComplete when (args.rawArgs[0]) {
-                "inventory" -> listOf("confirm")
-                "hand" -> listOf("confirm")
-                "log" -> (1..((market.listingCount / 8) + 1)).map(Long::toString).filter {
-                    it.startsWith(args.rawArgs[1], true)
-                }
-                else -> listOf()
-            }
-        }
-
-        return@onTabComplete listOf("hand", "inventory", "confirm", "log").filter {
-            it.startsWith(args.rawArgs[0], true)
-        }
-    }
-
-private fun execute(sender: CommandSender, args: Arguments, vars: HashMap<String, String>, inventory: Boolean): Boolean {
-    args.optionalFlag("confirm", "confirm")
-    val player = sender as Player
-    vars.putAll(Variables().withPlayer(player, false).get())
-
-    val stack = player.inventory.itemInMainHand
-    if (!doChecks(sender, stack, args, vars))
+    val stack = sender.inventory.itemInMainHand
+    if (!worthTable.isSellable(stack)) {
+        sender.sendMessage(locale.translate(Constants.LanguagePaths.CANNOT_SELL, vars))
+        SoundUtil.sendError(sender)
         return false
+    }
 
-    val listing = Listing(player, stack.type, worthTable.getWorth(stack), if (inventory) InventoryUtil.count(player.inventory, stack.type) else stack.amount)
-    vars.putAll(Variables().withListing(listing, player.inventory).get())
+    val listing = Listing(sender, stack.type, worthTable.getWorth(stack), if (inventory) InventoryUtil.count(sender.inventory, stack.type) else stack.amount)
+    vars.putAll(Variables().withListing(listing, sender.inventory).get())
 
     if (StickyCommands.plugin.config.getBoolean("auto-sell", true) && listing.seller.isOnline) {
-        InventoryUtil.removeItems(player.inventory, listing.material, listing.quantity)
-        StickyCommands.economy!!.depositPlayer(player, listing.price)
+        InventoryUtil.removeItems(sender.inventory, listing.material, listing.quantity)
+        StickyCommands.economy!!.depositPlayer(sender, listing.price)
     }
     sender.sendMessage(locale.translate(Constants.LanguagePaths.SELL_MESSAGE, vars))
     listing.list()
-
+    SoundUtil.sendSuccess(sender)
     return true
 }
 
-private fun doChecks(sender: CommandSender, stack: ItemStack, args: Arguments, vars: HashMap<String, String>): Boolean {
-    if (!worthTable.isSellable(stack)) {
-        sender.sendMessage(locale.translate(Constants.LanguagePaths.CANNOT_SELL, vars))
-        return false
+// TODO maybe make this look a little more nice
+private fun executeLog(sender: Player, page: Int, player: Player?): Boolean {
+    val vars = Variables().withPlayer(sender, false).get()
+
+    val listings = if (player == null) market.getListings(Listing.SortBy.DATE_DESCENDING, page, 8) else market.getListingsOfPlayer(player, Listing.SortBy.DATE_DESCENDING, page, 8)
+    sender.sendMessage(locale.translate(Constants.LanguagePaths.SELL_LOG_MESSAGE, vars))
+
+    var listingCount = 0
+    listings.forEach {
+        vars.putAll(Variables().withListing(it).get())
+        sender.spigot().sendMessage(ChatMessage(locale.translate(Constants.LanguagePaths.SELL_LOG_LOG, vars)).setHoverMessage(
+            locale.translate(Constants.LanguagePaths.SELL_LOG_LOG_HOVER, vars)).component)
+        ++listingCount
     }
 
-    if (!args.exists("confirm")) {
-        sender.sendMessage(locale.translate(Constants.LanguagePaths.SELL_MUST_CONFIRM, vars))
-        return false
+    val tmpPages = market.listingCount.toDouble() / 8
+    val pages = if (tmpPages > tmpPages.roundToInt()) Math.round(tmpPages + 1).toDouble() else tmpPages // ew but it works??
+
+    if (listingCount < 1 || page > pages) {
+        sender.sendMessage(locale.translate(Constants.LanguagePaths.SELL_LOG_NO_SALES, vars))
+        SoundUtil.sendSuccess(sender)
+        return true
     }
 
+    vars["current"] = page.toString()
+    vars["total"] = pages.toInt().toString()
+    sender.sendMessage(locale.translate(Constants.LanguagePaths.SELL_LOG_PAGINATOR, vars))
+    SoundUtil.sendSuccess(sender)
     return true
 }

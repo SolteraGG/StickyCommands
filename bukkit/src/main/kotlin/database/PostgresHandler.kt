@@ -71,7 +71,7 @@ class PostgresHandler() : WithPlugin {
      **********************/
 
     fun getUserInfo(username: String, isTarget: Boolean): Map<String, String> {
-        return transaction {
+        return transaction(db) {
             val result = Users.select { LowerCase(Users.name) eq username.toLowerCase() }.limit(1).firstOrNull()
             return@transaction (if (result == null) mapOf() else getUserInfo(UUID.fromString(result[Users.uniqueId]), isTarget))
         }
@@ -114,7 +114,13 @@ class PostgresHandler() : WithPlugin {
     }
 
     fun updateUser(player: Player, leaving: Boolean) {
-        transaction(this.plugin.postgresHandler.db) {
+        if (!leaving) {
+            val info = getUserInfo(player.uniqueId)
+            player.flySpeed = (info["player_fly_speed"]!!.toFloat() / 10)
+            player.walkSpeed = (info["player_walk_speed"]!!.toFloat() / 10)
+        }
+
+        transaction(db) {
             // FIXME WHY DOES THIS UPDATE A COLUMN NOT LISTED BELOW?!
             // firstSeen updates when they join, this should not happen.
             Users.insertOrUpdate(Users.uniqueId) {
@@ -147,7 +153,7 @@ class PostgresHandler() : WithPlugin {
         Listing.SortBy.ITEM -> Listings.item to SortOrder.ASC
     }
 
-    fun insetListing(listing: Listing) {
+    fun addListing(listing: Listing) {
         transaction(db) {
             Listings.insert {
                 it[seller] = listing.seller.uniqueId.toString()
@@ -161,7 +167,7 @@ class PostgresHandler() : WithPlugin {
 
     fun getListings(query: Query, sortBy: Listing.SortBy, page: Int, pageSize: Int): List<Listing> {
         val transactions = mutableListOf<Listing>()
-        transaction(this.plugin.postgresHandler.db) {
+        transaction(db) {
             query.limit(pageSize, ((page - 1) * pageSize).toLong())
                 .orderBy(orderBy(sortBy))
                 .iterator().forEach {
