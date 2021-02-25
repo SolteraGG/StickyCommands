@@ -105,6 +105,9 @@ object Constants {
 
         const val PLAYER_TIME_RESET = "player-time.time-reset"
         const val PLAYER_TIME_SET = "player-time.time-set"
+
+        const val SBACK_NON_EXISTENT_LOCATION = "sback.non-existent-location"
+        const val SBACK_OTHER_NON_EXISTENT_LOCATION = "sback.other-non-existent-location"
     }
 
     object Descriptions {
