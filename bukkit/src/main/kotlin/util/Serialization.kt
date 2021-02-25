@@ -12,6 +12,7 @@ object Serialization {
     }
 
     fun deserialize(json: String, clazz: KClass<Location>): Any {
-        return gson.fromJson(json, (clazz as Any).javaClass)
+        return gson.fromJson(json, (clazz::class as Any).javaClass)
     }
 }
+

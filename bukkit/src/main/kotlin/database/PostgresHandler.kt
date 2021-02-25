@@ -9,6 +9,7 @@ import com.dumbdogdiner.stickycommands.api.economy.Listing
 import com.dumbdogdiner.stickycommands.database.tables.Listings
 import com.dumbdogdiner.stickycommands.database.tables.Users
 import com.dumbdogdiner.stickycommands.util.Constants
+import com.dumbdogdiner.stickycommands.util.PlayerLocation
 import com.dumbdogdiner.stickycommands.util.Serialization
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
@@ -19,17 +20,12 @@ import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.entity.Player
-import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.Expression
-import org.jetbrains.exposed.sql.LowerCase
-import org.jetbrains.exposed.sql.Query
-import org.jetbrains.exposed.sql.SchemaUtils
-import org.jetbrains.exposed.sql.SortOrder
-import org.jetbrains.exposed.sql.addLogger
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import pw.forst.exposed.insertOrUpdate
+
+// TODO clean up some stuff here as far as duplicate database stuff
+
 
 class PostgresHandler() : WithPlugin {
     lateinit var db: Database
@@ -69,13 +65,16 @@ class PostgresHandler() : WithPlugin {
     }
 
     /**********************
-        BEGIN USER UTILS
+    BEGIN USER UTILS
      **********************/
 
     fun getUserInfo(username: String, isTarget: Boolean): Map<String, String> {
         return transaction(db) {
             val result = Users.select { LowerCase(Users.name) eq username.toLowerCase() }.limit(1).firstOrNull()
-            return@transaction (if (result == null) mapOf() else getUserInfo(UUID.fromString(result[Users.uniqueId]), isTarget))
+            return@transaction (if (result == null) mapOf() else getUserInfo(
+                UUID.fromString(result[Users.uniqueId]),
+                isTarget
+            ))
         }
     }
 
@@ -86,18 +85,20 @@ class PostgresHandler() : WithPlugin {
         transaction(db) {
             Users.select { Users.uniqueId eq uniqueId.toString() }
                 .forEach {
-                    val location = player?.location ?: Serialization.deserialize(it[Users.location], Location::class) as Location
+                    val location =
+                        player?.location ?: Serialization.deserialize(it[Users.location], Location::class ) as Location
                     info[prefix] = it[Users.name]
                     info["${prefix}_uuid"] = it[Users.uniqueId].toString()
                     info["${prefix}_online"] = it[Users.isOnline].toString()
                     info["${prefix}_first_seen"] = it[Users.firstSeen].toString()
                     info["${prefix}_last_seen"] = it[Users.lastSeen].toString()
-                    info["${prefix}_last_server"] = it[Users.lastServer].toString()
+                    info["${prefix}_last_world"] = it[Users.lastWorld].toString()
                     info["${prefix}_ipaddress"] = it[Users.ipAddress].toString()
                     info["${prefix}_fly_speed"] = (it[Users.flySpeed] * 10).toString()
                     info["${prefix}_walk_speed"] = (it[Users.walkSpeed] * 10).toString()
                     info["${prefix}_world"] = (location.world.name)
-                    info["${prefix}_location"] = ("${location.x}, ${location.y}, ${location.z}")
+                    info["${prefix}_location"] =
+                        ("${location.x}, ${location.y}, ${location.z}, ${location.pitch}, ${location.yaw}")
                 }
         }
         return info
@@ -105,6 +106,18 @@ class PostgresHandler() : WithPlugin {
 
     fun getUserInfo(uniqueId: UUID): Map<String, String> {
         return getUserInfo(uniqueId, false)
+    }
+
+    fun getUserLocation(uniqueId: UUID): Location {
+
+        lateinit var playerloc: Location
+        transaction(db) {
+            playerloc = Serialization.deserialize(
+                Users.select { Users.uniqueId eq uniqueId.toString() }.single()[Users.location],
+                Location::class) as Location
+        }
+
+        return playerloc;
     }
 
     // Workaround for some stupid shit below.
@@ -135,7 +148,7 @@ class PostgresHandler() : WithPlugin {
                 it[ipAddress] = player.address.address.toString()
                 it[lastSeen] = (System.currentTimeMillis())
                 it[firstSeen] = getFirstSeen(player)
-                it[lastServer] = plugin.config.getString("server") ?: "unknown"
+                it[lastWorld] = player.world.name
                 it[isOnline] = !leaving
                 it[location] = Serialization.serialize(player.location)
             }
@@ -143,12 +156,23 @@ class PostgresHandler() : WithPlugin {
         }
     }
 
+    // Need a lot of testing to ensure there is no race condition BS here
+    fun updateUserTeleport(player: Player, prevLoc: Location) {
+        transaction(db) {
+            Users.insertOrUpdate(Users.uniqueId) {
+                it[uniqueId] = player.uniqueId.toString()
+                it[lastWorld] = player.world.name
+            }
+
+        }
+    }
+
     /**********************
-        END USER UTILS
+    END USER UTILS
      **********************/
 
     /**********************
-       BEGIN MARKET UTILS
+    BEGIN MARKET UTILS
      **********************/
 
     private fun orderBy(sortBy: Listing.SortBy): (Pair<Expression<*>, SortOrder>) = when (sortBy) {
@@ -195,6 +219,6 @@ class PostgresHandler() : WithPlugin {
     }
 
     /**********************
-       END MARKET UTILS
+    END MARKET UTILS
      **********************/
 }

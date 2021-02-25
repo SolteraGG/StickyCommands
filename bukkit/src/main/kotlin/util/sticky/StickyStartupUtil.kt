@@ -6,19 +6,12 @@ package com.dumbdogdiner.stickycommands.util.sticky
 
 import com.dumbdogdiner.stickycommands.StickyCommands
 import com.dumbdogdiner.stickycommands.WithPlugin
-import com.dumbdogdiner.stickycommands.commands.afkCommand
-import com.dumbdogdiner.stickycommands.commands.powertoolCommand
-import com.dumbdogdiner.stickycommands.commands.seenCommand
-import com.dumbdogdiner.stickycommands.commands.sellCommand
-import com.dumbdogdiner.stickycommands.commands.smiteCommand
-import com.dumbdogdiner.stickycommands.commands.speedCommand
-import com.dumbdogdiner.stickycommands.commands.stickyCommand
-import com.dumbdogdiner.stickycommands.commands.whoisCommand
-import com.dumbdogdiner.stickycommands.commands.worthCommand
+import com.dumbdogdiner.stickycommands.commands.*
 import com.dumbdogdiner.stickycommands.listeners.AfkEventListener
 import com.dumbdogdiner.stickycommands.listeners.ConnectionEventListener
 import com.dumbdogdiner.stickycommands.listeners.PowertoolEventListener
 import com.dumbdogdiner.stickycommands.tasks.StickyTask
+import dev.jorel.commandapi.CommandAPI
 import java.util.Timer
 import net.luckperms.api.LuckPerms
 import net.milkbowl.vault.economy.Economy
@@ -38,6 +31,7 @@ object StickyStartupUtil : WithPlugin {
         stickyCommand.register()
         worthCommand.register()
         smiteCommand.register()
+        CommandAPI.registerCommand(SBack::class.java)
     }
 
     fun registerListeners() {

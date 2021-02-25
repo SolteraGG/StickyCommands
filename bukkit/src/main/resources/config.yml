@@ -13,7 +13,7 @@ afk-timeout: 300
 debug: false
 
 #The name of the server StickyCommands is running on
-server: "lobby"
+default_sback_world: "world"
 
 database:
   host: localhost

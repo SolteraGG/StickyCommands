@@ -22,7 +22,7 @@ object Users : Table(StickyCommands.plugin.config.getString(Constants.SettingsPa
 
     val lastSeen = long("last_seen")
 
-    val lastServer = text("last_server").default(config.getString("server")!!)
+    val lastWorld = text("last_world").default(config.getString("default_sback_world")!!)
 
     val walkSpeed = float("walk_speed").default(0.2F)
 

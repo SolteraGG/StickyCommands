@@ -26,6 +26,7 @@ import org.bukkit.plugin.java.JavaPlugin
 @PluginMain
 class StickyCommands : JavaPlugin(), StickyCommands {
     companion object {
+        @JvmStatic
         lateinit var plugin: com.dumbdogdiner.stickycommands.StickyCommands
         var economy: Economy? = null
         var localeProvider: LocaleProvider? = null

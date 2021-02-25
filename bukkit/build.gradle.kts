@@ -3,6 +3,7 @@ import kr.entree.spigradle.kotlin.papermc
 
 plugins {
     kotlin("jvm")
+    id("java")
     id("com.github.johnrengelman.shadow") version "5.2.0"
     id("kr.entree.spigradle")
 }
@@ -26,12 +27,18 @@ repositories {
     }
     maven(url = "https://raw.githubusercontent.com/JorelAli/CommandAPI/mvn-repo/")
     maven(url = "https://repo.codemc.org/repository/maven-public/")
+    maven(url = "http://repo.onarandombox.com/content/repositories/multiverse/")
 }
 
 dependencies {
     // jvm and kotlin dependencies
     implementation(kotlin("stdlib"))
     implementation(project(":StickyCommandsAPI"))
+
+    // Lombok
+    compileOnly("org.projectlombok:lombok:1.18.16")
+    annotationProcessor("org.projectlombok:lombok:1.18.16")
+
 
     // server dependencies
     compileOnly(paper())
@@ -42,6 +49,7 @@ dependencies {
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")
     compileOnly("net.luckperms:api:5.2")
     compileOnly("com.dumbdogdiner.closedsource-package-mirror:stafffacilities:4.8.5")
+    compileOnly("com.onarandombox.multiversecore:Multiverse-Core:4.2.2")
 
     // Database dependencies
     implementation("org.jetbrains.exposed", "exposed-core", "0.28.1")
@@ -52,7 +60,11 @@ dependencies {
     implementation("pw.forst", "exposed-upsert", "1.0")
     implementation("com.zaxxer", "HikariCP", "3.4.5")
 
+    // Commandapi
     implementation("dev.jorel" , "commandapi-shade", "5.6")
+    implementation("dev.jorel:commandapi-annotations:5.6")
+    annotationProcessor("dev.jorel:commandapi-annotations:5.6")
+
 }
 
 
