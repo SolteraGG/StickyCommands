@@ -108,16 +108,11 @@ class PostgresHandler() : WithPlugin {
         return getUserInfo(uniqueId, false)
     }
 
-    fun getUserLocation(uniqueId: UUID): Location {
-
-        lateinit var playerloc: Location
-        transaction(db) {
-            playerloc = Serialization.deserialize(
-                Users.select { Users.uniqueId eq uniqueId.toString() }.single()[Users.location],
-                Location::class) as Location
-        }
-
-        return playerloc;
+    fun getUserLocation(uniqueId: UUID): Location? {
+        val info = transaction(db) {
+            return@transaction Users.select { Users.uniqueId eq uniqueId.toString() }.singleOrNull()
+        } ?: return null
+        return Serialization.deserialize(info[Users.location], Location::class) as Location
     }
 
     // Workaround for some stupid shit below.

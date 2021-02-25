@@ -23,15 +23,16 @@ object StickyStartupUtil : WithPlugin {
     fun registerCommands() {
         logger.fine("Registering commands...")
         afkCommand.register()
-        seenCommand.register()
-        whoisCommand.register()
         powertoolCommand.register()
+        sbackCommand.register()
+        sbackOtherCommand.register()
+        seenCommand.register()
         sellCommand.register()
+        smiteCommand.register()
         speedCommand.register()
         stickyCommand.register()
+        whoisCommand.register()
         worthCommand.register()
-        smiteCommand.register()
-        CommandAPI.registerCommand(SBack::class.java)
     }
 
     fun registerListeners() {

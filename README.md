@@ -1,3 +1,3 @@
-# plugin-base
+# sticky-commands
 
-Generic plugin base using a Java API, and a Kotlin implementation.
+Light-weight essentials replacement for DumbDogDiner.
