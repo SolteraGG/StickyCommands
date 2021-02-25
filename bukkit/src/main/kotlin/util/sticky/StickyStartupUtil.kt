@@ -16,8 +16,8 @@ import com.dumbdogdiner.stickycommands.commands.stickyCommand
 import com.dumbdogdiner.stickycommands.commands.whoisCommand
 import com.dumbdogdiner.stickycommands.commands.worthCommand
 import com.dumbdogdiner.stickycommands.listeners.AfkEventListener
-import com.dumbdogdiner.stickycommands.listeners.ConnectionListener
-import com.dumbdogdiner.stickycommands.listeners.PowertoolListener
+import com.dumbdogdiner.stickycommands.listeners.ConnectionEventListener
+import com.dumbdogdiner.stickycommands.listeners.PowertoolEventListener
 import com.dumbdogdiner.stickycommands.tasks.StickyTask
 import java.util.Timer
 import net.luckperms.api.LuckPerms
@@ -43,8 +43,8 @@ object StickyStartupUtil : WithPlugin {
     fun registerListeners() {
         logger.fine("Registering listeners...")
         plugin.server.pluginManager.registerEvents(AfkEventListener(), plugin)
-        plugin.server.pluginManager.registerEvents(ConnectionListener(), plugin)
-        plugin.server.pluginManager.registerEvents(PowertoolListener(), plugin)
+        plugin.server.pluginManager.registerEvents(ConnectionEventListener(), plugin)
+        plugin.server.pluginManager.registerEvents(PowertoolEventListener(), plugin)
     }
 
     fun registerTimers(vararg timers: StickyTask) {
