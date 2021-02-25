@@ -10,14 +10,21 @@ import org.bukkit.entity.Player
 val sbackCommand = commandStub("sback", Constants.Permissions.BACK)
     .executesPlayer(PlayerCommandExecutor { player, _ ->
         if (sback(player)) { return@PlayerCommandExecutor }
-        player.sendMessage(locale.translate(Constants.LanguagePaths.SBACK_NON_EXISTENT_LOCATION, Variables()))
+        player.sendMessage(locale.translate(Constants.LanguagePaths.SBACK_NON_EXISTENT_LOCATION, Variables()
+            .withPlayer(player, false)
+            .get()
+        ))
     })
 
 val sbackOtherCommand = commandStub("sback", Constants.Permissions.BACK_OTHERS)
     .withArguments(PlayerArgument("player"))
     .executesPlayer(PlayerCommandExecutor { player, args ->
         if (sback(args[0] as Player)) { return@PlayerCommandExecutor }
-        player.sendMessage(locale.translate(Constants.LanguagePaths.SBACK_OTHER_NON_EXISTENT_LOCATION, Variables()))
+        player.sendMessage(locale.translate(Constants.LanguagePaths.SBACK_OTHER_NON_EXISTENT_LOCATION, Variables()
+            .withPlayer(player, false)
+            .withPlayer(args[0] as Player, true)
+            .get()
+        ))
     })
 
 private fun sback(sender: Player): Boolean {

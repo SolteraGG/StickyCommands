@@ -16,7 +16,7 @@ import org.bukkit.inventory.PlayerInventory
 /**
  * Utility class for getting a variables map with all the information about a player
  */
-class Variables() : WithPlugin {
+class Variables : WithPlugin {
 
     private val variables = HashMap<String, String>()
 
