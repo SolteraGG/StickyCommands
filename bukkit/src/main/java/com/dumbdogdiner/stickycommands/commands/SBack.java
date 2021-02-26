@@ -31,7 +31,6 @@ import static java.text.MessageFormat.format;
 
 @Command("SBack")
 public class SBack {
-
     private static final String PERM = "stickycommands.sback";
     private static final String PERM_OTHERS = "stickycommands.sback.others";
 

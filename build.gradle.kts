@@ -4,6 +4,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     java
     kotlin("jvm") version "1.4.10"
+    //kotlin("kapt") version "1.4.30"
     id("com.diffplug.spotless") version "5.8.2"
     id("kr.entree.spigradle") version "2.2.3"
     id("io.freefair.lombok") version "5.3.0"

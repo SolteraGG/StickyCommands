@@ -3,6 +3,7 @@ import kr.entree.spigradle.kotlin.papermc
 
 plugins {
     kotlin("jvm")
+    kotlin("kapt")
     id("java")
     id("com.github.johnrengelman.shadow") version "5.2.0"
     id("kr.entree.spigradle")
@@ -61,9 +62,10 @@ dependencies {
     implementation("com.zaxxer", "HikariCP", "3.4.5")
 
     // Commandapi
-    implementation("dev.jorel" , "commandapi-shade", "5.6")
-    implementation("dev.jorel:commandapi-annotations:5.6")
-    annotationProcessor("dev.jorel:commandapi-annotations:5.6")
+    shadow("dev.jorel" , "commandapi-shade", "5.8")
+    implementation("dev.jorel:commandapi-annotations:5.8")
+    annotationProcessor("dev.jorel:commandapi-annotations:5.8")
+    //kapt("dev.jorel:commandapi-annotations:5.8")
 
 }
 
@@ -95,3 +97,8 @@ tasks {
         version = "1.0.0"
     }
 }
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    kotlinOptions.jvmTarget = "11"
+}
+

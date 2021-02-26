@@ -2,6 +2,7 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
       <profile name="Gradle Imported" enabled="true">
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
@@ -18,23 +19,7 @@
         <processorPath useClasspath="false">
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.16/6dc192c7f93ec1853f70d59d8a6dcf94eb42866/lombok-1.18.16.jar" />
         </processorPath>
-        <module name="StickyCommands.main" />
-      </profile>
-      <profile name="Gradle Imported" enabled="true">
-        <outputRelativeToContentRoot value="true" />
-        <option name="bungeeAnnotationResultPath" value="E:\DDD_DEV\StickyCommands\bukkit\build\spigradle\bungee_main" />
-        <option name="nukkitAnnotationResultPath" value="E:\DDD_DEV\StickyCommands\bukkit\build\spigradle\nukkit_main" />
-        <option name="pluginAnnotationResultPath" value="E:\DDD_DEV\StickyCommands\bukkit\build\spigradle\plugin_main" />
-        <option name="spigotAnnotationResultPath" value="E:\DDD_DEV\StickyCommands\bukkit\build\spigradle\spigot_main" />
-        <processorPath useClasspath="false">
-          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.16/6dc192c7f93ec1853f70d59d8a6dcf94eb42866/lombok-1.18.16.jar" />
-          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/dev.jorel/commandapi-annotations/5.6/ad28d5fed843cdab124ab5fa28d6e0cfebfb44db/commandapi-annotations-5.6.jar" />
-          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/dev.jorel/commandapi-core/5.6/ac1ecde8d1e966e039c68d442bad34ce3902758a/commandapi-core-5.6.jar" />
-          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/de.tr7zw/item-nbt-api/2.6.0/be5e430e665b65b8935783f792e6922f33004121/item-nbt-api-2.6.0.jar" />
-          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/dev.jorel/commandapi-preprocessor/5.6/b18597d910e7b0a179310ca60302ba92a58b8d30/commandapi-preprocessor-5.6.jar" />
-          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/de.tr7zw/functional-annotations/0.1-SNAPSHOT/59ccfb17012d67b06c6e714f80810fba988a0047/functional-annotations-0.1-SNAPSHOT.jar" />
-        </processorPath>
-        <module name="StickyCommands.StickyCommands.main" />
+        <module name="com.dumbdogdiner.StickyCommands.main" />
       </profile>
       <profile name="Gradle Imported" enabled="true">
         <outputRelativeToContentRoot value="true" />
@@ -46,6 +31,22 @@
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.12/48e4e5d60309ebd833bc528dcf77668eab3cd72c/lombok-1.18.12.jar" />
         </processorPath>
         <module name="StickyCommands.StickyCommandsAPI.main" />
+      </profile>
+      <profile name="Gradle Imported" enabled="true">
+        <outputRelativeToContentRoot value="true" />
+        <option name="bungeeAnnotationResultPath" value="E:\DDD_DEV\StickyCommands\bukkit\build\spigradle\bungee_main" />
+        <option name="nukkitAnnotationResultPath" value="E:\DDD_DEV\StickyCommands\bukkit\build\spigradle\nukkit_main" />
+        <option name="pluginAnnotationResultPath" value="E:\DDD_DEV\StickyCommands\bukkit\build\spigradle\plugin_main" />
+        <option name="spigotAnnotationResultPath" value="E:\DDD_DEV\StickyCommands\bukkit\build\spigradle\spigot_main" />
+        <processorPath useClasspath="false">
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.16/6dc192c7f93ec1853f70d59d8a6dcf94eb42866/lombok-1.18.16.jar" />
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/dev.jorel/commandapi-annotations/5.8/cc0abd8f82c63e40785b8d3925f92e8c16eb5e69/commandapi-annotations-5.8.jar" />
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/dev.jorel/commandapi-core/5.8/9c33a384cae5a7ba78380120c394ab8d21410dc/commandapi-core-5.8.jar" />
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/de.tr7zw/item-nbt-api/2.6.0/be5e430e665b65b8935783f792e6922f33004121/item-nbt-api-2.6.0.jar" />
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/dev.jorel/commandapi-preprocessor/5.8/68ee5a84cf05959d24eb8da276f363caf55a4e69/commandapi-preprocessor-5.8.jar" />
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/de.tr7zw/functional-annotations/0.1-SNAPSHOT/d6a92aaf2c1be2043d02edb8c4bde18fd59d0d3b/functional-annotations-0.1-SNAPSHOT.jar" />
+        </processorPath>
+        <module name="StickyCommands.StickyCommands.main" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="11" />
