@@ -31,7 +31,8 @@ reload:
 
 back:
   no-previous: "{prefix}&cNo previous location found!"
-  teleported: "{prefix}&bYou have been teleported to your last location!"
+  teleported: "{prefix}&bYou have been returned to your last location!"
+  teleported-other: "{prefix}&bReturned &f{target} &bto their last location!"
 
 sell:
   cannot-sell: "{prefix}&cThis item cannot be sold!"

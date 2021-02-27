@@ -23,7 +23,7 @@ internal val market = StickyCommands.plugin.market
 internal val postgresHandler = StickyCommands.plugin.postgresHandler
 internal val plugin = StickyCommands.plugin
 
-internal fun playerVariables(player: Player, target: Boolean) = Variables().withPlayer(player, false).get()
+internal fun playerVariables(player: Player, target: Boolean) = Variables().withPlayer(player, target).get()
 internal fun playerVariables(player: Player) = playerVariables(player, false)
 
 internal fun commandStub(name: String, permission: String): CommandAPICommand = CommandAPICommand(name).withPermission(permission)
