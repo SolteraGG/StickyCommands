@@ -30,7 +30,5 @@ object Users : Table(StickyCommands.plugin.config.getString(Constants.SettingsPa
 
     val isOnline = bool("online").default(false)
 
-    val location = text("location")
-
     override val primaryKey = PrimaryKey(uniqueId)
 }

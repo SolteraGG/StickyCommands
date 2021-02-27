@@ -8,7 +8,6 @@ import com.dumbdogdiner.stickyapi.bukkit.util.SoundUtil
 import com.dumbdogdiner.stickycommands.StickyCommands
 import com.dumbdogdiner.stickycommands.util.Constants
 import dev.jorel.commandapi.executors.PlayerCommandExecutor
-import org.bukkit.Location
 
 val afkCommand = commandStub("afk", Constants.Permissions.AFK)
     .executesPlayer(PlayerCommandExecutor { player, _ ->

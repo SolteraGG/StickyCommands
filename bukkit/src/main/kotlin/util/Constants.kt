@@ -13,7 +13,7 @@ object Constants {
 
     object Permissions {
         const val AFK = "$prefix.afk"
-        const val BACK = "$prefix.back"
+        const val SBACK = "$prefix.back"
 
         const val POWERTOOL = "$prefix.powertool"
         const val POWERTOOL_CLEAR = "$POWERTOOL.clear"
@@ -85,6 +85,9 @@ object Constants {
         const val YOU_KILLED = "kill.you-killed"
         const val SUICIDE = "kill.suicide"
 
+        const val BACK_NO_PREVIOUS = "back.no-previous"
+        const val BACK_TELEPORTED = "back.teleported"
+
         private const val smite_prefix = "smite"
         const val SMITE_OTHER = "$smite_prefix.smite-other-player"
         const val SMITE_BLOCK = "$smite_prefix.smite-block"
@@ -103,26 +106,6 @@ object Constants {
 
         const val PLAYER_TIME_RESET = "player-time.time-reset"
         const val PLAYER_TIME_SET = "player-time.time-set"
-    }
-
-    object Descriptions {
-        const val AFK = "Let the server know you're afk!"
-
-        const val SELL = "Sell an item"
-        const val SELL_INVENTORY = "Sell all of an item from your inventory"
-        const val SELL_LOG = "Check the logs of recent sales"
-
-        const val WORTH = "Check the worth of an item."
-
-        const val POWERTOOL = "Bind an item to a command"
-        const val POWERTOOL_CLEAR = "Clear your item of a command"
-        const val POWERTOOL_TOGGLE = "Toggle your powertool"
-
-        const val SPEED = "Change your fly or walk speed"
-
-        const val SEEN = "Check when a player was last online"
-
-        const val WHOIS = "Lookup a player"
     }
 
     object SettingsPaths {

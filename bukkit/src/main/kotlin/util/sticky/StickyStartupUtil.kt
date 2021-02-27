@@ -8,6 +8,7 @@ import com.dumbdogdiner.stickycommands.StickyCommands
 import com.dumbdogdiner.stickycommands.WithPlugin
 import com.dumbdogdiner.stickycommands.commands.afkCommand
 import com.dumbdogdiner.stickycommands.commands.powertoolCommand
+import com.dumbdogdiner.stickycommands.commands.sBackCommand
 import com.dumbdogdiner.stickycommands.commands.seenCommand
 import com.dumbdogdiner.stickycommands.commands.sellCommand
 import com.dumbdogdiner.stickycommands.commands.smiteCommand
@@ -18,6 +19,7 @@ import com.dumbdogdiner.stickycommands.commands.worthCommand
 import com.dumbdogdiner.stickycommands.listeners.AfkEventListener
 import com.dumbdogdiner.stickycommands.listeners.ConnectionEventListener
 import com.dumbdogdiner.stickycommands.listeners.PowertoolEventListener
+import com.dumbdogdiner.stickycommands.listeners.TeleportEventListener
 import com.dumbdogdiner.stickycommands.tasks.StickyTask
 import java.util.Timer
 import net.luckperms.api.LuckPerms
@@ -38,6 +40,7 @@ object StickyStartupUtil : WithPlugin {
         stickyCommand.register()
         worthCommand.register()
         smiteCommand.register()
+        sBackCommand.register()
     }
 
     fun registerListeners() {
@@ -45,6 +48,7 @@ object StickyStartupUtil : WithPlugin {
         plugin.server.pluginManager.registerEvents(AfkEventListener(), plugin)
         plugin.server.pluginManager.registerEvents(ConnectionEventListener(), plugin)
         plugin.server.pluginManager.registerEvents(PowertoolEventListener(), plugin)
+        plugin.server.pluginManager.registerEvents(TeleportEventListener(), plugin)
     }
 
     fun registerTimers(vararg timers: StickyTask) {

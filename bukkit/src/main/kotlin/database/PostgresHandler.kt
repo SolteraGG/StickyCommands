@@ -7,9 +7,10 @@ package com.dumbdogdiner.stickycommands.database
 import com.dumbdogdiner.stickycommands.WithPlugin
 import com.dumbdogdiner.stickycommands.api.economy.Listing
 import com.dumbdogdiner.stickycommands.database.tables.Listings
+import com.dumbdogdiner.stickycommands.database.tables.Locations
+import com.dumbdogdiner.stickycommands.database.tables.Locations.world
 import com.dumbdogdiner.stickycommands.database.tables.Users
 import com.dumbdogdiner.stickycommands.util.Constants
-import com.dumbdogdiner.stickycommands.util.Serialization
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import java.time.Instant
@@ -59,7 +60,7 @@ class PostgresHandler() : WithPlugin {
         transaction(db) {
             try {
                 addLogger(ExposedLogger())
-                SchemaUtils.createMissingTablesAndColumns(Users, Listings)
+                SchemaUtils.createMissingTablesAndColumns(Users, Listings, Locations)
             } catch (e: Exception) {
                 logger.warning("[SQL] Failed to connect to SQL database - invalid connection info/database not up")
                 success = false
@@ -82,11 +83,9 @@ class PostgresHandler() : WithPlugin {
     fun getUserInfo(uniqueId: UUID, isTarget: Boolean): Map<String, String> {
         val info = mutableMapOf<String, String>()
         val prefix = if (isTarget) "target" else "player"
-        val player = Bukkit.getPlayer(uniqueId)
         transaction(db) {
             Users.select { Users.uniqueId eq uniqueId.toString() }
                 .forEach {
-                    val location = player?.location ?: Serialization.deserialize(it[Users.location], Location::class) as Location
                     info[prefix] = it[Users.name]
                     info["${prefix}_uuid"] = it[Users.uniqueId].toString()
                     info["${prefix}_online"] = it[Users.isOnline].toString()
@@ -96,8 +95,6 @@ class PostgresHandler() : WithPlugin {
                     info["${prefix}_ipaddress"] = it[Users.ipAddress].toString()
                     info["${prefix}_fly_speed"] = (it[Users.flySpeed] * 10).toString()
                     info["${prefix}_walk_speed"] = (it[Users.walkSpeed] * 10).toString()
-                    info["${prefix}_world"] = (location.world.name)
-                    info["${prefix}_location"] = ("${location.x}, ${location.y}, ${location.z}")
                 }
         }
         return info
@@ -109,14 +106,10 @@ class PostgresHandler() : WithPlugin {
 
     // Workaround for some stupid shit below.
     // FIXME find a better way.
-    private fun getFirstSeen(player: Player): Long {
-        var time: Long? = null
-        transaction(db) {
-            Users.select { (Users.uniqueId eq player.uniqueId.toString()) }.firstOrNull()?.let {
-                time = it[Users.firstSeen]
-            }
+    private fun getFirstSeen(player: Player) = transaction(db) {
+        Users.select { (Users.uniqueId eq player.uniqueId.toString()) }.firstOrNull().let {
+            return@transaction it?.get(Users.firstSeen) ?: player.firstPlayed
         }
-        return time ?: (player.firstPlayed)
     }
 
     fun updateUser(player: Player, leaving: Boolean) {
@@ -137,10 +130,32 @@ class PostgresHandler() : WithPlugin {
                 it[firstSeen] = getFirstSeen(player)
                 it[lastServer] = plugin.config.getString("server") ?: "unknown"
                 it[isOnline] = !leaving
-                it[location] = Serialization.serialize(player.location)
             }
             commit()
         }
+    }
+
+    fun updateLocation(player: Player) = transaction(db) {
+        Locations.insertOrUpdate(Locations.uniqueId) {
+            val location = player.location
+            it[uniqueId] = "${player.uniqueId}"
+            it[world] = "${location.world.uid}"
+            it[x] = location.x
+            it[y] = location.y
+            it[z] = location.z
+            it[pitch] = location.pitch
+            it[yaw] = location.yaw
+        }
+    }
+
+    fun getLocation(uniqueId: UUID) = transaction(db) {
+        Locations.select { (Locations.uniqueId eq uniqueId.toString()) }
+            .firstOrNull().let {
+            return@transaction if (it == null || Bukkit.getWorld(UUID.fromString(it[world])) == null) null else {
+                Location(Bukkit.getWorld(UUID.fromString(it[world])),
+                    it[Locations.x], it[Locations.y], it[Locations.z], it[Locations.yaw], it[Locations.pitch])
+                }
+            }
     }
 
     /**********************
