@@ -100,9 +100,7 @@ class PostgresHandler() : WithPlugin {
         return info
     }
 
-    fun getUserInfo(uniqueId: UUID): Map<String, String> {
-        return getUserInfo(uniqueId, false)
-    }
+    fun getUserInfo(uniqueId: UUID) = getUserInfo(uniqueId, false)
 
     // Workaround for some stupid shit below.
     // FIXME find a better way.

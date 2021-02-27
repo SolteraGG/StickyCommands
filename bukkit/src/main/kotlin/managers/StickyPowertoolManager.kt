@@ -12,10 +12,6 @@ import org.bukkit.entity.Player
 // There might be a better way of handling this
 // but oh well
 class StickyPowertoolManager : PowertoolManager {
-    companion object {
-        val powertoolManager = StickyPowertoolManager()
-    }
-
     private val powertools = mutableSetOf<Powertool>()
 
     override fun getPowerTool(player: Player, type: Material): Powertool? {

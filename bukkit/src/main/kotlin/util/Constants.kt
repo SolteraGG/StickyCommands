@@ -13,7 +13,7 @@ object Constants {
 
     object Permissions {
         const val AFK = "$prefix.afk"
-        const val SBACK = "$prefix.back"
+        const val SBACK = "$prefix.sback"
 
         const val POWERTOOL = "$prefix.powertool"
         const val POWERTOOL_CLEAR = "$POWERTOOL.clear"
