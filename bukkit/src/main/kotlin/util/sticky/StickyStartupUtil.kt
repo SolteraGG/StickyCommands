@@ -7,6 +7,7 @@ package com.dumbdogdiner.stickycommands.util.sticky
 import com.dumbdogdiner.stickycommands.StickyCommands
 import com.dumbdogdiner.stickycommands.WithPlugin
 import com.dumbdogdiner.stickycommands.commands.afkCommand
+import com.dumbdogdiner.stickycommands.commands.killCommand
 import com.dumbdogdiner.stickycommands.commands.powertoolCommand
 import com.dumbdogdiner.stickycommands.commands.sBackCommand
 import com.dumbdogdiner.stickycommands.commands.seenCommand
@@ -21,6 +22,8 @@ import com.dumbdogdiner.stickycommands.listeners.ConnectionEventListener
 import com.dumbdogdiner.stickycommands.listeners.PowertoolEventListener
 import com.dumbdogdiner.stickycommands.listeners.TeleportEventListener
 import com.dumbdogdiner.stickycommands.tasks.StickyTask
+import dev.jorel.commandapi.CommandAPI
+import java.io.File
 import java.util.Timer
 import net.luckperms.api.LuckPerms
 import net.milkbowl.vault.economy.Economy
@@ -38,9 +41,12 @@ object StickyStartupUtil : WithPlugin {
         sellCommand.register()
         speedCommand.register()
         stickyCommand.register()
+
+        CommandAPI.unregister("worth")
         worthCommand.register()
         smiteCommand.register()
         sBackCommand.register()
+        killCommand.register()
     }
 
     fun registerListeners() {
@@ -91,6 +97,27 @@ object StickyStartupUtil : WithPlugin {
             true
         } else {
             false
+        }
+    }
+
+    fun setupConfig(): Boolean {
+        try {
+            if (!plugin.dataFolder.exists()) {
+                plugin.logger.info("Error: No folder was found! Creating...")
+                if (!plugin.dataFolder.mkdirs()) {
+                    plugin.logger.info("Error: Unable to create data folder, are your file permissions correct?")
+                    return false
+                }
+                plugin.saveResource("config.yml", false)
+                plugin.logger.info("The folder was created successfully!")
+            }
+            if (!File(plugin.dataFolder.absolutePath + "config.yml").exists()) {
+                plugin.saveResource("config.yml", false)
+            }
+            return true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return false
         }
     }
 }

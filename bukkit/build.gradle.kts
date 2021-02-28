@@ -52,7 +52,7 @@ dependencies {
     implementation("pw.forst", "exposed-upsert", "1.0")
     implementation("com.zaxxer", "HikariCP", "3.4.5")
 
-    implementation("dev.jorel" , "commandapi-shade", "5.6")
+    implementation("dev.jorel" , "commandapi-shade", "5.8")
 }
 
 

@@ -16,6 +16,8 @@ object Constants {
         const val SBACK = "$prefix.sback"
         const val SBACK_OTHER = "$prefix.sback.other"
 
+        const val KILL = "$prefix.kill"
+
         const val POWERTOOL = "$prefix.powertool"
         const val POWERTOOL_CLEAR = "$POWERTOOL.clear"
         const val POWERTOOL_TOGGLE = "$POWERTOOL.toggle"
@@ -94,7 +96,7 @@ object Constants {
         const val SMITE_OTHER = "$smite_prefix.smite-other-player"
         const val SMITE_BLOCK = "$smite_prefix.smite-block"
         const val SMITE_MESSAGE = "$smite_prefix.smite-message"
-        const val SMITE_IMMUNE = "$smite_prefix.immune"
+        const val SMITE_IMMUNE = "$smite_prefix.smite-immune"
         const val SMITE_YOURSELF = "$smite_prefix.yourself"
 
         const val YOU_WHIPPED = "whip.you-whipped"

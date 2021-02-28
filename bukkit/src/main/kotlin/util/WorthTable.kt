@@ -19,21 +19,21 @@ import org.bukkit.persistence.PersistentDataType
 
 // FIXME I feel this could be done better...
 class WorthTable : WithPlugin {
-    var configFile: File? = null
+    var configFile: File
     var localConfig: FileConfiguration? = null
     var decimalFormat = DecimalFormat("0.00") // We don't want something like 25.3333333333, instead we want 25.33
 
     init {
         val worthFile: String? = plugin.config.getString("worth-file", "worth.yml")
         configFile = File(plugin.dataFolder, worthFile)
-        if (!configFile!!.exists()) {
-            configFile!!.parentFile.mkdirs()
+        if (!configFile.exists()) {
+            configFile.parentFile.mkdirs()
             plugin.saveResource(worthFile!!, false)
         }
 
         val fc: FileConfiguration = YamlConfiguration()
         try {
-            fc.load(configFile!!)
+            fc.load(configFile)
             localConfig = fc
         } catch (e: IOException) {
             e.printStackTrace()

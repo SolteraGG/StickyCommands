@@ -66,7 +66,7 @@ class PostgresHandler() : WithPlugin {
                 success = false
             }
         }
-        return success
+        return dataSource.isRunning || success
     }
 
     /**********************
@@ -110,11 +110,18 @@ class PostgresHandler() : WithPlugin {
         }
     }
 
+    fun getUserSpeed(player: Player) = transaction(db) {
+        Users.select { (Users.uniqueId eq player.uniqueId.toString()) }
+            .firstOrNull()?.let {
+                return@transaction listOf(it[Users.walkSpeed], it[Users.flySpeed])
+            }
+    }
+
     fun updateUser(player: Player, leaving: Boolean) {
         if (!leaving) {
-            val info = getUserInfo(player.uniqueId)
-            player.flySpeed = (info["player_fly_speed"]!!.toFloat() / 10)
-            player.walkSpeed = (info["player_walk_speed"]!!.toFloat() / 10)
+            val speed = getUserSpeed(player)
+            player.walkSpeed = (speed?.get(0) ?: player.walkSpeed)
+            player.flySpeed = (speed?.get(1) ?: player.flySpeed)
         }
 
         transaction(db) {
@@ -128,6 +135,8 @@ class PostgresHandler() : WithPlugin {
                 it[firstSeen] = getFirstSeen(player)
                 it[lastServer] = plugin.config.getString("server") ?: "unknown"
                 it[isOnline] = !leaving
+                it[flySpeed] = player.flySpeed
+                it[walkSpeed] = player.walkSpeed
             }
             commit()
         }
@@ -181,6 +190,7 @@ class PostgresHandler() : WithPlugin {
                 it[quantity] = listing.quantity
                 it[value] = listing.price
                 it[buyer] = if (listing.buyer == null) null else listing.buyer!!.uniqueId.toString()
+                it[sold] = plugin.config.getBoolean("auto-sell", true) // refactor this later!
             }
         }
     }
@@ -196,7 +206,7 @@ class PostgresHandler() : WithPlugin {
                             it[Listings.id],
                             Bukkit.getOfflinePlayer(UUID.fromString(it[Listings.seller])),
                             Material.valueOf(it[Listings.item]),
-                            it[Listings.value],
+                            (it[Listings.value] / it[Listings.quantity]),
                             it[Listings.quantity],
                             if (it[Listings.buyer] == null) null else Bukkit.getOfflinePlayer(UUID.fromString(it[Listings.buyer])),
                             Date.from(Instant.ofEpochSecond(it[Listings.listedAt]))
