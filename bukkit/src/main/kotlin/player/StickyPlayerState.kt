@@ -14,6 +14,8 @@ import com.dumbdogdiner.stickycommands.util.Constants
 import com.dumbdogdiner.stickycommands.util.Variables
 import me.xtomyserrax.StaffFacilities.SFAPI
 import org.bukkit.entity.Player
+import org.bukkit.metadata.FixedMetadataValue
+import org.bukkit.metadata.MetadataValue
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
 
@@ -78,6 +80,9 @@ class StickyPlayerState(
         // reset the time if we're unsetting their afk status
         if (!isAfk) {
             this._afkTime = 0
+            this.player.removeMetadata("stickycommands_afk", this.plugin)
+        } else {
+            this.player.setMetadata("stickycommands_afk", FixedMetadataValue(this.plugin, "stickycommands_afk"))
         }
 
         if (broadcast) {
