@@ -22,7 +22,7 @@ database:
   username: root
   password: root
   table-prefix: stickycommands_
-  # Maximum number of times mysql will try to reconnect before giving up.
+  # Maximum number of times postgres will try to reconnect before giving up.
   max-reconnects: 5
   # Use SSL?
   use-ssl: disabled
