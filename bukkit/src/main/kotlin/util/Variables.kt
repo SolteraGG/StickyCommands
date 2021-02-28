@@ -12,6 +12,7 @@ import org.bukkit.Location
 import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 import org.bukkit.inventory.PlayerInventory
+import kotlin.math.round
 
 /**
  * Utility class for getting a variables map with all the information about a player
@@ -77,10 +78,13 @@ class Variables() : WithPlugin {
     }
 
     fun withLocation(location: Location): Variables {
-        variables["location"] = "${location.x}, ${location.y}, ${location.z}"
-        variables["location_x"] = location.x.toString()
-        variables["location_y"] = location.y.toString()
-        variables["location_z"] = location.z.toString()
+        val x = location.x.round(2)
+        val y = location.y.round(2)
+        val z = location.z.round(2)
+        variables["location"] = "$x, $y, $z"
+        variables["location_x"] = "$x"
+        variables["location_y"] = "$y"
+        variables["location_z"] = "$z"
         variables["world"] = location.world.name
         variables["pitch"] = location.pitch.toString()
         variables["yaw"] = location.yaw.toString()
@@ -89,5 +93,11 @@ class Variables() : WithPlugin {
 
     fun get(): HashMap<String, String> {
         return this.variables
+    }
+
+    private fun Double.round(decimals: Int): Double {
+        var multiplier = 1.0
+        repeat(decimals) { multiplier *= 10 }
+        return round(this * multiplier) / multiplier
     }
 }
