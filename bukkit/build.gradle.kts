@@ -7,6 +7,8 @@ plugins {
     id("kr.entree.spigradle")
 }
 
+version = "4.0.0"
+
 repositories {
     papermc()
     maven(uri("https://repo.extendedclip.com/content/repositories/placeholderapi/"))
