@@ -48,7 +48,7 @@ class StickyCommands : JavaPlugin(), StickyCommands {
         worthTable = WorthTable()
         afkTimer = AfkTimer()
 
-        if (!StartupUtil.setupConfig(this)) return
+        if (!StickyStartupUtil.setupConfig()) return
 
         localeProvider = StartupUtil.setupLocale(this, localeProvider)
         if (localeProvider == null) return

@@ -10,7 +10,7 @@ import com.dumbdogdiner.stickycommands.util.Constants
 import com.dumbdogdiner.stickycommands.util.Variables
 import dev.jorel.commandapi.executors.PlayerCommandExecutor
 
-val worthCommand = commandStub("worth", Constants.Permissions.WORTH)
+val worthCommand = commandStub("sworth", Constants.Permissions.WORTH)
     .executesPlayer(PlayerCommandExecutor { sender, _ ->
         val vars = Variables().withPlayer(sender, false).get()
         val stack = sender.inventory.itemInMainHand
