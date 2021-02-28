@@ -1,18 +1,3 @@
-#StickyCommands
-
-## Overview
-Light-weight replacement for Essentials
-
-- Powertools
-- Player market
-- Cross-server support
-
-
-## Configuration
-
-The default configuration for StickyCommands is below.
-
-```yml
 # The translation file you wish to use. (Default: messages.en_us.yml)
 translation-file: "messages.en_us.yml"
 
@@ -41,8 +26,3 @@ database:
   max-reconnects: 5
   # Use SSL?
   use-ssl: disabled
-```
-
-## License
-
-StickyCommands is licensed under the MIT License.

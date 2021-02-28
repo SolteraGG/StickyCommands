@@ -1,0 +1,43 @@
+/*
+ * Copyright (c) 2021 DumbDogDiner <dumbdogdiner.com>. All rights reserved.
+ * Licensed under the MIT license, see LICENSE for more information.
+ */
+package com.dumbdogdiner.stickycommands.managers
+
+import com.dumbdogdiner.stickycommands.api.item.Powertool
+import com.dumbdogdiner.stickycommands.api.managers.PowertoolManager
+import org.bukkit.Material
+import org.bukkit.entity.Player
+
+// There might be a better way of handling this
+// but oh well
+class StickyPowertoolManager : PowertoolManager {
+    private val powertools = mutableSetOf<Powertool>()
+
+    override fun getPowerTool(player: Player, type: Material): Powertool? {
+        for (powertool in powertools) {
+            if (powertool.player == player && powertool.material == type) {
+                return powertool
+            }
+        }
+        return null
+    }
+
+    override fun getPowertools(): Set<Powertool> {
+        return this.powertools
+    }
+
+    override fun add(powertool: Powertool) {
+        this.powertools.add(powertool)
+    }
+
+    override fun remove(powertool: Powertool) {
+        this.powertools.remove(powertool)
+    }
+    override fun remove(player: Player) {
+        for (powertool in powertools) {
+            if (powertool.player != player) continue
+            this.powertools.remove(powertool)
+        }
+    }
+}
