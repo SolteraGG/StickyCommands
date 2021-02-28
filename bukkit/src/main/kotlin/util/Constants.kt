@@ -13,6 +13,8 @@ object Constants {
 
     object Permissions {
         const val AFK = "$prefix.afk"
+        const val SBACK = "$prefix.sback"
+        const val SBACK_OTHER = "$prefix.sback.other"
 
         const val KILL = "$prefix.kill"
 
@@ -85,6 +87,10 @@ object Constants {
         const val YOU_WERE_KILLED = "kill.you-were-killed"
         const val YOU_KILLED = "kill.you-killed"
         const val SUICIDE = "kill.suicide"
+
+        const val BACK_NO_PREVIOUS = "back.no-previous"
+        const val BACK_TELEPORTED = "back.teleported"
+        const val BACK_TELEPORTED_OTHER = "back.teleported-other"
 
         private const val smite_prefix = "smite"
         const val SMITE_OTHER = "$smite_prefix.smite-other-player"

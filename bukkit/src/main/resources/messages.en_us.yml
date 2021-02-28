@@ -29,6 +29,11 @@ reload:
   database-success: "{prefix}&aReloaded configuration and messages successfully!"
   error: "{prefix}&cThere was an error reloading StickyCommands, please see console for details!"
 
+back:
+  no-previous: "{prefix}&cNo previous location found!"
+  teleported: "{prefix}&bYou have been returned to your last location!"
+  teleported-other: "{prefix}&bReturned &f{target} &bto their last location!"
+
 sell:
   cannot-sell: "{prefix}&cThis item cannot be sold!"
   bad-worth: "{prefix}&f1 {item} &cis worth a negative amount &f(${single_worth}) &cand cannot be sold &4(Please ask a developer)"

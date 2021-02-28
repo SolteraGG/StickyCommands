@@ -7,6 +7,8 @@ package com.dumbdogdiner.stickycommands.database
 import com.dumbdogdiner.stickycommands.WithPlugin
 import com.dumbdogdiner.stickycommands.api.economy.Listing
 import com.dumbdogdiner.stickycommands.database.tables.Listings
+import com.dumbdogdiner.stickycommands.database.tables.Locations
+import com.dumbdogdiner.stickycommands.database.tables.Locations.world
 import com.dumbdogdiner.stickycommands.database.tables.Users
 import com.dumbdogdiner.stickycommands.util.Constants
 import com.zaxxer.hikari.HikariConfig
@@ -15,6 +17,7 @@ import java.time.Instant
 import java.util.Date
 import java.util.UUID
 import org.bukkit.Bukkit
+import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.jetbrains.exposed.sql.Database
@@ -57,7 +60,7 @@ class PostgresHandler() : WithPlugin {
         transaction(db) {
             try {
                 addLogger(ExposedLogger())
-                SchemaUtils.createMissingTablesAndColumns(Users, Listings)
+                SchemaUtils.createMissingTablesAndColumns(Users, Listings, Locations)
             } catch (e: Exception) {
                 logger.warning("[SQL] Failed to connect to SQL database - invalid connection info/database not up")
                 success = false
@@ -97,20 +100,14 @@ class PostgresHandler() : WithPlugin {
         return info
     }
 
-    fun getUserInfo(uniqueId: UUID): Map<String, String> {
-        return getUserInfo(uniqueId, false)
-    }
+    fun getUserInfo(uniqueId: UUID) = getUserInfo(uniqueId, false)
 
     // Workaround for some stupid shit below.
     // FIXME find a better way.
-    private fun getFirstSeen(player: Player): Long {
-        var time: Long? = null
-        transaction(db) {
-            Users.select { (Users.uniqueId eq player.uniqueId.toString()) }.firstOrNull()?.let {
-                time = it[Users.firstSeen]
-            }
+    private fun getFirstSeen(player: Player) = transaction(db) {
+        Users.select { (Users.uniqueId eq player.uniqueId.toString()) }.firstOrNull().let {
+            return@transaction it?.get(Users.firstSeen) ?: player.firstPlayed
         }
-        return time ?: (player.firstPlayed)
     }
 
     fun getUserSpeed(player: Player) = transaction(db) {
@@ -143,6 +140,29 @@ class PostgresHandler() : WithPlugin {
             }
             commit()
         }
+    }
+
+    fun updateLocation(player: Player) = transaction(db) {
+        Locations.insertOrUpdate(Locations.uniqueId) {
+            val location = player.location
+            it[uniqueId] = "${player.uniqueId}"
+            it[world] = "${location.world.uid}"
+            it[x] = location.x
+            it[y] = location.y
+            it[z] = location.z
+            it[pitch] = location.pitch
+            it[yaw] = location.yaw
+        }
+    }
+
+    fun getLocation(uniqueId: UUID) = transaction(db) {
+        Locations.select { (Locations.uniqueId eq uniqueId.toString()) }
+            .firstOrNull().let {
+            return@transaction if (it == null || Bukkit.getWorld(UUID.fromString(it[world])) == null) null else {
+                Location(Bukkit.getWorld(UUID.fromString(it[world])),
+                    it[Locations.x], it[Locations.y], it[Locations.z], it[Locations.yaw], it[Locations.pitch])
+                }
+            }
     }
 
     /**********************
