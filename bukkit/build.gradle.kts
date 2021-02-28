@@ -80,6 +80,6 @@ tasks {
         authors = mutableListOf("ZachyFoxx", "SkyezerFox", "Rodwuff")
         apiVersion = "1.16"
         softDepends = mutableListOf("Vault", "LuckPerms", "StaffFacilities")
-        version = "1.0.0"
+        version = "4.0.0"
     }
 }

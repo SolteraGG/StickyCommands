@@ -9,18 +9,19 @@ import com.dumbdogdiner.stickycommands.StickyCommands
 import com.dumbdogdiner.stickycommands.item.StickyPowertool
 import com.dumbdogdiner.stickycommands.util.Constants
 import com.dumbdogdiner.stickycommands.util.Variables
+import dev.jorel.commandapi.arguments.GreedyStringArgument
 import dev.jorel.commandapi.executors.PlayerCommandExecutor
 import java.util.HashMap
 import org.bukkit.ChatColor
 import org.bukkit.Material
-import org.bukkit.command.Command
 import org.bukkit.entity.Player
 
 val powertoolCommand = commandStub("powertool", Constants.Permissions.POWERTOOL)
-    .withArguments(commandArgument("command"))
+    .withArguments(GreedyStringArgument("command"))
     .executesPlayer(PlayerCommandExecutor { sender, args ->
         val vars = Variables().withPlayer(sender, false).get()
-        val command = (args[0] as Command).name
+        val command = args.joinToString(" ")
+
         // can't assign your hand...
         if (bindingAir(sender, vars))
             return@PlayerCommandExecutor

@@ -9,7 +9,7 @@ object Constants {
     const val DEFAULT_WALKING_SPEED = 0.2f // 0.1 is sneak, supposedly.
     const val DEFAULT_FLYING_SPEED = 0.1f // according to google
     const val SMITE_EXPLOSION_STRENGTH = 1.5f
-    const val SMITE_TARGET_RANGE = 100
+    const val SMITE_TARGET_RANGE = 512
 
     object Permissions {
         const val AFK = "$prefix.afk"
