@@ -170,6 +170,7 @@ class PostgresHandler() : WithPlugin {
                 it[quantity] = listing.quantity
                 it[value] = listing.price
                 it[buyer] = if (listing.buyer == null) null else listing.buyer!!.uniqueId.toString()
+                it[sold] = plugin.config.getBoolean("auto-sell", true) // refactor this later!
             }
         }
     }
@@ -185,7 +186,7 @@ class PostgresHandler() : WithPlugin {
                             it[Listings.id],
                             Bukkit.getOfflinePlayer(UUID.fromString(it[Listings.seller])),
                             Material.valueOf(it[Listings.item]),
-                            it[Listings.value],
+                            (it[Listings.value] / it[Listings.quantity]),
                             it[Listings.quantity],
                             if (it[Listings.buyer] == null) null else Bukkit.getOfflinePlayer(UUID.fromString(it[Listings.buyer])),
                             Date.from(Instant.ofEpochSecond(it[Listings.listedAt]))
