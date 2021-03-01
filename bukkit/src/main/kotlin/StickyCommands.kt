@@ -33,7 +33,7 @@ class StickyCommands : JavaPlugin(), StickyCommands {
         var staffFacilitiesEnabled = false
     }
 
-    val postgresHandler = PostgresHandler()
+    lateinit var postgresHandler: PostgresHandler
     lateinit var worthTable: WorthTable
     lateinit var afkTimer: AfkTimer
 
@@ -43,6 +43,7 @@ class StickyCommands : JavaPlugin(), StickyCommands {
 
     override fun onLoad() {
         plugin = this
+        postgresHandler = PostgresHandler()
 
         CommandAPI.onLoad(true)
         worthTable = WorthTable()

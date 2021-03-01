@@ -130,7 +130,7 @@ class PostgresHandler() : WithPlugin {
             Users.insertOrUpdate(Users.uniqueId) {
                 it[name] = player.name
                 it[uniqueId] = player.uniqueId.toString()
-                it[ipAddress] = player.address.address.toString()
+                it[ipAddress] = player.address.address.hostAddress
                 it[lastSeen] = (System.currentTimeMillis())
                 it[firstSeen] = getFirstSeen(player)
                 it[lastServer] = plugin.config.getString("server") ?: "unknown"

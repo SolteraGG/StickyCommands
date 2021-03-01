@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "com.dumbdogdiner"
-version = "4.0.0"
+version = "4.0.1"
 
 allprojects {
     // Declare global repositories
