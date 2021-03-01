@@ -3,7 +3,7 @@ import kr.entree.spigradle.kotlin.papermc
 
 plugins {
     kotlin("jvm")
-    id("com.github.johnrengelman.shadow") version "5.2.0"
+    id("com.github.johnrengelman.shadow") version "6.1.0"
     id("kr.entree.spigradle")
 }
 
@@ -40,7 +40,7 @@ dependencies {
     implementation("com.dumbdogdiner:stickyapi:2.1.0")
 
     // plugin depends
-    compileOnly("me.clip:placeholderapi:2.10.6")
+    compileOnly("me.clip:placeholderapi:2.10.9")
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")
     compileOnly("net.luckperms:api:5.2")
     compileOnly("com.dumbdogdiner.closedsource-package-mirror:stafffacilities:4.8.5")
