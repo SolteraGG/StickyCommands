@@ -14,8 +14,8 @@ dependencies {
 
     // Annotations
     implementation("org.jetbrains:annotations:20.1.0")
-    compileOnly("org.projectlombok:lombok:1.18.16")
-    annotationProcessor("org.projectlombok:lombok:1.18.12")
+    compileOnly("org.projectlombok:lombok:1.18.18")
+    annotationProcessor("org.projectlombok:lombok:1.18.18")
 }
 
 spotless {
