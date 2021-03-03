@@ -31,8 +31,8 @@ class StickyPlaceholders : Placeholders, WithApi, PlaceholderExpansion() {
         return StickyCommands.plugin.description.version
     }
 
-    override fun onPlaceholderRequest(player: Player, identifier: String?): String? {
-        return if (identifier.equals("afk")) {
+    override fun onPlaceholderRequest(player: Player, identifier: String): String? {
+        return if (identifier == "afk") {
             if (this.playerStateManager.getPlayerState(player).isAfk) "&8[AFK]" else ""
         } else null
     }

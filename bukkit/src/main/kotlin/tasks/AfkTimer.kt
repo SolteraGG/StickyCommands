@@ -28,7 +28,7 @@ class AfkTimer : StickyTask(1000L, 1000L) {
 
             if (exceedsPermittedTime(state, state.afkTime - AFK_TIMEOUT)) {
                 val variables = Variables().withPlayer(state.player, false).get()
-                variables["time"] = (state.afkTime * 1e3).toString()
+                variables["time"] = (state.afkTime * 1e3).toLong().toString()
                 // Bukkit doesn't like async stuff, so we have to run this 1 tick later
                 Bukkit.getScheduler().scheduleSyncDelayedTask(StickyCommands.plugin,
                     {
