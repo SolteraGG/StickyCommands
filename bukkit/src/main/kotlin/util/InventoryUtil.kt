@@ -10,6 +10,12 @@ import org.bukkit.inventory.ItemStack
 
 object InventoryUtil {
 
+    /**
+     * Remove items from a player's inventory
+     * @param inventory to remove items from
+     * @param type of material to remove from the inventory
+     * @param amount of items to remove
+     */
     fun removeItems(inventory: Inventory, type: Material, amount: Int) {
         var _amount = amount
         if (_amount <= 0) return
@@ -30,6 +36,11 @@ object InventoryUtil {
         }
     }
 
+    /**
+     * Get the count of a material in an inventory
+     * @param inventory to count
+     * @param type of material to count
+    */
     fun count(inventory: Inventory, type: Material): Int {
         var count = 0
         val size = inventory.size

@@ -24,6 +24,7 @@ private val sBackSingle = commandStub("sback", Constants.Permissions.SBACK)
         val location = postgresHandler.getLocation(player.uniqueId)
         if (location == null) {
             player.sendMessage(locale.translate(Constants.LanguagePaths.BACK_NO_PREVIOUS, playerVariables(player)))
+            player.chat("/spawn") // Requested by Stixil
             return@PlayerCommandExecutor SoundUtil.sendError(player)
         }
 
@@ -42,6 +43,7 @@ private val sBackOther = commandStub("sback", Constants.Permissions.SBACK_OTHER)
         if (location == null) {
             player.sendMessage(locale.translate(Constants.LanguagePaths.BACK_NO_PREVIOUS, variables))
             SoundUtil.send(player, NotificationType.ERROR)
+            target.chat("/spawn") // Requested by Stixil
             return@CommandExecutor
         }
 

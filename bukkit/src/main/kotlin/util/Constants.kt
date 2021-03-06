@@ -4,6 +4,9 @@
  */
 package com.dumbdogdiner.stickycommands.util
 
+/**
+ * Class for storing constant values such as configuration paths
+ */
 object Constants {
     private const val prefix = "stickycommands"
     const val DEFAULT_WALKING_SPEED = 0.2f // 0.1 is sneak, supposedly.

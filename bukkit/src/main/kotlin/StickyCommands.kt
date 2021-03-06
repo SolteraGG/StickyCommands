@@ -18,7 +18,6 @@ import com.dumbdogdiner.stickycommands.util.WorthTable
 import com.dumbdogdiner.stickycommands.util.sticky.StickyStartupUtil
 import dev.jorel.commandapi.CommandAPI
 import kr.entree.spigradle.annotations.PluginMain
-import net.luckperms.api.LuckPerms
 import net.milkbowl.vault.economy.Economy
 import org.bukkit.plugin.Plugin
 import org.bukkit.plugin.java.JavaPlugin
@@ -29,7 +28,6 @@ class StickyCommands : JavaPlugin(), StickyCommands {
         lateinit var plugin: com.dumbdogdiner.stickycommands.StickyCommands
         var economy: Economy? = null
         var localeProvider: LocaleProvider? = null
-        var perms: LuckPerms? = null
         var staffFacilitiesEnabled = false
     }
 
@@ -65,10 +63,6 @@ class StickyCommands : JavaPlugin(), StickyCommands {
 
         if (!StickyStartupUtil.setupEconomy())
                 logger.severe("Disabled economy commands due to no Vault dependency found!")
-
-        if (!StickyStartupUtil.setupLuckperms())
-                logger.severe(
-                        "Disabled group listing/LuckPerms dependant features due to no LuckPerms dependency found!")
 
         if (!StickyStartupUtil.setupStaffFacilities())
                 logger.severe("StaffFacilities not found, disabling integration")

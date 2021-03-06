@@ -8,11 +8,11 @@ import com.dumbdogdiner.stickyapi.common.util.StringUtil
 import com.dumbdogdiner.stickyapi.common.util.TimeUtil
 import com.dumbdogdiner.stickycommands.WithPlugin
 import com.dumbdogdiner.stickycommands.api.economy.Listing
+import kotlin.math.round
 import org.bukkit.Location
 import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 import org.bukkit.inventory.PlayerInventory
-import kotlin.math.round
 
 /**
  * Utility class for getting a variables map with all the information about a player
@@ -21,6 +21,9 @@ class Variables() : WithPlugin {
 
     private val variables = HashMap<String, String>()
 
+    /**
+     * Get placeholders for a player object
+     */
     fun withPlayer(target: Player, isTarget: Boolean): Variables {
         val prefix = if (isTarget) "target" else "player"
         withOfflinePlayer(target, isTarget)
@@ -46,6 +49,9 @@ class Variables() : WithPlugin {
         return this
     }
 
+    /**
+     * Get placeholders for an player object
+     */
     fun withOfflinePlayer(target: OfflinePlayer, isTarget: Boolean): Variables {
         val prefix = if (isTarget) "target" else "player"
         variables[prefix] = target.name ?: "unknown"
@@ -54,6 +60,9 @@ class Variables() : WithPlugin {
         return this
     }
 
+    /**
+     * Get placeholders for a listing object
+     */
     fun withListing(listing: Listing): Variables {
         variables["worth"] = (listing.price).toString()
         variables["amount"] = (listing.quantity).toString()
@@ -69,6 +78,9 @@ class Variables() : WithPlugin {
         return this
     }
 
+    /**
+     * Get placeholders for a listing object
+     */
     fun withListing(listing: Listing, inventory: PlayerInventory): Variables {
         variables["single_worth"] = (listing.price / listing.quantity).toString()
         variables["hand_worth"] = ((listing.price / listing.quantity) * (inventory.itemInMainHand.amount)).toString()
@@ -77,6 +89,9 @@ class Variables() : WithPlugin {
         return this
     }
 
+    /**
+     * Get placeholders for a location object
+     */
     fun withLocation(location: Location): Variables {
         val x = location.x.round(2)
         val y = location.y.round(2)
@@ -91,6 +106,9 @@ class Variables() : WithPlugin {
         return this
     }
 
+    /**
+     * Get the map of placeholders
+     */
     fun get(): HashMap<String, String> {
         return this.variables
     }

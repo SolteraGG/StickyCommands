@@ -13,6 +13,9 @@ import com.dumbdogdiner.stickycommands.util.Variables
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 
+/**
+ * Task for setting AFK status and kicking AFK players
+ */
 class AfkTimer : StickyTask(1000L, 1000L) {
     private var AFK_TIMEOUT: Int = StickyCommands.plugin.config.getInt(Constants.SettingsPaths.AFK_TIMEOUT, 300)
 

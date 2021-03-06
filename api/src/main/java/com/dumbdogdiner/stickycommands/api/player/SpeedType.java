@@ -4,6 +4,9 @@
  */
 package com.dumbdogdiner.stickycommands.api.player;
 
+/**
+ * The speed type to modify for a player
+ */
 public enum SpeedType {
     WALK,
     FLY,

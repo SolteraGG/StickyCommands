@@ -71,10 +71,19 @@ class StickyPlayerState(
         return false
     }
 
+    /**
+     * Set this player state's AFK status
+     * @param isAfk
+     */
     override fun setAfk(isAfk: Boolean) {
         setAfk(isAfk, false)
     }
 
+    /**
+     * Set this player state's AFK status
+     * @param isAfk
+     * @param broadcast Whether or not to broadcast the status to the server
+     */
     override fun setAfk(isAfk: Boolean, broadcast: Boolean) {
         this._afk = isAfk
         // reset the time if we're unsetting their afk status
@@ -96,10 +105,17 @@ class StickyPlayerState(
         }
     }
 
+    /**
+     * Returns true if this player has fly mode enabled
+     */
     override fun hasFlyModeEnabled(): Boolean {
         return this.player.allowFlight
     }
 
+    /**
+     * Get this player's speed
+     * @return The player's speed as [Float]
+     */
     override fun getSpeed(type: SpeedType): Float {
         return when (type) {
             SpeedType.WALK -> this.player.walkSpeed
@@ -107,6 +123,12 @@ class StickyPlayerState(
         }
     }
 
+    /**
+     * Set this player's speed
+     * <p>
+     * This method will determine which speed type to modify
+     * @param speed to set
+     */
     override fun setSpeed(speed: Float) {
         if (this.player.isFlying)
             setSpeed(SpeedType.FLY, speed)
@@ -114,6 +136,11 @@ class StickyPlayerState(
             setSpeed(SpeedType.WALK, speed)
     }
 
+    /**
+     * Set this player's speed
+     * @param type of speed to modify
+     * @speed to set
+     */
     override fun setSpeed(type: SpeedType, speed: Float) {
         // we can't reassign params, so we have to do this.
         var _speed = speed
@@ -146,6 +173,10 @@ class StickyPlayerState(
         }
     }
 
+    /**
+     * Set this player's fly mode
+     * @param flyEnabled
+     */
     override fun setFlyModeEnabled(flyEnabled: Boolean) {
         this.player.allowFlight = flyEnabled
     }
