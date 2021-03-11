@@ -42,7 +42,7 @@ dependencies {
     // plugin depends
     compileOnly("me.clip:placeholderapi:2.10.9")
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")
-    compileOnly("net.luckperms:api:5.2")
+    compileOnly("net.luckperms:api:5.3")
     compileOnly("com.dumbdogdiner.closedsource-package-mirror:stafffacilities:4.8.5")
 
     // Database dependencies
