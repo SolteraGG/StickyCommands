@@ -18,12 +18,14 @@ import kotlin.math.roundToInt
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 
+// Well... this is a little messy...
+// TODO: Clean this up
 val sellCommand = commandStub("sell", Constants.Permissions.SELL)
     .executesPlayer(PlayerCommandExecutor { sender, args ->
         sender.sendMessage(locale.translate(Constants.LanguagePaths.SELL_MUST_CONFIRM, Variables().withPlayer(sender, false).get()))
     })
     .withSubcommand(
-        commandStub("confirm", Constants.Permissions.SELL_INVENTORY)
+        commandStub("confirm", Constants.Permissions.SELL_HAND)
             .executesPlayer(PlayerCommandExecutor { sender, args ->
                 execute(sender, false)
             })
@@ -31,8 +33,24 @@ val sellCommand = commandStub("sell", Constants.Permissions.SELL)
     .withSubcommand(
         commandStub("inventory", Constants.Permissions.SELL_INVENTORY)
             .executesPlayer(PlayerCommandExecutor { sender, args ->
-                execute(sender, true)
+                sender.sendMessage(locale.translate(Constants.LanguagePaths.SELL_MUST_CONFIRM, Variables().withPlayer(sender, false).get()))
             })
+            .withSubcommand(
+                commandStub("confirm", Constants.Permissions.SELL_INVENTORY))
+                    .executesPlayer(PlayerCommandExecutor { sender, args ->
+                        execute(sender, true)
+                })
+    )
+    .withSubcommand(
+        commandStub("hand", Constants.Permissions.SELL_HAND)
+            .executesPlayer(PlayerCommandExecutor { sender, args ->
+                sender.sendMessage(locale.translate(Constants.LanguagePaths.SELL_MUST_CONFIRM, Variables().withPlayer(sender, false).get()))
+            })
+            .withSubcommand(
+                commandStub("confirm", Constants.Permissions.SELL_HAND))
+                    .executesPlayer(PlayerCommandExecutor { sender, args ->
+                        execute(sender, false)
+                })
     )
     .withSubcommand(
         commandStub("log", Constants.Permissions.SELL_LOG)
@@ -85,7 +103,6 @@ private fun execute(sender: Player, inventory: Boolean): Boolean {
     return true
 }
 
-// TODO maybe make this look a little more nice
 private fun executeLog(sender: Player, page: Int, player: Player?): Boolean {
     val vars = Variables().withPlayer(sender, false).get()
 
