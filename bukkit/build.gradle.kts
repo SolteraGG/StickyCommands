@@ -7,7 +7,7 @@ plugins {
     id("kr.entree.spigradle")
 }
 
-version = "4.0.3"
+version = "4.0.4"
 
 repositories {
     papermc()
