@@ -4,12 +4,17 @@
  */
 package com.dumbdogdiner.stickycommands.economy
 
+import com.dumbdogdiner.stickycommands.StickyCommands
 import com.dumbdogdiner.stickycommands.WithPlugin
 import com.dumbdogdiner.stickycommands.api.economy.Listing
 import com.dumbdogdiner.stickycommands.api.economy.Market
 import com.dumbdogdiner.stickycommands.database.tables.Listings
+import com.dumbdogdiner.stickycommands.util.InventoryUtil
+import event.ListingCreateEvent
+import event.PowertoolExecuteEvent
 import org.bukkit.Material
 import org.bukkit.OfflinePlayer
+import org.bukkit.entity.Player
 import org.jetbrains.exposed.sql.Query
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.select
@@ -61,6 +66,15 @@ class StickyMarket : Market, WithPlugin {
     }
 
     override fun add(listing: Listing) {
+        val event = ListingCreateEvent(listing)
+        this.callBukkitEvent(event)
+        if (event.isCancelled)
+            return
+
+        if (StickyCommands.plugin.config.getBoolean("auto-sell", true) && listing.seller.isOnline) {
+            InventoryUtil.removeItems((listing.seller as Player).inventory, listing.material, listing.quantity)
+            StickyCommands.economy!!.depositPlayer(listing.seller, listing.price)
+        }
         this.plugin.postgresHandler.addListing(listing)
     }
 

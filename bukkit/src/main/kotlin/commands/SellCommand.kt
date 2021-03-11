@@ -74,11 +74,7 @@ private fun execute(sender: Player, inventory: Boolean): Boolean {
 
     val listing = Listing(sender, stack.type, worthTable.getWorth(stack), if (inventory) InventoryUtil.count(sender.inventory, stack.type) else stack.amount)
     vars.putAll(Variables().withListing(listing, sender.inventory).get())
-
-    if (StickyCommands.plugin.config.getBoolean("auto-sell", true) && listing.seller.isOnline) {
-        InventoryUtil.removeItems(sender.inventory, listing.material, listing.quantity)
-        StickyCommands.economy!!.depositPlayer(sender, listing.price)
-    }
+    
     sender.sendMessage(locale.translate(Constants.LanguagePaths.SELL_MESSAGE, vars))
     listing.list()
     SoundUtil.sendSuccess(sender)
