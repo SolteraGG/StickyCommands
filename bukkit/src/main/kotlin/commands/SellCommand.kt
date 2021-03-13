@@ -11,11 +11,14 @@ import com.dumbdogdiner.stickycommands.api.economy.Listing
 import com.dumbdogdiner.stickycommands.util.Constants
 import com.dumbdogdiner.stickycommands.util.InventoryUtil
 import com.dumbdogdiner.stickycommands.util.Variables
+import dev.jorel.commandapi.CommandAPICommand
 import dev.jorel.commandapi.arguments.IntegerArgument
 import dev.jorel.commandapi.arguments.StringArgument
+import dev.jorel.commandapi.executors.CommandExecutor
 import dev.jorel.commandapi.executors.PlayerCommandExecutor
 import kotlin.math.roundToInt
 import org.bukkit.Bukkit
+import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
 // Well... this is a little messy...
@@ -31,15 +34,18 @@ val sellCommand = commandStub("sell", Constants.Permissions.SELL)
             })
     )
     .withSubcommand(
-        commandStub("inventory", Constants.Permissions.SELL_INVENTORY)
+        CommandAPICommand("inventory")
+            .withPermission("sell.inventory")
             .executesPlayer(PlayerCommandExecutor { sender, args ->
                 sender.sendMessage(locale.translate(Constants.LanguagePaths.SELL_MUST_CONFIRM, Variables().withPlayer(sender, false).get()))
             })
             .withSubcommand(
-                commandStub("confirm", Constants.Permissions.SELL_INVENTORY))
+                CommandAPICommand("confirm")
+                    .withPermission(Constants.Permissions.SELL_INVENTORY)
                     .executesPlayer(PlayerCommandExecutor { sender, args ->
                         execute(sender, true)
                 })
+            )
     )
     .withSubcommand(
         commandStub("hand", Constants.Permissions.SELL_HAND)
@@ -47,10 +53,12 @@ val sellCommand = commandStub("sell", Constants.Permissions.SELL)
                 sender.sendMessage(locale.translate(Constants.LanguagePaths.SELL_MUST_CONFIRM, Variables().withPlayer(sender, false).get()))
             })
             .withSubcommand(
-                commandStub("confirm", Constants.Permissions.SELL_HAND))
+                CommandAPICommand("confirm")
+                    .withPermission(Constants.Permissions.SELL_HAND)
                     .executesPlayer(PlayerCommandExecutor { sender, args ->
                         execute(sender, false)
-                })
+                    })
+            )
     )
     .withSubcommand(
         commandStub("log", Constants.Permissions.SELL_LOG)
@@ -78,6 +86,38 @@ val sellCommand = commandStub("sell", Constants.Permissions.SELL)
             .executesPlayer(PlayerCommandExecutor { sender, args ->
                 executeLog(sender, args[1] as Int, Bukkit.getPlayer(args[0].toString()))
             })
+    )
+
+private val a = CommandAPICommand("perm")
+    .withSubcommand(
+        CommandAPICommand("group")
+            .withSubcommand(
+                CommandAPICommand("add")
+                    .withArguments(StringArgument("permission"))
+                    .withArguments(StringArgument("groupName"))
+                    .executes(CommandExecutor { sender: CommandSender?, args: Array<Any?>? -> })
+            )
+            .withSubcommand(
+                CommandAPICommand("remove")
+                    .withArguments(StringArgument("permission"))
+                    .withArguments(StringArgument("groupName"))
+                    .executes(CommandExecutor { sender: CommandSender?, args: Array<Any?>? -> })
+            )
+    )
+    .withSubcommand(
+        CommandAPICommand("user")
+            .withSubcommand(
+                CommandAPICommand("add")
+                    .withArguments(StringArgument("permission"))
+                    .withArguments(StringArgument("userName"))
+                    .executes(CommandExecutor { sender: CommandSender?, args: Array<Any?>? -> })
+            )
+            .withSubcommand(
+                CommandAPICommand("remove")
+                    .withArguments(StringArgument("permission"))
+                    .withArguments(StringArgument("userName"))
+                    .executes(CommandExecutor { sender: CommandSender?, args: Array<Any?>? -> })
+            )
     )
 
 private fun execute(sender: Player, inventory: Boolean): Boolean {

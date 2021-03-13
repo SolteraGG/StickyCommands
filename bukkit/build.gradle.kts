@@ -7,7 +7,7 @@ plugins {
     id("kr.entree.spigradle")
 }
 
-version = "4.0.4"
+version = "4.0.4a"
 
 repositories {
     papermc()
@@ -82,6 +82,6 @@ tasks {
         authors = mutableListOf("ZachyFoxx", "SkyezerFox", "Rodwuff")
         apiVersion = "1.16"
         softDepends = mutableListOf("Vault", "LuckPerms", "StaffFacilities")
-        version = "4.0.0"
+        version = this.version
     }
 }
