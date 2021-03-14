@@ -11,6 +11,7 @@ import com.dumbdogdiner.stickycommands.api.economy.Listing
 import kotlin.math.round
 import org.bukkit.Location
 import org.bukkit.OfflinePlayer
+import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.bukkit.inventory.PlayerInventory
 
@@ -103,6 +104,11 @@ class Variables() : WithPlugin {
         variables["world"] = location.world.name
         variables["pitch"] = location.pitch.toString()
         variables["yaw"] = location.yaw.toString()
+        return this
+    }
+
+    fun withSender(sender: CommandSender): Variables {
+        variables["name"] = sender.name
         return this
     }
 

@@ -20,6 +20,7 @@ object Constants {
         const val SBACK_OTHER = "$prefix.sback.other"
 
         const val KILL = "$prefix.kill"
+        const val KILL_IMMUNE = "$prefix.kill.immune"
 
         const val POWERTOOL = "$prefix.powertool"
         const val POWERTOOL_CLEAR = "$POWERTOOL.clear"
@@ -87,8 +88,10 @@ object Constants {
         const val ITEM_MESSAGE = "item-message"
         const val MEMORY_MESSAGE = "memory-message"
 
+        const val KILL_IMMUNE = "kill.kill-immune"
         const val YOU_WERE_KILLED = "kill.you-were-killed"
         const val YOU_KILLED = "kill.you-killed"
+        const val YOU_KILLED_ENTITIES = "kill.you-killed-entities"
         const val SUICIDE = "kill.suicide"
 
         const val BACK_NO_PREVIOUS = "back.no-previous"
@@ -96,6 +99,7 @@ object Constants {
         const val BACK_TELEPORTED_OTHER = "back.teleported-other"
 
         private const val smite_prefix = "smite"
+        const val SMITE_ENTITIES = "$smite_prefix.smite-entities"
         const val SMITE_OTHER = "$smite_prefix.smite-other-player"
         const val SMITE_BLOCK = "$smite_prefix.smite-block"
         const val SMITE_MESSAGE = "$smite_prefix.smite-message"

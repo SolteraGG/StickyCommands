@@ -61,9 +61,12 @@ item-message: "{prefix}&bGave you &f{amount} {item}&b!"
 kill:
   you-were-killed: "{prefix}&bThou hast been slain!"
   you-killed: "{prefix}&bYou killed &f{target}"
+  you-killed-entities: "{prefix}&bYou killed &f{amount} &bentities!"
   suicide: "{prefix}&bYou magically died!"
+  kill-immune: "{prefix}&f{target}&c is immune to your wrath!"
 
 smite:
+  smite-entities: "{prefix}&bYou fury reigns down on &f{amount} &bentities!"
   smite-other-player: "{prefix}&bYour fury reigns down on &f{target}&b!"
   smite-block: "{prefix}&bYour fury reigns down on the block at &f{location_x}, {location_y}, {location_z} &bof world &f{world}"
   smite-message: "{prefix}&bThou hast been smitten!"
