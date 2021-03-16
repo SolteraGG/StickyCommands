@@ -7,7 +7,7 @@ plugins {
     id("kr.entree.spigradle")
 }
 
-version = "4.1.0"
+version = "4.2.0"
 
 repositories {
     papermc()
@@ -45,6 +45,9 @@ dependencies {
     compileOnly("net.luckperms:api:5.3")
     compileOnly("com.dumbdogdiner.closedsource-package-mirror:stafffacilities:4.8.5")
 
+    // Command API
+    implementation("dev.jorel" , "commandapi-core", "5.8")
+
     // Database dependencies
     implementation("org.jetbrains.exposed", "exposed-core", "0.28.1")
     implementation("org.jetbrains.exposed", "exposed-dao", "0.28.1")
@@ -54,7 +57,6 @@ dependencies {
     implementation("pw.forst", "exposed-upsert", "1.0")
     implementation("com.zaxxer", "HikariCP", "3.4.5")
 
-    implementation("dev.jorel" , "commandapi-shade", "5.8")
 }
 
 

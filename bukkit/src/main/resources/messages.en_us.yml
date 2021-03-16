@@ -58,13 +58,6 @@ hat:
   remove-hat: "{prefix}&bYour hat has been removed!"
 item-message: "{prefix}&bGave you &f{amount} {item}&b!"
 
-kill:
-  you-were-killed: "{prefix}&bThou hast been slain!"
-  you-killed: "{prefix}&bYou killed &f{target}"
-  you-killed-entities: "{prefix}&bYou killed &f{amount} &bentities!"
-  suicide: "{prefix}&bYou magically died!"
-  kill-immune: "{prefix}&f{target}&c is immune to your wrath!"
-
 smite:
   smite-entities: "{prefix}&bYou fury reigns down on &f{amount} &bentities!"
   smite-other-player: "{prefix}&bYour fury reigns down on &f{target}&b!"

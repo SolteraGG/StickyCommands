@@ -8,7 +8,6 @@ import com.dumbdogdiner.stickycommands.StickyCommands
 import com.dumbdogdiner.stickycommands.WithPlugin
 import com.dumbdogdiner.stickycommands.commands.afkCommand
 import com.dumbdogdiner.stickycommands.commands.boopCommand
-import com.dumbdogdiner.stickycommands.commands.killCommand
 import com.dumbdogdiner.stickycommands.commands.powertoolCommand
 import com.dumbdogdiner.stickycommands.commands.sBackCommand
 import com.dumbdogdiner.stickycommands.commands.seenCommand
@@ -50,7 +49,6 @@ object StickyStartupUtil : WithPlugin {
         worthCommand.register()
         smiteCommand.register()
         sBackCommand.register()
-        killCommand.register()
     }
 
     /**

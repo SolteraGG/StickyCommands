@@ -16,7 +16,6 @@ import com.dumbdogdiner.stickycommands.managers.StickyPowertoolManager
 import com.dumbdogdiner.stickycommands.timers.AfkTimer
 import com.dumbdogdiner.stickycommands.util.WorthTable
 import com.dumbdogdiner.stickycommands.util.sticky.StickyStartupUtil
-import dev.jorel.commandapi.CommandAPI
 import kr.entree.spigradle.annotations.PluginMain
 import net.milkbowl.vault.economy.Economy
 import org.bukkit.plugin.Plugin
@@ -43,7 +42,6 @@ class StickyCommands : JavaPlugin(), StickyCommands {
         plugin = this
         postgresHandler = PostgresHandler()
 
-        CommandAPI.onLoad(true)
         worthTable = WorthTable()
         afkTimer = AfkTimer()
 
@@ -70,8 +68,6 @@ class StickyCommands : JavaPlugin(), StickyCommands {
         StickyStartupUtil.registerCommands()
         StickyStartupUtil.registerListeners()
         StickyStartupUtil.registerTimers(afkTimer)
-
-        CommandAPI.onEnable(this)
     }
 
     override fun onDisable() {

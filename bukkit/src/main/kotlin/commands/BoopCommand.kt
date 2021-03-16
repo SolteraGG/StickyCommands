@@ -28,7 +28,7 @@ val boopCommand = CommandAPICommand("boop")
         // <3
         if (isSkye && Random.nextDouble(0.0, 1.0) <= 0.01) {
             val entity = player.world.spawnEntity(target.location, EntityType.FOX)
-            entity.customName = ChatColor.translateAlternateColorCodes('&', String(Base64.getDecoder().decode("aWx5IHNreWU=")))
+            entity.customName = ChatColor.translateAlternateColorCodes('&', "&d&l" + String(Base64.getDecoder().decode("aWx5IHNreWU=")))
             SoundUtil.queueSound(target, Sound.ENTITY_FOX_SLEEP, 1f, 1f, 0L)
             SoundUtil.queueSound(target, Sound.ENTITY_FOX_SNIFF, 1f, 1f, 500L)
         }
