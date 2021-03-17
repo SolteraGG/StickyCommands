@@ -46,7 +46,7 @@ dependencies {
     compileOnly("com.dumbdogdiner.closedsource-package-mirror:stafffacilities:4.8.5")
 
     // Command API
-    implementation("dev.jorel" , "commandapi-core", "5.8")
+    implementation("dev.jorel" , "commandapi-shade", "5.8")
 
     // Database dependencies
     implementation("org.jetbrains.exposed", "exposed-core", "0.28.1")
