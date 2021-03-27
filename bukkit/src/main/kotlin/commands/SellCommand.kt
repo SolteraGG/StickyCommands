@@ -88,38 +88,6 @@ val sellCommand = commandStub("sell", Constants.Permissions.SELL)
             })
     )
 
-private val a = CommandAPICommand("perm")
-    .withSubcommand(
-        CommandAPICommand("group")
-            .withSubcommand(
-                CommandAPICommand("add")
-                    .withArguments(StringArgument("permission"))
-                    .withArguments(StringArgument("groupName"))
-                    .executes(CommandExecutor { sender: CommandSender?, args: Array<Any?>? -> })
-            )
-            .withSubcommand(
-                CommandAPICommand("remove")
-                    .withArguments(StringArgument("permission"))
-                    .withArguments(StringArgument("groupName"))
-                    .executes(CommandExecutor { sender: CommandSender?, args: Array<Any?>? -> })
-            )
-    )
-    .withSubcommand(
-        CommandAPICommand("user")
-            .withSubcommand(
-                CommandAPICommand("add")
-                    .withArguments(StringArgument("permission"))
-                    .withArguments(StringArgument("userName"))
-                    .executes(CommandExecutor { sender: CommandSender?, args: Array<Any?>? -> })
-            )
-            .withSubcommand(
-                CommandAPICommand("remove")
-                    .withArguments(StringArgument("permission"))
-                    .withArguments(StringArgument("userName"))
-                    .executes(CommandExecutor { sender: CommandSender?, args: Array<Any?>? -> })
-            )
-    )
-
 private fun execute(sender: Player, inventory: Boolean): Boolean {
     val vars = Variables().withPlayer(sender, false).get()
 
