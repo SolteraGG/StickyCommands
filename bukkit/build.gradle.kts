@@ -37,7 +37,7 @@ dependencies {
 
     // server dependencies
     compileOnly(paper())
-    implementation("com.dumbdogdiner:stickyapi:2.1.0")
+    implementation("com.dumbdogdiner:stickyapi:3.0.0")
 
     // plugin depends
     compileOnly("me.clip:placeholderapi:2.10.9")
