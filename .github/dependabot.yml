@@ -1,0 +1,37 @@
+version: 2
+registries:
+  maven-repository-maven-pkg-github-com-dumbdogdiner-buildtoolspac:
+    type: maven-repository
+    url: https://maven.pkg.github.com/DumbDogDiner/BuildToolsPackages
+    username: vladfrangu
+    password: "${{secrets.MAVEN_REPOSITORY_MAVEN_PKG_GITHUB_COM_DUMBDOGDINER_BUILDTOOLSPAC_PASSWORD}}"
+
+updates:
+- package-ecosystem: gradle
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "12:00"
+  open-pull-requests-limit: 16
+  ignore:
+  - dependency-name: com.diffplug.spotless
+    versions:
+    - 5.11.1
+    - 5.12.0
+    - 5.12.1
+  - dependency-name: com.dumbdogdiner:stickyapi
+    versions:
+    - 2.1.0
+    - 3.0.0
+    - 3.0.1
+  - dependency-name: org.yaml:snakeyaml
+    versions:
+    - "1.28"
+  - dependency-name: com.destroystokyo.paper:paper-api
+    versions:
+    - 1.16.5-R0.1-SNAPSHOT
+  - dependency-name: org.spigotmc:spigot-api
+    versions:
+    - 1.16.5-R0.1-SNAPSHOT
+  registries:
+  - maven-repository-maven-pkg-github-com-dumbdogdiner-buildtoolspac
