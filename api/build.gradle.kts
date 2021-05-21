@@ -13,7 +13,7 @@ dependencies {
     compileOnly(paper())
 
     // Annotations
-    implementation("org.jetbrains:annotations:20.1.0")
+    implementation("org.jetbrains:annotations:21.0.0")
     compileOnly("org.projectlombok:lombok:1.18.18")
     annotationProcessor("org.projectlombok:lombok:1.18.18")
 }
