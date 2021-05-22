@@ -15,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 //TODO Move to stickyapi
@@ -59,6 +60,16 @@ public class User implements Cacheable {
         if(!AFKState)
             afkTime = 0;
         afk = AFKState;
+        Map<String, String> vars = new HashMap<>();
+        vars.put("PLAYER", name);
+
+        if(!isHidden()) {
+            if(isAfk()) {
+                Bukkit.broadcastMessage(StickyCommands.getInstance().getLocaleProvider().translate("afk.afk", vars));
+            } else {
+                Bukkit.broadcastMessage(StickyCommands.getInstance().getLocaleProvider().translate("afk.not-afk", vars));
+            }
+        }
     }
 
     /**
@@ -166,12 +177,16 @@ public class User implements Cacheable {
         switch(type) {
             case FLY:
                 p.setFlySpeed(speed);
-                StickyCommands.getInstance().getDatabase().setSpeed(this.uniqueId, speed, 1);
+                // fixme this is ignored for nowStickyCommands.getDatabaseHandler().setSpeed(this.uniqueId, speed, 1);
                 break;
             case WALK:
                 p.setWalkSpeed(speed);
-                StickyCommands.getInstance().getDatabase().setSpeed(this.uniqueId, speed, 0);
+                // fixme this is ignored for now StickyCommands.getInstance().getDatabaseHandler().setSpeed(this.uniqueId, speed, 0);
                 break;
         }
+    }
+
+    public void toggleAfk() {
+        setAfk(!isAfk());
     }
 }

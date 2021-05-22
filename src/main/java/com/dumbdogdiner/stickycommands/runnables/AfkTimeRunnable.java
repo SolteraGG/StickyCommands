@@ -21,7 +21,7 @@ public class AfkTimeRunnable extends TimerTask {
             if (user.getAfkTime() >= AFK_TIMEOUT) {
                 var variables = new TreeMap<String, String>(String.CASE_INSENSITIVE_ORDER);
                 if (!user.isAfk()) {
-                    AfkCommand.setAFKAndBroadcast(user, true);
+                    user.setAfk(true);
                 } else if (exceedsPermittedTime(user, user.getAfkTime() - AFK_TIMEOUT)) {
                     variables.put("time", String.valueOf(user.getAfkTime() - AFK_TIMEOUT));
                     System.out.println(variables.get("time"));

@@ -40,17 +40,17 @@ public class SeenCommand extends AsyncCommand {
         if (!a.valid())
             return ExitCode.EXIT_INVALID_SYNTAX.setMessage(locale.translate("invalid-syntax", variables));
 
-        var userData = StickyCommands.getInstance().getDatabase().getUserData(a.get("player"));
-        if (userData == null) {
-            variables.put("bad_user", a.get("player"));
-            sender.sendMessage(locale.translate("player-has-not-joined", variables));
-            return ExitCode.EXIT_SUCCESS;
-        }
-
-        userData.put("player", player.getName());   
-        userData.put("player_uuid", player.getUniqueId().toString());
-        userData.put("ipaddress", sender.hasPermission("stickycommands.seen.ip") ? userData.get("ipaddress") : StringUtil.censorWord(userData.get("ipaddress")));
-        sender.sendMessage(locale.translate("seen-message", userData));
+//        var userData = StickyCommands.getInstance().getDatabaseHandler().getUserData(a.get("player"));
+//        if (userData == null) {
+//            variables.put("bad_user", a.get("player"));
+//            sender.sendMessage(locale.translate("player-has-not-joined", variables));
+//            return ExitCode.EXIT_SUCCESS;
+//        }
+//
+//        userData.put("player", player.getName());
+//        userData.put("player_uuid", player.getUniqueId().toString());
+//        userData.put("ipaddress", sender.hasPermission("stickycommands.seen.ip") ? userData.get("ipaddress") : StringUtil.censorWord(userData.get("ipaddress")));
+//        sender.sendMessage(locale.translate("seen-message", userData));
 
         return ExitCode.EXIT_SUCCESS;
     }

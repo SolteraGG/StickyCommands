@@ -7,13 +7,15 @@ import java.util.Timer;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Logger;
 
 import com.dumbdogdiner.stickycommands.commands.*;
+import com.dumbdogdiner.stickycommands.database.PostgresHandler;
+import com.dumbdogdiner.stickycommands.economy.Market;
 import com.dumbdogdiner.stickycommands.listeners.PlayerInteractionListener;
 import com.dumbdogdiner.stickycommands.listeners.PlayerJoinListener;
 import com.dumbdogdiner.stickycommands.runnables.AfkTimeRunnable;
 import com.dumbdogdiner.stickycommands.listeners.AfkEventListener;
-import com.dumbdogdiner.stickycommands.utils.Database;
 import com.dumbdogdiner.stickycommands.utils.Item;
 import com.dumbdogdiner.stickyapi.StickyAPI;
 import com.dumbdogdiner.stickyapi.bukkit.util.CommandUtil;
@@ -21,6 +23,8 @@ import com.dumbdogdiner.stickyapi.bukkit.util.StartupUtil;
 import com.dumbdogdiner.stickyapi.common.translation.LocaleProvider;
 import com.dumbdogdiner.stickyapi.common.util.TimeUtil;
 
+import dev.jorel.commandapi.CommandAPI;
+import kr.entree.spigradle.annotations.PluginMain;
 import net.luckperms.api.LuckPerms;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -31,72 +35,123 @@ import org.bukkit.plugin.java.JavaPlugin;
 import lombok.Getter;
 import net.milkbowl.vault.economy.Economy;
 
+
+// I really, ***REALLY*** didn't want this to be in kotlin but i might not have a choice....... Which is dumb, and stupid. AND it makes some bits of the interfaecee thing even dumber
+// but maybe i can make some stuff work half decent with some jvmstatics but it involves some messy companion objects.
+
+// Alternatively i can do various levels of fuckery
+// but then we return to the multiple different systems that I greatly hate
+// but maybe i can do a couple modules or something. Or even make, as far as things care, a kotlin class for these particular getters. i leit dont fucking know
+@PluginMain
 public class StickyCommands extends JavaPlugin {
 
     /**
      * The singleton instance of the plugin.
      */
-    @Getter
-    static StickyCommands instance;
 
-    @Getter
-    protected Boolean enabled = false;
+    private static StickyCommands instance;
+    // For now we have to do this shit manually?!?!
+    public static StickyCommands getInstance(){
+        return instance;
+    }
 
-    @Getter
-    private boolean staffFacilitiesEnabled;
+
+    private static Logger logger;
+
+
+    protected static Boolean enabled = false;
+
+
+    private static boolean staffFacilitiesEnabled;
+
 
     /**
      * Thread pool for the execution of asynchronous tasks.
      */
-    @Getter
-    protected ExecutorService pool = Executors.newFixedThreadPool(3);
+
+    protected static ExecutorService pool = Executors.newFixedThreadPool(3);
 
     /**
      * Cache of all online users.
      */
-    @Getter
-    protected HashMap<UUID, User> onlineUserCache = new HashMap<UUID, User>();
 
+    protected static HashMap<UUID, User> onlineUserCache = new HashMap<UUID, User>();
+    public HashMap<UUID, User> getOnlineUserCache(){
+        return onlineUserCache;
+    }
 
     /**
      * AFK TimerTask that tracks how long a player has been AFK
      */
-    @Getter
-    protected Timer afkRunnable = new Timer();
+
+    protected static Timer afkRunnable = new Timer();
+    public static Timer getAfkRunnable(){
+        return afkRunnable;
+    }
 
 
     /**
      * The server's uptime in seconds
      */
-    @Getter
-    protected Long upTime = TimeUtil.getUnixTime();
+    protected static Long upTime = TimeUtil.getUnixTime();
+    public static long getUpTime(){
+        return upTime;
+    }
 
     /**
      * The current vault economy instance.
      */
-    @Getter
-    Economy economy = null;
+    private static Economy economy = null;
+    public static Economy getEconomy(){
+        return economy;
+    }
 
-    @Getter
-    LocaleProvider localeProvider;
+
+    private static LocaleProvider localeProvider;
+
+    public static boolean isStaffFacilitiesEnabled() {
+        return staffFacilitiesEnabled;
+    }
+
+    public static Market getMarket() {
+        return market;
+    }
+
+    public LocaleProvider getLocaleProvider(){
+        return localeProvider;
+    }
 
     /**
      * The LuckPerms API instance
      */
-    @Getter
-    LuckPerms perms;
+
+    private static LuckPerms perms;
 
     /**
      * The database connected
      */
-    @Getter
-    Database database;
+
+    private static PostgresHandler databaseHandler;
+    public static PostgresHandler getDatabaseHandler(){
+        return databaseHandler;
+    }
+
+    /**
+     * The market
+     */
+
+    private static Market market;
+
+    public static LuckPerms getPerms() {
+        return perms;
+    }
 
 
     @Override
     public void onLoad() {
         enabled = true;
         instance = this;
+        logger = super.getLogger();
         // Set our thread pool
         StickyAPI.setPool(pool);
         new Item();
@@ -108,31 +163,36 @@ public class StickyCommands extends JavaPlugin {
         if (!StartupUtil.setupConfig(this))
             return;
 
-        this.localeProvider = StartupUtil.setupLocale(this, this.localeProvider);
-        if (this.localeProvider == null)
+        localeProvider = StartupUtil.setupLocale(this, localeProvider);
+        if (localeProvider == null) {
+            logger.severe("Could not setup locales! Fuck this shit, I'm out!");
             return;
-
+        }
+        databaseHandler = new PostgresHandler();
+        // I think this is done in postgreshandler
+//        database.createMissingTables();
 
         if (!setupPAPI())
-            getLogger().severe("PlaceholderAPI is not availible, is it installed?");
+            getLogger().severe("PlaceholderAPI is not available, is it installed?");
 
         if (!setupEconomy())
             getLogger().severe("Disabled economy commands due to no Vault dependency found!");
+        else
+            market = new Market();
 
         if (!setupLuckperms())
             getLogger().severe("Disabled group listing/luckperms dependant features due to no Luckperms dependency found!");
 
-        if (!setupStaffFacilities())
+        if (!checkStaffFacilities())
             getLogger().severe("StaffFacilities not found, disabling integration");
 
 
-        this.database = new Database();
-        database.createMissingTables();
+
 
         // Register currently online users - in case of a reload.
         // (stop reloading spigot, please.)
         for (Player player : Bukkit.getOnlinePlayers()) {
-            this.onlineUserCache.put(player.getUniqueId(), new User(player));
+            onlineUserCache.put(player.getUniqueId(), new User(player));
         }
 
         if (!registerEvents())
@@ -146,7 +206,7 @@ public class StickyCommands extends JavaPlugin {
         getLogger().info("StickyCommands started successfully!");
     }
 
-    private boolean setupStaffFacilities() {
+    private boolean checkStaffFacilities() {
         return staffFacilitiesEnabled = Bukkit.getPluginManager().getPlugin("StaffFacilities") != null;
     }
 
@@ -177,7 +237,7 @@ public class StickyCommands extends JavaPlugin {
     @Override
     public void onDisable() {
         reloadConfig(); // Save our config
-        database.terminate(); // Terminate our database connection
+        // no longer needed??? database.terminate(); // Terminate our database connection
         afkRunnable.cancel(); // Stop our AFK runnable
         enabled = false;
     }
@@ -216,7 +276,7 @@ public class StickyCommands extends JavaPlugin {
         commandList.add(new MemoryCommand(this));
         commandList.add(new TopCommand(this));
         commandList.add(new PowerToolCommand(this));
-        commandList.add(new AfkCommand(this));
+        CommandAPI.registerCommand(AfkCommand.class);
         commandList.add(new PlayerTimeCommand(this));
         commandList.add(new SmiteCommand(this));
         commandList.add(new HatCommand(this));

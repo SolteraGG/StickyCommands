@@ -19,20 +19,20 @@ public class PlayerJoinListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         var player = event.getPlayer();
         StickyCommands.getInstance().getOnlineUserCache().put(player.getUniqueId(), User.fromPlayer(player));
-        StickyCommands.getInstance().getDatabase().updateUser(player.getUniqueId().toString(), player.getName(), player.getAddress().getAddress().getHostAddress(), TimeUtil.now(), true, true);
+        StickyCommands.getInstance().getDatabaseHandler().updateUser(player.getUniqueId().toString(), player.getName(), player.getAddress().getAddress().getHostAddress(), TimeUtil.now(), true, true);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerQuit(PlayerQuitEvent event) {
         var player = event.getPlayer();
         StickyCommands.getInstance().getOnlineUserCache().remove(player.getUniqueId());
-        StickyCommands.getInstance().getDatabase().updateUser(player.getUniqueId().toString(), player.getName(), player.getAddress().getAddress().getHostAddress(), TimeUtil.now(), false, false);
+        StickyCommands.getInstance().getDatabaseHandler().updateUser(player.getUniqueId().toString(), player.getName(), player.getAddress().getAddress().getHostAddress(), TimeUtil.now(), false, false);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerQuit(PlayerKickEvent event) {
         var player = event.getPlayer();
         StickyCommands.getInstance().getOnlineUserCache().remove(player.getUniqueId());
-        StickyCommands.getInstance().getDatabase().updateUser(player.getUniqueId().toString(), player.getName(), player.getAddress().getAddress().getHostAddress(), TimeUtil.now(), false, false);
+        StickyCommands.getInstance().getDatabaseHandler().updateUser(player.getUniqueId().toString(), player.getName(), player.getAddress().getAddress().getHostAddress(), TimeUtil.now(), false, false);
     }
 }

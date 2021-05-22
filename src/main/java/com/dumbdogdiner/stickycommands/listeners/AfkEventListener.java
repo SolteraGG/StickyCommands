@@ -91,9 +91,7 @@ public class AfkEventListener implements Listener {
 
         assert user != null;
         user.resetAfkTime();
-        if (user.isAfk()) {
-            AfkCommand.setAFKAndBroadcast(user, false);
-        }
+        user.setAfk(false);
     }
 
     boolean nearbyContainsPlayer(Player player, Integer x, Integer y, Integer z) {

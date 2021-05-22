@@ -6,7 +6,6 @@ import com.dumbdogdiner.stickyapi.common.arguments.Arguments;
 import com.dumbdogdiner.stickyapi.common.translation.LocaleProvider;
 import com.dumbdogdiner.stickycommands.StickyCommands;
 import com.dumbdogdiner.stickycommands.User;
-import com.dumbdogdiner.stickycommands.utils.Constants;
 import com.dumbdogdiner.stickycommands.utils.SpeedType;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

@@ -5,7 +5,6 @@ import com.dumbdogdiner.stickyapi.bukkit.command.ExitCode;
 import com.dumbdogdiner.stickyapi.common.arguments.Arguments;
 import com.dumbdogdiner.stickyapi.common.translation.LocaleProvider;
 import com.dumbdogdiner.stickycommands.StickyCommands;
-import com.dumbdogdiner.stickycommands.utils.Constants;
 
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.model.group.Group;

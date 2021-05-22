@@ -27,8 +27,10 @@ import lombok.Setter;
 
 /**
  * Utility class for interfacing with the database.
+ * @deprecated replaced with the kotlin one, even though i hate how big kotlin is
  */
 @SuppressWarnings("SqlNoDataSourceInspection")
+@Deprecated
 public class Database {
     private Connection connection = null;
 

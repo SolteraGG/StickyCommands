@@ -125,7 +125,7 @@ public class Item {
     public void sell(Player player, Boolean sellInventory, TreeMap<String, String> variables, Integer amount) {
         Debugger debug = new Debugger(getClass());
         debug.print("selling item " + getName());
-        var database = StickyCommands.getInstance().getDatabase();
+        var database = StickyCommands.getInstance().getDatabaseHandler();
         debug.print("database variable declared");
         if (!sellInventory) {
             debug.print("Not selling inventory...");

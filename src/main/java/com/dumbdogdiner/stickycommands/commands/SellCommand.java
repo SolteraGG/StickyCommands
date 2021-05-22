@@ -6,6 +6,7 @@ import java.util.TreeMap;
 
 import com.dumbdogdiner.stickycommands.StickyCommands;
 import com.dumbdogdiner.stickycommands.Sale;
+import com.dumbdogdiner.stickycommands.database.PostgresHandler;
 import com.dumbdogdiner.stickycommands.utils.Database;
 import com.dumbdogdiner.stickycommands.utils.Item;
 import com.dumbdogdiner.stickyapi.common.arguments.Arguments;
@@ -23,7 +24,7 @@ import org.bukkit.plugin.Plugin;
 
 public class SellCommand extends AsyncCommand {
     static StickyCommands self = StickyCommands.getInstance();
-    LocaleProvider locale = StickyCommands.getInstance().getLocaleProvider();
+    LocaleProvider locale = StickyCommands.getLocaleProvider();
     TreeMap<String, String> variables = locale.newVariables();
 
     public SellCommand(Plugin owner) {
@@ -49,11 +50,11 @@ public class SellCommand extends AsyncCommand {
         if (a.get("sellMode") != null && a.get("sellMode").equalsIgnoreCase("log")) {
             if (!sender.hasPermission("stickycommands.sell.log"))
                 return ExitCode.EXIT_PERMISSION_DENIED.setMessage(locale.translate("no-permission", variables));
-            return handleLog(player, new Arguments(Arrays.copyOfRange(args, 1, args.length))); // We no longer need the
-                                                                                               // first
-                                                                                               // argument, just
-                                                                                               // everything
-                                                                                               // after it!
+            //todo finish or fixreturn handleLog(player, new Arguments(Arrays.copyOfRange(args, 1, args.length))); // We no longer need the
+            return ExitCode.EXIT_INVALID_STATE;                                                                     // first
+            // argument, just
+            // everything
+            // after it!
         }
 
         var item = new Item(player.getInventory().getItemInMainHand());
@@ -93,8 +94,8 @@ public class SellCommand extends AsyncCommand {
             switch (a.get("sellMode") == null ? "hand" : a.get("sellMode").toLowerCase()) {
                 case "hand":
                 case "confirm":
-                if (a.getFlag("confirm")) {
-                    System.out.println(a.get("sellMode"));
+                    if (a.getFlag("confirm")) {
+                        System.out.println(a.get("sellMode"));
                         variables.put("amount", String.valueOf(item.getAmount()));
                         variables.put("worth", String.valueOf(item.getWorth() * item.getAmount()));
                         player.sendMessage(locale.translate("sell.sell-message", variables));
@@ -128,59 +129,61 @@ public class SellCommand extends AsyncCommand {
         // SHOULD NOT REACH HERE
     }
 
+
+    // TODO x2: redo this plz
     // TODO: Allow for specifying player
+
     /**
      * Handles the log sub command!
      */
-    ExitCode handleLog(Player sender, Arguments a) {
-        a.optionalString("page");
-        if (!a.valid())
-            return ExitCode.EXIT_INVALID_SYNTAX.setMessage(locale.translate("invalid-syntax", variables));
-
-        // I hate and love this.
-        Integer page = a.get("page") == null ? 0
-                : (NumberUtil.isNumeric(a.get("page")) ? Integer.parseInt(a.get("page")) : 0);
-        Database database = StickyCommands.getInstance().getDatabase();
-        var salesList = database.getSaleLog(page);
-
-        sender.sendMessage(locale.translate("sell.log.log-message", variables));
-        var i = 0;
-        for (Sale sale : salesList) {
-            ++i;
-            variables.put("log_player", sale.getUsername());
-            variables.put("saleid", sale.getSaleId().toString());
-            variables.put("item", sale.getItem().getName());
-            variables.put("item_enum", sale.getItem().getType().toString());
-            variables.put("amount", sale.getAmount().toString());
-            variables.put("price", sale.getPrice().toString());
-            variables.put("new_balance", sale.getNewBalance().toString());
-            variables.put("old_balance", sale.getOldBalance().toString());
-            variables.put("balance_change", String.valueOf(Item.getDecimalFormat().format(sale.getNewBalance() - sale.getOldBalance())));
-            variables.put("date", sale.getDate().toString());
-            sender.spigot().sendMessage(new ChatMessage(locale.translate("sell.log.log", variables)).setHoverMessage(locale.translate("sell.log.log-hover", variables)).getComponent());
-            // Due to a limitation with the ChatMessage class, I can't append hover messages...
-            // sender.spigot().sendMessage(logMessage.getComponent());
-        }
-        
-        Integer totalPages = database.getSaleLogSize() / 8;
-        if (i < 1 || page > totalPages) {
-            sender.sendMessage(locale.translate("sell.log.no-sales", variables));
-            return ExitCode.EXIT_SUCCESS;
-        }
-        variables.put("current", String.valueOf(page));
-        variables.put("total", String.valueOf(totalPages));
-        sender.sendMessage(locale.translate("sell.log.paginator", variables));
-
-        return ExitCode.EXIT_SUCCESS;
-    }
-
+//    ExitCode handleLog(Player sender, Arguments a) {
+//        a.optionalString("page");
+//        if (!a.valid())
+//            return ExitCode.EXIT_INVALID_SYNTAX.setMessage(locale.translate("invalid-syntax", variables));
+//
+//        // I hate and love this.
+//        Integer page = a.get("page") == null ? 0
+//                : (NumberUtil.isNumeric(a.get("page")) ? Integer.parseInt(a.get("page")) : 0);
+//        PostgresHandler database = StickyCommands.getDatabase();
+//        var salesList = database.getSaleLog(page);
+//
+//        sender.sendMessage(locale.translate("sell.log.log-message", variables));
+//        var i = 0;
+//        for (Sale sale : salesList) {
+//            ++i;
+//            variables.put("log_player", sale.getUsername());
+//            variables.put("saleid", sale.getSaleId().toString());
+//            variables.put("item", sale.getItem().getName());
+//            variables.put("item_enum", sale.getItem().getType().toString());
+//            variables.put("amount", sale.getAmount().toString());
+//            variables.put("price", sale.getPrice().toString());
+//            variables.put("new_balance", sale.getNewBalance().toString());
+//            variables.put("old_balance", sale.getOldBalance().toString());
+//            variables.put("balance_change", String.valueOf(Item.getDecimalFormat().format(sale.getNewBalance() - sale.getOldBalance())));
+//            variables.put("date", sale.getDate().toString());
+//            sender.spigot().sendMessage(new ChatMessage(locale.translate("sell.log.log", variables)).setHoverMessage(locale.translate("sell.log.log-hover", variables)).getComponent());
+//            // Due to a limitation with the ChatMessage class, I can't append hover messages...
+//            // sender.spigot().sendMessage(logMessage.getComponent());
+//        }
+//
+//        Integer totalPages = database.getSaleLogSize() / 8;
+//        if (i < 1 || page > totalPages) {
+//            sender.sendMessage(locale.translate("sell.log.no-sales", variables));
+//            return ExitCode.EXIT_SUCCESS;
+//        }
+//        variables.put("current", String.valueOf(page));
+//        variables.put("total", String.valueOf(totalPages));
+//        sender.sendMessage(locale.translate("sell.log.paginator", variables));
+//
+//        return ExitCode.EXIT_SUCCESS;
+//    }
     @Override
     public List<String> tabComplete(CommandSender sender, String alias, String[] args) {
         if (args.length < 2) {
-            return Arrays.asList(new String[] { "hand", "inventory",
-                    (sender.hasPermission("stickycommands.sell.log") ? "log" : "") });
+            return Arrays.asList(new String[]{"hand", "inventory",
+                    (sender.hasPermission("stickycommands.sell.log") ? "log" : "")});
         } else if (args.length == 2) {
-            return Arrays.asList(new String[] { "confirm" });
+            return Arrays.asList(new String[]{"confirm"});
         }
         return null;
     }

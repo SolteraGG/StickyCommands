@@ -1,11 +1,11 @@
 package com.dumbdogdiner.stickycommands;
 
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.spi.NumberFormatProvider;
 import java.util.Locale;
 
-/** Class to hold and format coins
+/**
+ *  Class to hold and format coins
  * Could use or be in StickyAPI, but this would be a future move.
  * Contains formatting and some worth calculations
  */
