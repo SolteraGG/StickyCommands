@@ -25,6 +25,7 @@ import com.dumbdogdiner.stickyapi.common.util.TimeUtil;
 
 import dev.jorel.commandapi.CommandAPI;
 import kr.entree.spigradle.annotations.PluginMain;
+import lombok.Getter;
 import net.luckperms.api.LuckPerms;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -47,103 +48,73 @@ public class StickyCommands extends JavaPlugin {
     /**
      * The singleton instance of the plugin.
      */
-
+    @Getter
     private static StickyCommands instance;
-    // For now we have to do this shit manually?!?!
-    public static StickyCommands getInstance(){
-        return instance;
-    }
 
-
+    @Getter
     private static Logger logger;
 
-
+    @Getter
     protected static Boolean enabled = false;
 
-
+    @Getter
     private static boolean staffFacilitiesEnabled;
 
 
     /**
      * Thread pool for the execution of asynchronous tasks.
      */
-
+    @Getter
     protected static ExecutorService pool = Executors.newFixedThreadPool(3);
 
     /**
      * Cache of all online users.
      */
-
+    @Getter
     protected static HashMap<UUID, User> onlineUserCache = new HashMap<UUID, User>();
-    public HashMap<UUID, User> getOnlineUserCache(){
-        return onlineUserCache;
-    }
+
 
     /**
      * AFK TimerTask that tracks how long a player has been AFK
      */
-
+    @Getter
     protected static Timer afkRunnable = new Timer();
-    public static Timer getAfkRunnable(){
-        return afkRunnable;
-    }
 
 
     /**
      * The server's uptime in seconds
      */
+    @Getter
     protected static Long upTime = TimeUtil.getUnixTime();
-    public static long getUpTime(){
-        return upTime;
-    }
 
     /**
      * The current vault com.dumbdogdiner.stickycommands.economy instance.
      */
+    @Getter
     private static Economy economy = null;
-    public static Economy getEconomy(){
-        return economy;
-    }
 
-
+    @Getter
     private static LocaleProvider localeProvider;
 
-    public static boolean isStaffFacilitiesEnabled() {
-        return staffFacilitiesEnabled;
-    }
-
-    public static Market getMarket() {
-        return market;
-    }
-
-    public LocaleProvider getLocaleProvider(){
-        return localeProvider;
-    }
 
     /**
      * The LuckPerms API instance
      */
-
+    @Getter
     private static LuckPerms perms;
 
     /**
      * The com.dumbdogdiner.stickycommands.database connected
      */
-
+    @Getter
     private static PostgresHandler databaseHandler;
-    public static PostgresHandler getDatabaseHandler(){
-        return databaseHandler;
-    }
+
 
     /**
      * The market
      */
-
+    @Getter
     private static Market market;
-
-    public static LuckPerms getPerms() {
-        return perms;
-    }
 
 
     @Override
@@ -165,9 +136,15 @@ public class StickyCommands extends JavaPlugin {
         localeProvider = StartupUtil.setupLocale(this, localeProvider);
         if (localeProvider == null) {
             logger.severe("Could not setup locales! Fuck this shit, I'm out!");
+            Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
-        databaseHandler = new PostgresHandler();
+        databaseHandler = new PostgresHandler(getConfig(), getLogger());
+        if (!databaseHandler.init()) {
+            logger.severe("Database is buggered, I can't deal with this, goodbye!");
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
         // I think this is done in postgreshandler
 //        com.dumbdogdiner.stickycommands.database.createMissingTables();
 
@@ -177,15 +154,13 @@ public class StickyCommands extends JavaPlugin {
         if (!setupEconomy())
             getLogger().severe("Disabled com.dumbdogdiner.stickycommands.economy commands due to no Vault dependency found!");
         else
-            market = new Market();
+            market = new Market(databaseHandler);
 
         if (!setupLuckperms())
             getLogger().severe("Disabled group listing/luckperms dependant features due to no Luckperms dependency found!");
 
         if (!checkStaffFacilities())
             getLogger().severe("StaffFacilities not found, disabling integration");
-
-
 
 
         // Register currently online users - in case of a reload.
@@ -196,10 +171,10 @@ public class StickyCommands extends JavaPlugin {
 
         if (!registerEvents())
             return;
-        
+
         if (!registerCommands())
             return;
-        
+
         afkRunnable.scheduleAtFixedRate(new AfkTimeRunnable(), 1000L, 1000L); // We must run this every ONE second!
 
         getLogger().info("StickyCommands started successfully!");
@@ -260,27 +235,27 @@ public class StickyCommands extends JavaPlugin {
      * Register all the commands!
      */
     boolean registerCommands() {
-        List<Command> commandList = new ArrayList<Command>();
+//        List<Command> commandList = new ArrayList<Command>();
         // Register com.dumbdogdiner.stickycommands.economy based commands only if the com.dumbdogdiner.stickycommands.economy provider is not null.
-        if (economy != null) {
-            commandList.add(new SellCommand(this));
-            commandList.add(new WorthCommand(this));
-        }
-
-        commandList.add(new SpeedCommand(this));
-        commandList.add(new SeenCommand(this));
-    
-        commandList.add(new KillCommand(this));
-        commandList.add(new JumpCommand(this));
-        commandList.add(new MemoryCommand(this));
-        commandList.add(new TopCommand(this));
-        commandList.add(new PowerToolCommand(this));
+//        if (economy != null) {
+//            commandList.add(new SellCommand(this));
+//            commandList.add(new WorthCommand(this));
+//        }
+//
+//        commandList.add(new SpeedCommand(this));
+//        commandList.add(new SeenCommand(this));
+//
+//        commandList.add(new KillCommand(this));
+//        commandList.add(new JumpCommand(this));
+//        commandList.add(new MemoryCommand(this));
+//        commandList.add(new TopCommand(this));
+//        commandList.add(new PowerToolCommand(this));
         CommandAPI.registerCommand(AfkCommand.class);
-        commandList.add(new PlayerTimeCommand(this));
-        commandList.add(new SmiteCommand(this));
-        commandList.add(new HatCommand(this));
-
-        CommandUtil.registerCommands(getServer(), commandList);
+//        commandList.add(new PlayerTimeCommand(this));
+//        commandList.add(new SmiteCommand(this));
+//        commandList.add(new HatCommand(this));
+//
+//        CommandUtil.registerCommands(getServer(), commandList);
         return true;
     }
 
@@ -298,6 +273,7 @@ public class StickyCommands extends JavaPlugin {
      * Get an online user
      *
      * @param uuid the UUID of the user to lookup
+     *
      * @return The user if found, otherwise null
      */
     public User getOnlineUser(UUID uuid) {

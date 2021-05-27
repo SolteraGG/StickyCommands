@@ -28,7 +28,7 @@ class Market (val database : PostgresHandler){
 
     // How do i do this best? I think i need ot pass it in...
     private fun query(query: Query, sortBy: Listing.SortBy, page: Int, pageSize: Int): List<Listing> {
-        return database.getListings(query, sortBy, page, pageSize)
+        return database.getListings(this, query, sortBy, page, pageSize)
     }
 
     /**

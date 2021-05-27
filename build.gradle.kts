@@ -8,7 +8,7 @@ plugins {
     id("org.jetbrains.dokka") version "1.4.32"
     id("com.github.johnrengelman.shadow") version "6.1.0"
     id("maven-publish")
-    id("io.freefair.lombok") version "5.3.0"
+    //id("io.freefair.lombok") version "5.3.0"
     id("kr.entree.spigradle") version "2.2.3"
 }
 
@@ -83,9 +83,9 @@ dependencies {
 
     // java deps
     compileOnly("org.projectlombok:lombok:1.18.16")
-    annotationProcessor("org.projectlombok:lombok:1.18.12")
+    //annotationProcessor("org.projectlombok:lombok:1.18.12")
     implementation("org.jetbrains:annotations:20.1.0")
-    //kapt("org.projectlombok:lombok:1.18.12")
+    kapt("org.projectlombok:lombok:1.18.12")
 
     // spigot, paper
     compileOnly(paper(mcApiVer))
@@ -146,7 +146,7 @@ tasks {
     }
 
     compileKotlin {
-        setSource(delombok.get().outputs)
+        //setSource(delombok.get().outputs)
         println(source.asPath)
     }
 

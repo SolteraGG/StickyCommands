@@ -25,7 +25,9 @@ import java.time.Instant
 import java.util.*
 import java.util.logging.Logger
 
-class PostgresHandler(val config : FileConfiguration, val market : Market, val logger : Logger) {
+
+// TODO: for the love of anything document this please!!!
+class PostgresHandler(val config: FileConfiguration, val logger: Logger) {
     lateinit var db: Database
 
     fun init(): Boolean {
@@ -63,7 +65,7 @@ class PostgresHandler(val config : FileConfiguration, val market : Market, val l
     }
 
     /**********************
-        BEGIN USER UTILS
+    BEGIN USER UTILS
      **********************/
 
     fun getUserInfo(username: String, isTarget: Boolean): Map<String, String> {
@@ -151,19 +153,21 @@ class PostgresHandler(val config : FileConfiguration, val market : Market, val l
     fun getLocation(uniqueId: UUID) = transaction(db) {
         Locations.select { (Locations.uniqueId eq uniqueId.toString()) }
             .firstOrNull().let {
-            return@transaction if (it == null || Bukkit.getWorld(UUID.fromString(it[world])) == null) null else {
-                Location(Bukkit.getWorld(UUID.fromString(it[world])),
-                    it[Locations.x], it[Locations.y], it[Locations.z], it[Locations.yaw], it[Locations.pitch])
+                return@transaction if (it == null || Bukkit.getWorld(UUID.fromString(it[world])) == null) null else {
+                    Location(
+                        Bukkit.getWorld(UUID.fromString(it[world])),
+                        it[Locations.x], it[Locations.y], it[Locations.z], it[Locations.yaw], it[Locations.pitch]
+                    )
                 }
             }
     }
 
     /**********************
-        END USER UTILS
+    END USER UTILS
      **********************/
 
     /**********************
-       BEGIN MARKET UTILS
+    BEGIN MARKET UTILS
      **********************/
 
     private fun orderBy(sortBy: Listing.SortBy): (Pair<Expression<*>, SortOrder>) = when (sortBy) {
@@ -188,7 +192,8 @@ class PostgresHandler(val config : FileConfiguration, val market : Market, val l
         }
     }
 
-    fun getListings(query: Query, sortBy: Listing.SortBy, page: Int, pageSize: Int): List<Listing> {
+
+    fun getListings(market: Market, query: Query, sortBy: Listing.SortBy, page: Int, pageSize: Int): List<Listing> {
         val transactions = mutableListOf<Listing>()
         transaction(db) {
             query.limit(pageSize, ((page - 1) * pageSize).toLong())
@@ -212,6 +217,6 @@ class PostgresHandler(val config : FileConfiguration, val market : Market, val l
     }
 
     /**********************
-       END MARKET UTILS
+    END MARKET UTILS
      **********************/
 }
