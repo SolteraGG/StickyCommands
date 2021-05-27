@@ -16,8 +16,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.entity.Player;
 
-public class JumpCommand extends AsyncCommand {
-    private static LocaleProvider locale = StickyCommands.getInstance().getLocaleProvider();
+/**
+ * Teleports player to the block they are looking at
+ */
+public class JumpCommand {
+    /*private static LocaleProvider locale = StickyCommands.getInstance().getLocaleProvider();
     TreeMap<String, String> variables = locale.newVariables();
 
     public JumpCommand(Plugin owner) {
@@ -69,5 +72,5 @@ public class JumpCommand extends AsyncCommand {
     @Override
     public List<String> tabComplete(CommandSender sender, String alias, String[] args) {
         return null; // We don't want any tab complete for this command
-    }
+    }*/
 }

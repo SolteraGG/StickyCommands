@@ -144,8 +144,8 @@ public class SellCommand extends AsyncCommand {
 //        // I hate and love this.
 //        Integer page = a.get("page") == null ? 0
 //                : (NumberUtil.isNumeric(a.get("page")) ? Integer.parseInt(a.get("page")) : 0);
-//        PostgresHandler database = StickyCommands.getDatabase();
-//        var salesList = database.getSaleLog(page);
+//        PostgresHandler com.dumbdogdiner.stickycommands.database = StickyCommands.getDatabase();
+//        var salesList = com.dumbdogdiner.stickycommands.database.getSaleLog(page);
 //
 //        sender.sendMessage(locale.translate("sell.log.log-message", variables));
 //        var i = 0;
@@ -166,7 +166,7 @@ public class SellCommand extends AsyncCommand {
 //            // sender.spigot().sendMessage(logMessage.getComponent());
 //        }
 //
-//        Integer totalPages = database.getSaleLogSize() / 8;
+//        Integer totalPages = com.dumbdogdiner.stickycommands.database.getSaleLogSize() / 8;
 //        if (i < 1 || page > totalPages) {
 //            sender.sendMessage(locale.translate("sell.log.no-sales", variables));
 //            return ExitCode.EXIT_SUCCESS;

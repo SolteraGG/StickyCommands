@@ -1,1 +1,3 @@
 rootProject.name = 'stickycommands'
+include 'DatabaseProvider'
+

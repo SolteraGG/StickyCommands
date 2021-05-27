@@ -26,7 +26,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Utility class for interfacing with the database.
+ * Utility class for interfacing with the com.dumbdogdiner.stickycommands.database.
  * @deprecated replaced with the kotlin one, even though i hate how big kotlin is
  */
 @SuppressWarnings("SqlNoDataSourceInspection")
@@ -38,30 +38,30 @@ public class Database {
 
     @Getter
     @Setter
-    private String host = config.getString("database.host", "localhost");
+    private String host = config.getString("com.dumbdogdiner.stickycommands.database.host", "localhost");
     @Getter
     @Setter
-    private Integer port = config.getInt("database.port", 3306);
+    private Integer port = config.getInt("com.dumbdogdiner.stickycommands.database.port", 3306);
     @Getter
     @Setter
-    private String name = config.getString("database.name", "lolbans");
+    private String name = config.getString("com.dumbdogdiner.stickycommands.database.name", "lolbans");
     @Getter
     @Setter
-    private Integer maxReconnects = config.getInt("database.max-reconnects", 5);
+    private Integer maxReconnects = config.getInt("com.dumbdogdiner.stickycommands.database.max-reconnects", 5);
     @Getter
     @Setter
-    private Boolean useSSL = config.getBoolean("database.use-ssl", false);
+    private Boolean useSSL = config.getBoolean("com.dumbdogdiner.stickycommands.database.use-ssl", false);
 
     @Getter
     @Setter
-    private String username = config.getString("database.username", "root");
+    private String username = config.getString("com.dumbdogdiner.stickycommands.database.username", "root");
     @Getter
     @Setter
-    private String password = config.getString("database.password", "password");
+    private String password = config.getString("com.dumbdogdiner.stickycommands.database.password", "password");
 
     @Getter
     @Setter
-    private String tablePrefix = config.getString("database.table-prefix", "stickycommands_");
+    private String tablePrefix = config.getString("com.dumbdogdiner.stickycommands.database.table-prefix", "stickycommands_");
 
     // TODO Add configuration check
     public Database() {
@@ -69,7 +69,7 @@ public class Database {
     }
 
     /**
-     * Open a new connection to the database.
+     * Open a new connection to the com.dumbdogdiner.stickycommands.database.
      */
     private Connection openConnection() {
         try {
@@ -87,7 +87,7 @@ public class Database {
     }
 
     /**
-     * Get a reference to this instance's database connection. Will attempt to
+     * Get a reference to this instance's com.dumbdogdiner.stickycommands.database connection. Will attempt to
      * create a new connection if the existing one doesn't exist, or has been
      * closed.
      */
@@ -142,7 +142,7 @@ public class Database {
         } catch (SQLException e) {
             e.printStackTrace();
             StickyCommands.getInstance().getLogger()
-                    .severe("Cannot create database tables, please ensure your SQL user has the correct permissions.");
+                    .severe("Cannot create com.dumbdogdiner.stickycommands.database tables, please ensure your SQL user has the correct permissions.");
             return false;
 
         }
@@ -187,7 +187,7 @@ public class Database {
     }
 
     /**
-     * Get the speed for a user of a certain speed type from the database
+     * Get the speed for a user of a certain speed type from the com.dumbdogdiner.stickycommands.database
      * @param uuid The UUID of the player
      * @param type The speed type
      * @return {@link java.lang.Float}
@@ -331,7 +331,7 @@ public class Database {
     }
 
      /**
-     * Insert a user into the database.
+     * Insert a user into the com.dumbdogdiner.stickycommands.database.
      * 
      * @param uuid       UUID of the minecraft user
      * @param playerName Name of the minecraft player
@@ -350,7 +350,7 @@ public class Database {
                     // them
                     // This happens because we insert every time they join for the first time, but
                     // if the playerdata is removed on the world
-                    // or the spigot plugin is setup in multiple servers using the same database, it
+                    // or the spigot plugin is setup in multiple servers using the same com.dumbdogdiner.stickycommands.database, it
                     // would add them a second time
                     // lets not do that....
                     PreparedStatement checkUser = connection.prepareStatement("SELECT uuid FROM " + withPrefix("users") + " WHERE uuid = ?");
@@ -409,7 +409,7 @@ public class Database {
                 try {
                     // This is a fail-safe just incase the table was dropped or the player joined
                     // the server BEFORE the plugin was added...
-                    // This will ensure they get added to the database no matter what.
+                    // This will ensure they get added to the com.dumbdogdiner.stickycommands.database no matter what.
                     PreparedStatement checkUser = connection
                             .prepareStatement(String.format("SELECT * FROM " + withPrefix("users") + " WHERE uuid = ?"));
                         checkUser.setString(1, uuid.toString());

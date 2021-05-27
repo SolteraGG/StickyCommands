@@ -8,6 +8,7 @@ import com.dumbdogdiner.stickyapi.bukkit.command.AsyncCommand;
 import com.dumbdogdiner.stickyapi.bukkit.command.ExitCode;
 import com.dumbdogdiner.stickyapi.common.translation.LocaleProvider;
 
+import com.dumbdogdiner.stickycommands.utils.Constants;
 import dev.jorel.commandapi.annotations.Command;
 import dev.jorel.commandapi.annotations.Default;
 import dev.jorel.commandapi.annotations.Permission;
@@ -26,7 +27,7 @@ public class AfkCommand {
     }
 
     @Default
-    @Permission("stickycommands.afk")
+    @Permission(Constants.Permissions.AFK)
     public static void afk(Player player) {
         TreeMap<String, String> vars = locale.newVariables();
         vars.put("player", player.getName());

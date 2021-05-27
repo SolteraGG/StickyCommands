@@ -99,7 +99,7 @@ public class StickyCommands extends JavaPlugin {
     }
 
     /**
-     * The current vault economy instance.
+     * The current vault com.dumbdogdiner.stickycommands.economy instance.
      */
     private static Economy economy = null;
     public static Economy getEconomy(){
@@ -128,7 +128,7 @@ public class StickyCommands extends JavaPlugin {
     private static LuckPerms perms;
 
     /**
-     * The database connected
+     * The com.dumbdogdiner.stickycommands.database connected
      */
 
     private static PostgresHandler databaseHandler;
@@ -170,13 +170,13 @@ public class StickyCommands extends JavaPlugin {
         }
         databaseHandler = new PostgresHandler();
         // I think this is done in postgreshandler
-//        database.createMissingTables();
+//        com.dumbdogdiner.stickycommands.database.createMissingTables();
 
         if (!setupPAPI())
             getLogger().severe("PlaceholderAPI is not available, is it installed?");
 
         if (!setupEconomy())
-            getLogger().severe("Disabled economy commands due to no Vault dependency found!");
+            getLogger().severe("Disabled com.dumbdogdiner.stickycommands.economy commands due to no Vault dependency found!");
         else
             market = new Market();
 
@@ -237,13 +237,13 @@ public class StickyCommands extends JavaPlugin {
     @Override
     public void onDisable() {
         reloadConfig(); // Save our config
-        // no longer needed??? database.terminate(); // Terminate our database connection
+        // no longer needed??? com.dumbdogdiner.stickycommands.database.terminate(); // Terminate our com.dumbdogdiner.stickycommands.database connection
         afkRunnable.cancel(); // Stop our AFK runnable
         enabled = false;
     }
 
     /**
-     * Setup the vault economy instance.
+     * Setup the vault com.dumbdogdiner.stickycommands.economy instance.
      */
     private boolean setupEconomy() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
@@ -262,7 +262,7 @@ public class StickyCommands extends JavaPlugin {
      */
     boolean registerCommands() {
         List<Command> commandList = new ArrayList<Command>();
-        // Register economy based commands only if the economy provider is not null.
+        // Register com.dumbdogdiner.stickycommands.economy based commands only if the com.dumbdogdiner.stickycommands.economy provider is not null.
         if (economy != null) {
             commandList.add(new SellCommand(this));
             commandList.add(new WorthCommand(this));

@@ -4,44 +4,45 @@
  */
 package com.dumbdogdiner.stickycommands.database
 
-import com.dumbdogdiner.stickycommands.StickyCommandsKt
-import com.dumbdogdiner.stickycommands.aatempmovemeplz.Listing
+import com.dumbdogdiner.stickycommands.economy.Listing
 import com.dumbdogdiner.stickycommands.database.tables.Listings
 import com.dumbdogdiner.stickycommands.database.tables.Locations
 import com.dumbdogdiner.stickycommands.database.tables.Locations.world
 import com.dumbdogdiner.stickycommands.database.tables.Users
-import com.dumbdogdiner.stickycommands.utils.Constants
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
+import com.dumbdogdiner.stickycommands.economy.Market
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material
+import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.entity.Player
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import pw.forst.exposed.insertOrUpdate
 import java.time.Instant
 import java.util.*
+import java.util.logging.Logger
 
-class PostgresHandler() : StickyCommandsKt {
+class PostgresHandler(val config : FileConfiguration, val market : Market, val logger : Logger) {
     lateinit var db: Database
 
     fun init(): Boolean {
         var success = true
-        logger.info("[SQL] Checking SQL database has been set up correctly...")
+        logger.info("[SQL] Checking SQL com.dumbdogdiner.stickycommands.database has been set up correctly...")
 
         val config = HikariConfig().apply {
             jdbcUrl = "jdbc:postgresql://${
-                config.getString(Constants.SettingsPaths.DATABASE_HOST)
+                config.getString(DatabaseConstants.DATABASE_HOST)
             }:${
-                config.getInt(Constants.SettingsPaths.DATABASE_PORT)
+                config.getInt(DatabaseConstants.DATABASE_PORT)
             }/${
-                config.getString(Constants.SettingsPaths.DATABASE_DATABASE)
-            }?sslmode=${config.getString(Constants.SettingsPaths.DATABASE_USE_SSL, "disabled")}"
+                config.getString(DatabaseConstants.DATABASE_DATABASE)
+            }?sslmode=${config.getString(DatabaseConstants.DATABASE_USE_SSL, "disabled")}"
 
             driverClassName = "com.dumbdogdiner.stickycommands.libs.org.postgresql.Driver"
-            username = config.getString(Constants.SettingsPaths.DATABASE_USERNAME, "postgres")!!
-            password = config.getString(Constants.SettingsPaths.DATABASE_PASSWORD)!!
+            username = config.getString(DatabaseConstants.DATABASE_USERNAME, "postgres")!!
+            password = config.getString(DatabaseConstants.DATABASE_PASSWORD)!!
             maximumPoolSize = 2
         }
 
@@ -50,10 +51,10 @@ class PostgresHandler() : StickyCommandsKt {
 
         transaction(db) {
             try {
-                addLogger(ExposedLogger())
+                addLogger(ExposedLogger(logger))
                 SchemaUtils.createMissingTablesAndColumns(Users, Listings, Locations)
             } catch (e: Exception) {
-                logger.warning("[SQL] Failed to connect to SQL database - invalid connection info/database not up")
+                logger.warning("[SQL] Failed to connect to SQL com.dumbdogdiner.stickycommands.database - invalid connection info/com.dumbdogdiner.stickycommands.database not up")
                 success = false
             }
         }
@@ -124,7 +125,7 @@ class PostgresHandler() : StickyCommandsKt {
                 it[ipAddress] = player.address.address.hostAddress
                 it[lastSeen] = (System.currentTimeMillis())
                 it[firstSeen] = getFirstSeen(player)
-                it[lastServer] = plugin.config.getString("server") ?: "unknown"
+                it[lastServer] = config.getString("server") ?: "unknown"
                 it[isOnline] = !leaving
                 it[flySpeed] = player.flySpeed
                 it[walkSpeed] = player.walkSpeed
@@ -181,7 +182,7 @@ class PostgresHandler() : StickyCommandsKt {
                 it[quantity] = listing.quantity
                 it[value] = listing.price
                 it[buyer] = if (listing.buyer == null) null else listing.buyer!!.uniqueId.toString()
-                it[sold] = plugin.config.getBoolean("auto-sell", true) // refactor this later!
+                it[sold] = config.getBoolean("auto-sell", true) // refactor this later!
             }
         }
     }
@@ -194,6 +195,7 @@ class PostgresHandler() : StickyCommandsKt {
                 .iterator().forEach {
                     transactions.add(
                         Listing(
+                            market,
                             it[Listings.id],
                             Bukkit.getOfflinePlayer(UUID.fromString(it[Listings.seller])),
                             Material.valueOf(it[Listings.item]),

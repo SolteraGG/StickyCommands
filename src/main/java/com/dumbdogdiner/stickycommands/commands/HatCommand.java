@@ -5,6 +5,10 @@ import com.dumbdogdiner.stickyapi.bukkit.command.ExitCode;
 import com.dumbdogdiner.stickyapi.common.arguments.Arguments;
 import com.dumbdogdiner.stickyapi.common.translation.LocaleProvider;
 import com.dumbdogdiner.stickycommands.StickyCommands;
+import com.dumbdogdiner.stickycommands.utils.Constants;
+import dev.jorel.commandapi.annotations.Command;
+import dev.jorel.commandapi.annotations.Default;
+import dev.jorel.commandapi.annotations.Permission;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -13,16 +17,25 @@ import org.bukkit.plugin.Plugin;
 
 import java.util.TreeMap;
 
-public class HatCommand extends AsyncCommand{
+@Command("hat")
+@Permission(Constants.Permissions.HAT)
+public class HatCommand {
     private static final LocaleProvider locale = StickyCommands.getInstance().getLocaleProvider();
+
+    @Default
+    public static void hat(Player player){
+        player.sendMessage("Not implemented, fuck off");
+    }
+
+/*
     private final TreeMap<String, String> variables = locale.newVariables();
     private static final  String HAT_PERMISSION = "stickycommands.hat";
     private static final String HAT_REMOVE_FLAG = "remove";
     private static final String HAT_OFFHAND_FLAG = "offhand";
 
-    /**
+    *//**
      * Create a new command for the associated plugin
-     */
+     *//*
     public HatCommand(Plugin owner) {
         super("hat", owner);
         setPermission(HAT_PERMISSION);
@@ -59,7 +72,7 @@ public class HatCommand extends AsyncCommand{
             }
 
 
-        /*
+        *//*
             if(false){
                 // See if mainhand is free
                 if(handItem.getType().isAir()){
@@ -76,10 +89,10 @@ public class HatCommand extends AsyncCommand{
             } else {
                 inv.setItemInMainHand(oldHelmet);
                 inv.setHelmet(handItem);
-            }*/
+            }*//*
             return ExitCode.EXIT_SUCCESS;
         } else {
             return ExitCode.EXIT_PERMISSION_DENIED;
         }
-    }
+    }*/
 }

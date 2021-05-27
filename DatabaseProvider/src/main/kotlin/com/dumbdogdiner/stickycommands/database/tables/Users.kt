@@ -4,11 +4,9 @@
  */
 package com.dumbdogdiner.stickycommands.database.tables
 
-import com.dumbdogdiner.stickycommands.StickyCommands
-import com.dumbdogdiner.stickycommands.utils.Constants
 import org.jetbrains.exposed.sql.Table
 
-object Users : Table(StickyCommands.getInstance().config.getString(Constants.SettingsPaths.DATABASE_TABLE_PREFIX) + "users"){
+object Users : Table(prefix + "users"){
 
     val uniqueId = varchar("unique_id", 36)
 

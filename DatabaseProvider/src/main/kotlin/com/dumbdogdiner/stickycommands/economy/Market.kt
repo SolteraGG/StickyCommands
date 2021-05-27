@@ -4,9 +4,7 @@
  */
 package com.dumbdogdiner.stickycommands.economy
 
-import com.dumbdogdiner.stickycommands.StickyCommandsKt
-import com.dumbdogdiner.stickycommands.aatempmovemeplz.Listing
-
+import com.dumbdogdiner.stickycommands.database.PostgresHandler
 import com.dumbdogdiner.stickycommands.database.tables.Listings
 import org.bukkit.Material
 import org.bukkit.OfflinePlayer
@@ -16,8 +14,8 @@ import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 
-// TODO implement listing cache?? (is this actually necessary because I don't think so
-class Market : StickyCommandsKt {
+// TODO implement listing cache?? (is this actually necessary because I don't think so)
+class Market (val database : PostgresHandler){
     // I truely, deeply lothe companion objects but kotlin is exceedingly stupid
     // and won't let you do constants in classes. At least it doesnt make it too dumb
     // to use in java
@@ -28,8 +26,9 @@ class Market : StickyCommandsKt {
         const val PAGE_MAX_SIZE: Int = 10
     }
 
+    // How do i do this best? I think i need ot pass it in...
     private fun query(query: Query, sortBy: Listing.SortBy, page: Int, pageSize: Int): List<Listing> {
-        return databaseHandler.getListings(query, sortBy, page, pageSize)
+        return database.getListings(query, sortBy, page, pageSize)
     }
 
     /**
@@ -67,7 +66,7 @@ class Market : StickyCommandsKt {
      * @return Gets the latest ID??
      */
     fun latestId(): Int {
-        val selectionResult = transaction(databaseHandler.db) {
+        val selectionResult = transaction(database.db) {
             Listings.selectAll().firstOrNull()
         }
         return if (selectionResult?.getOrNull(Listings.id) == null) 1 else selectionResult[Listings.id]
@@ -80,7 +79,7 @@ class Market : StickyCommandsKt {
      */
     fun getListingCount(): Long {
         var count = 0L
-        transaction(databaseHandler.db) {
+        transaction(database.db) {
             count = Listings.selectAll().count()
         }
         return count
@@ -92,14 +91,14 @@ class Market : StickyCommandsKt {
      * @param listing to list
      */
     fun add(listing: Listing) {
-        databaseHandler.addListing(listing)
+        database.addListing(listing)
     }
 
     /**
      * Remove a listing from the market
      */
     fun remove(listing: Listing) {
-        transaction(databaseHandler.db) {
+        transaction(database.db) {
             Listings.deleteWhere { (Listings.id eq listing.id) }
         }
     }

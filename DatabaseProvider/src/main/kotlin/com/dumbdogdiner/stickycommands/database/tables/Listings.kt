@@ -4,13 +4,9 @@
  */
 package com.dumbdogdiner.stickycommands.database.tables
 
-import com.dumbdogdiner.stickycommands.StickyCommands
-import com.dumbdogdiner.stickycommands.StickyCommandsKt
-import com.dumbdogdiner.stickycommands.utils.Constants
-
 import org.jetbrains.exposed.sql.Table
 
-object Listings : Table(prefix + "listings") {
+object Listings : Table(prefix + "listings"){
     val id = integer("id").autoIncrement()
 
     var listedAt = long("listed_at").clientDefault { System.currentTimeMillis() }
@@ -23,6 +19,7 @@ object Listings : Table(prefix + "listings") {
 
     var value = double("value")
 
+    // TODO: change this to a UUID object directly if we can??
     var buyer = varchar("buyer", 36).nullable()
 
     var sold = bool("sold").default(false)

@@ -4,17 +4,16 @@
  */
 package com.dumbdogdiner.stickycommands.database
 
-import com.dumbdogdiner.stickycommands.StickyCommands
-import com.dumbdogdiner.stickycommands.StickyCommandsKt
 import org.jetbrains.exposed.sql.SqlLogger
 import org.jetbrains.exposed.sql.Transaction
 import org.jetbrains.exposed.sql.statements.StatementContext
 import org.jetbrains.exposed.sql.statements.expandArgs
+import java.util.logging.Logger
 
 /**
  * SQL Logger for Exposed.
  */
-class ExposedLogger : SqlLogger, StickyCommandsKt {
+class ExposedLogger (val logger : Logger): SqlLogger {
     override fun log(context: StatementContext, transaction: Transaction) {
         logger.fine(context.expandArgs(transaction))
     }

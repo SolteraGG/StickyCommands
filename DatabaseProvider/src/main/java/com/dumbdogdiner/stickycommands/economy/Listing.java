@@ -1,11 +1,8 @@
-/*
+package com.dumbdogdiner.stickycommands.economy;/*
  * Copyright (c) 2021 DumbDogDiner <dumbdogdiner.com>. All rights reserved.
  * Licensed under the MIT license, see LICENSE for more information.
  */
-package com.dumbdogdiner.stickycommands.aatempmovemeplz;
 
-import com.dumbdogdiner.stickycommands.StickyCommands;
-import com.dumbdogdiner.stickycommands.economy.Market;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
@@ -19,8 +16,9 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.Objects;
 
+// I realize passing in a market is a little clunky but I cannot think of a better solution for now.
 public class Listing {
-    private final Market market = StickyCommands.getMarket();
+    private final Market market;
 
     public enum SortBy {
         PRICE_ASCENDING,
@@ -65,6 +63,7 @@ public class Listing {
     /**
      * Create a new listing
      *
+     * @param market   the market we care about
      * @param id       of the listing, if null it will be auto generated
      * @param player   that listed this item
      * @param material to list
@@ -73,8 +72,8 @@ public class Listing {
      * @param buyer    of this listing
      * @param listedAt time of listing
      */
-    public Listing(@NotNull Integer id, @NotNull OfflinePlayer player, @NotNull Material material, double price, int quantity, @Nullable OfflinePlayer buyer, @NotNull Date listedAt) {
-        this(player, material, price, quantity);
+    public Listing(@NotNull Market market, int id, @NotNull OfflinePlayer player, @NotNull Material material, double price, int quantity, @Nullable OfflinePlayer buyer, @NotNull Date listedAt) {
+        this(market, player, material, price, quantity);
 
         this.buyer = buyer;
         this.id =
@@ -90,9 +89,10 @@ public class Listing {
      * @param price    to list at
      * @param quantity of items to be listed
      */
-    public Listing(@NotNull OfflinePlayer seller, @NotNull Material material, double price, int quantity) {
+    public Listing(@NotNull Market market, @NotNull OfflinePlayer seller, @NotNull Material material, double price, int quantity) {
         this.seller = seller;
         this.material = material;
+        this.market = market;
 
 
         this.price = BigDecimal.valueOf(price).setScale(2, RoundingMode.HALF_UP).doubleValue();

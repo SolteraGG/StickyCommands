@@ -4,7 +4,7 @@ Light-weight essentials replacement for DumbDogDiner
 # Commands
 | Command | Description | Permission |
 | --- | --- | --- |
-| /stickycommands [reload/database/db] | Reloads the configuration and messages YAML file, or reconnects the database | stickycommands.reload |
+| /stickycommands [reload/com.dumbdogdiner.stickycommands.database/db] | Reloads the configuration and messages YAML file, or reconnects the com.dumbdogdiner.stickycommands.database | stickycommands.reload |
 | /speed \<speed> | Sets your flying or walking speed | stickycommands.speed |
 | /sell \<hand> | Sells the stack of items in your hand | stickycommands.sell.hand |
 | /sell \<inventory> | Sells all of the items in your inventory that match the one you're holding | stickycommands.sell.inventory |

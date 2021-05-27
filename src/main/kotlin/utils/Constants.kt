@@ -19,6 +19,8 @@ object Constants {
         const val SBACK = "$prefix.sback"
         const val SBACK_OTHER = "$prefix.sback.other"
 
+        const val HAT = "$prefix.hat"
+
         const val KILL = "$prefix.kill"
         const val KILL_IMMUNE = "$prefix.kill.immune"
 
@@ -64,7 +66,7 @@ object Constants {
         const val SPEED_MESSAGE = "speed-message"
 
         const val RELOAD_CONFIG_SUCCESS = "reload.configs-success"
-        const val RELOAD_DATABASE_SUCCESS = "reload.database-success"
+        const val RELOAD_DATABASE_SUCCESS = "reload.com.dumbdogdiner.stickycommands.database-success"
         const val RELOAD_ERROR = "reload.error"
 
         const val CANNOT_SELL = "sell.cannot-sell"
@@ -130,13 +132,6 @@ object Constants {
         const val DEBUG = "debug"
         const val SERVER = "server"
 
-        const val DATABASE_HOST = "database.host"
-        const val DATABASE_PORT = "database.port"
-        const val DATABASE_DATABASE = "database.database"
-        const val DATABASE_USERNAME = "database.username"
-        const val DATABASE_PASSWORD = "database.password"
-        const val DATABASE_TABLE_PREFIX = "database.table-prefix"
-        const val DATABASE_MAX_RECONNECTS = "database.max-reconnects"
-        const val DATABASE_USE_SSL = "database.use-ssl"
+
     }
 }

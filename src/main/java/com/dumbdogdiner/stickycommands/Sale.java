@@ -44,7 +44,7 @@ public class Sale {
     public Sale(ResultSet result) {
         try {
             if (result == null)
-                throw new NullPointerException("ResultSet is null, did the database query execute successfully?");
+                throw new NullPointerException("ResultSet is null, did the com.dumbdogdiner.stickycommands.database query execute successfully?");
             UUID uuid = UUID.fromString(result.getString("uuid"));
             // We want the username of the player... So we need to query the users table.
             this.saleId = result.getInt("id");

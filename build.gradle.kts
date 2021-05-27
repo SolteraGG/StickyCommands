@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     java
+    idea
     kotlin("jvm") version "1.4.32"
     id("org.jetbrains.dokka") version "1.4.32"
     id("com.github.johnrengelman.shadow") version "6.1.0"
@@ -14,9 +15,11 @@ plugins {
 group = "com.dumbdogdiner"
 version = "3.3.2"
 val mcApi = "1.16.5"
-val apiVer = mcApi + "-R0.1-SNAPSHOT"
+val mcApiVer = mcApi + "-R0.1-SNAPSHOT"
 val useLocal = false;
 val withClosedSource = false;
+
+//project.ext.set("mcApiVer", mcApiVer)
 
 //java.sourceSets.create("build/")
 
@@ -27,7 +30,7 @@ val withClosedSource = false;
 
 // but yeah basically we have to specify the exact compile order, and then this will actually work. This is way better than dealing with how garbage kotlin's syntax can get in certain cases, or how painful it ould be to not use exposed, or to foce exposed into java (though im starting to consider that, along with records
 // Alternatively, maybe i can make a separate module that the db kotlin lives in, and that MIGHT solve it; and keep only the constants kotlin in main module, or, even better, convert it to yaml and use kotlinpoet or javapoet
-// to generate it so that it is lower maintanance and is all around just better! 
+// to generate it so that it is lower maintanance and is all around just better!
 
 repositories {
     mavenCentral()
@@ -61,32 +64,35 @@ repositories {
     }
 }
 
+//
+//sourceSets.register("mainLomboked")
+//configure<SourceSetContainer> {
+//    named("main") {
+//        java.srcDirs(setOf("src/main/java", "src/main/kotlin"))
+//    }
+//    named("mainLomboked") {
+//        java.srcDirs(setOf("src/main/kotlin", "src/main/delombok"))
+//    }
+//}
+
+
 dependencies {
     // *sigh* kotlin bullshit
     implementation(kotlin("stdlib"))
+    implementation(project(":DatabaseProvider"))
 
     // java deps
     compileOnly("org.projectlombok:lombok:1.18.16")
     annotationProcessor("org.projectlombok:lombok:1.18.12")
     implementation("org.jetbrains:annotations:20.1.0")
-    kapt("org.projectlombok:lombok:1.18.12")
+    //kapt("org.projectlombok:lombok:1.18.12")
 
     // spigot, paper
-    compileOnly(paper(apiVer))
+    compileOnly(paper(mcApiVer))
 
     compileOnly("dev.jorel.CommandAPI:commandapi-core:5.12")
     compileOnly("dev.jorel.CommandAPI:commandapi-annotations:5.12")
     annotationProcessor("dev.jorel.CommandAPI:commandapi-annotations:5.12")
-
-
-    // Database
-    implementation("org.jetbrains.exposed", "exposed-core", "0.28.1")
-    implementation("org.jetbrains.exposed", "exposed-dao", "0.28.1")
-    implementation("org.jetbrains.exposed", "exposed-jdbc", "0.28.1")
-    implementation("org.jetbrains.exposed", "exposed-java-time", "0.28.1")
-    implementation("org.postgresql", "postgresql", "42.2.18")
-    implementation("pw.forst", "exposed-upsert", "1.0")
-    implementation("com.zaxxer", "HikariCP", "3.4.5")
 
     // plugin-specific deps
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")
@@ -121,6 +127,11 @@ tasks.withType<JavaCompile> {
 
 
 tasks {
+//    delombok{
+//        sourcepath.from(file("src/main/java"))
+//        classpath.from(files("src/main/java", "src/main/kotlin"))
+//    }
+
     build {
         finalizedBy(shadowJar)
     }
@@ -131,6 +142,12 @@ tasks {
         relocate("com.zaxxer", "${pkg}com.zaxxer")
         relocate("org.postgresql", "${pkg}org.postgresql")
     }
+
+    compileKotlin {
+        setSource(delombok.get().outputs)
+        println(source.asPath)
+    }
+
 
     spigot {
         apiVersion = mcApi
@@ -151,6 +168,7 @@ tasks {
         enabled = false
     }
 }
+
 
 
 //

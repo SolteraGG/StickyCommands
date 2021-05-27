@@ -126,7 +126,7 @@ public class Item {
         Debugger debug = new Debugger(getClass());
         debug.print("selling item " + getName());
         var database = StickyCommands.getInstance().getDatabaseHandler();
-        debug.print("database variable declared");
+        debug.print("com.dumbdogdiner.stickycommands.database variable declared");
         if (!sellInventory) {
             debug.print("Not selling inventory...");
             StickyCommands.getInstance().getEconomy().depositPlayer(player, getWorth() * amount);
