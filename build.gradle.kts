@@ -8,7 +8,7 @@ plugins {
     id("org.jetbrains.dokka") version "1.4.32"
     id("com.github.johnrengelman.shadow") version "6.1.0"
     id("maven-publish")
-    //id("io.freefair.lombok") version "5.3.0"
+    id("io.freefair.lombok") version "6.0.0-m2"
     id("kr.entree.spigradle") version "2.2.3"
 }
 
@@ -18,19 +18,6 @@ val mcApi = "1.16.5"
 val mcApiVer = mcApi + "-R0.1-SNAPSHOT"
 val useLocal = false;
 val withClosedSource = false;
-
-//project.ext.set("mcApiVer", mcApiVer)
-
-//java.sourceSets.create("build/")
-
-// best fix i have would be to run kotlin on the delomboked java. then compile that java, and throw out the errors that happen during delombok
-// its hacky, shitty, etc. but its the only thing i got that could work
-
-// So all i gotta do is do the necessary gradle fuckery
-
-// but yeah basically we have to specify the exact compile order, and then this will actually work. This is way better than dealing with how garbage kotlin's syntax can get in certain cases, or how painful it ould be to not use exposed, or to foce exposed into java (though im starting to consider that, along with records
-// Alternatively, maybe i can make a separate module that the db kotlin lives in, and that MIGHT solve it; and keep only the constants kotlin in main module, or, even better, convert it to yaml and use kotlinpoet or javapoet
-// to generate it so that it is lower maintanance and is all around just better!
 
 repositories {
     mavenCentral()
@@ -82,10 +69,10 @@ dependencies {
     implementation(project(":DatabaseProvider"))
 
     // java deps
-    compileOnly("org.projectlombok:lombok:1.18.16")
-    //annotationProcessor("org.projectlombok:lombok:1.18.12")
+//    implementation("org.projectlombok:lombok:1.18.16")
+//    annotationProcessor("org.projectlombok:lombok:1.18.12")
     implementation("org.jetbrains:annotations:20.1.0")
-    kapt("org.projectlombok:lombok:1.18.12")
+//    kapt("org.projectlombok:lombok:1.18.12")
 
     // spigot, paper
     compileOnly(paper(mcApiVer))
