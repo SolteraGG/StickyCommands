@@ -29,12 +29,10 @@ public class Listing {
         ITEM
     }
 
-    @Getter
-    @NotNull
+    @Getter @NotNull
     public OfflinePlayer seller;
 
-    @Getter
-    @NotNull
+    @Getter @NotNull
     public Material material;
 
     @Getter
@@ -43,9 +41,7 @@ public class Listing {
     @Getter
     public int quantity;
 
-    @Getter
-    @Setter
-    @Nullable
+    @Nullable @Getter @Setter
     public OfflinePlayer buyer;
 
     @Getter

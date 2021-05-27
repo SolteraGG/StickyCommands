@@ -1,5 +1,6 @@
 # Items not listed in this file will not be sellable on the server
 # Setting the worth to 0 will disallow the ability to sell the item, delete the item or set to -1 to disable.
+# TODO maybe: this might be better as a csv or sqlite?
 
 # Constants:
 # Silk touch always 2x the dropped item

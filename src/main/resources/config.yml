@@ -5,7 +5,8 @@ ops-bypass-permissions: true
 # The translation file you wish to use. (Default: messages.en_us.yml)
 translation-file: "messages.en_us.yml"
 
-worth-file: "worth.yml"
+enable-medallions: false
+
 allow-selling: true
 
 # Amount of time before being put into AFK mode (in seconds)
@@ -24,7 +25,7 @@ database:
   username: root
   password: root
   table-prefix: stickycommands_
-  # Maximum number of times mysql will try to reconnect before giving up.
+  # Maximum number of times sql will try to reconnect
   max-reconnects: 5
   # Use SSL?
   use-ssl: false

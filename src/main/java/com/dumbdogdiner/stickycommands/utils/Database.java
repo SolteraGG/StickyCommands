@@ -17,7 +17,7 @@ import java.util.concurrent.FutureTask;
 import com.dumbdogdiner.stickyapi.common.util.Debugger;
 import com.dumbdogdiner.stickyapi.common.util.TimeUtil;
 import com.dumbdogdiner.stickycommands.StickyCommands;
-import com.dumbdogdiner.stickycommands.Sale;
+import com.dumbdogdiner.stickycommands.objects.Sale;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.NotNull;
@@ -237,7 +237,7 @@ public class Database {
     }
 
     /**
-     * Get a {@link java.util.List} of {@link com.dumbdogdiner.stickycommands.Sale}
+     * Get a {@link java.util.List} of {@link Sale}
      * @param page The page to select (Each page is 8 rows)
      * @return {@link java.util.List}
      */
@@ -276,7 +276,7 @@ public class Database {
     }
 
     /**
-     * Get a {@link java.util.List} of {@link com.dumbdogdiner.stickycommands.Sale} for a certain player
+     * Get a {@link java.util.List} of {@link Sale} for a certain player
      * @param uuid The uuid of the player
      * @return {@link java.util.List}
      */

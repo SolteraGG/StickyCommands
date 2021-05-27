@@ -99,6 +99,7 @@ dependencies {
     compileOnly("me.clip:placeholderapi:2.10.6")
     implementation("com.dumbdogdiner:stickyapi:1.5.0")
     compileOnly("net.luckperms:api:5.2")
+    implementation("org.apache.commons:commons-csv:1.8")
 
     if (withClosedSource) {
         compileOnly("com.dumbdogdiner.closedsource-package-mirror:stafffacilities:4.8.5")

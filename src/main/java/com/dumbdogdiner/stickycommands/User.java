@@ -18,24 +18,18 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-//TODO Move to stickyapi
-
 public class User implements Cacheable {
 
     /**
      * The username of the user.
      */
-    @Getter
-    @Setter
-    @NotNull
+    @NotNull @Getter @Setter
     private String name;
 
     /**
      * The UUID of the user.
      */
-    @Getter
-    @Setter
-    @NotNull
+    @NotNull @Setter @Getter
     private UUID uniqueId;
 
     /**
@@ -56,15 +50,17 @@ public class User implements Cacheable {
     @NotNull
     private Integer afkTime = 0;
 
-    public void setAfk(boolean AFKState){
-        if(!AFKState)
+
+
+    public void setAfk(boolean AFKState) {
+        if (!AFKState)
             afkTime = 0;
         afk = AFKState;
         Map<String, String> vars = new HashMap<>();
         vars.put("PLAYER", name);
 
-        if(!isHidden()) {
-            if(isAfk()) {
+        if (!isHidden()) {
+            if (isAfk()) {
                 Bukkit.broadcastMessage(StickyCommands.getInstance().getLocaleProvider().translate("afk.afk", vars));
             } else {
                 Bukkit.broadcastMessage(StickyCommands.getInstance().getLocaleProvider().translate("afk.not-afk", vars));
@@ -74,16 +70,17 @@ public class User implements Cacheable {
 
     /**
      * Checks if a given player is hidden, vanished, staffvanished, or fakeleaved
+     *
      * @return Whether the user is hidden.
      */
-    public boolean isHidden(){
-        if(StickyCommands.getInstance().isStaffFacilitiesEnabled()){
+    public boolean isHidden() {
+        if (StickyCommands.getInstance().isStaffFacilitiesEnabled()) {
             Player player = this.getPlayer();
             /*System.out.println(SFAPI.isPlayerFakeleaved(player));
             System.out.println(SFAPI.isPlayerStaffVanished(player));
             System.out.println(SFAPI.isPlayerVanished(player));
             System.out.println(isVanished()); */
-            return  SFAPI.isPlayerFakeleaved(player) ||
+            return SFAPI.isPlayerFakeleaved(player) ||
                     SFAPI.isPlayerStaffVanished(player) ||
                     SFAPI.isPlayerVanished(player) ||
                     isVanished();
@@ -107,17 +104,17 @@ public class User implements Cacheable {
     }
 
 
-    public int incAfkTime(){
+    public int incAfkTime() {
         return ++afkTime;
     }
 
-    public void resetAfkTime(){
+    public void resetAfkTime() {
         afkTime = 0;
     }
-    
-   // I spent an hour trying to come up with a good solution to this weird problem where if you are being pushed by water, and on the corner water block, your from block is considered air and not water...
-   // So, we need to keep a buffer of the last 3 blocks the player stood in, and if it contains water, we'll consider it as the water pushing them, since there's no event for
-   // checking if a player is being pushed by water!
+
+    // I spent an hour trying to come up with a good solution to this weird problem where if you are being pushed by water, and on the corner water block, your from block is considered air and not water...
+    // So, we need to keep a buffer of the last 3 blocks the player stood in, and if it contains water, we'll consider it as the water pushing them, since there's no event for
+    // checking if a player is being pushed by water!
     @Getter
     @NotNull
     private ArrayList<Material> blockBuffer = new ArrayList<Material>();
@@ -173,8 +170,8 @@ public class User implements Cacheable {
 
         Player p = getPlayer();
         assert p != null;
-                
-        switch(type) {
+
+        switch (type) {
             case FLY:
                 p.setFlySpeed(speed);
                 // fixme this is ignored for nowStickyCommands.getDatabaseHandler().setSpeed(this.uniqueId, speed, 1);

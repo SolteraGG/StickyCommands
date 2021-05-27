@@ -1,4 +1,4 @@
-package com.dumbdogdiner.stickycommands;
+package com.dumbdogdiner.stickycommands.objects;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,6 +14,7 @@ import lombok.Getter;
 
 /**
  * An object to represent a sale, this is mostly for convenience later...
+ * FIXME is this necessary? check kotlin ver
  */
 public class Sale {
 

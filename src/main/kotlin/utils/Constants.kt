@@ -125,12 +125,12 @@ object Constants {
     // TODO: auto-generate this stuff in the future, owo
     object SettingsPaths {
         const val TRANSLATION_FILE = "translation-file"
-        const val WORTH_FILE = "worth-file"
         const val ALLOW_SELLING = "allow-selling"
         const val AUTO_SELL = "auto-sell"
         const val AFK_TIMEOUT = "afk-timeout"
         const val DEBUG = "debug"
         const val SERVER = "server"
+        const val ENABLE_MEDALLIONS = "enable-medallions"
 
 
     }

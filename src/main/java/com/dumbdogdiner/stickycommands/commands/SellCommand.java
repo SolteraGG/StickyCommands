@@ -5,16 +5,11 @@ import java.util.List;
 import java.util.TreeMap;
 
 import com.dumbdogdiner.stickycommands.StickyCommands;
-import com.dumbdogdiner.stickycommands.Sale;
-import com.dumbdogdiner.stickycommands.database.PostgresHandler;
-import com.dumbdogdiner.stickycommands.utils.Database;
 import com.dumbdogdiner.stickycommands.utils.Item;
 import com.dumbdogdiner.stickyapi.common.arguments.Arguments;
 import com.dumbdogdiner.stickyapi.bukkit.command.AsyncCommand;
 import com.dumbdogdiner.stickyapi.bukkit.command.ExitCode;
-import com.dumbdogdiner.stickyapi.common.translation.ChatMessage;
 import com.dumbdogdiner.stickyapi.common.translation.LocaleProvider;
-import com.dumbdogdiner.stickyapi.common.util.NumberUtil;
 
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;

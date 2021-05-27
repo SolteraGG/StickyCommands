@@ -26,5 +26,7 @@ object Users : Table(prefix + "users"){
 
     val isOnline = bool("online").default(false)
 
+    val firstJoinItemsGiven = bool("first_join_items_given").default(false)
+
     override val primaryKey = PrimaryKey(uniqueId)
 }
