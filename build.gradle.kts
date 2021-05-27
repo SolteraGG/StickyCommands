@@ -89,6 +89,7 @@ dependencies {
 
     // spigot, paper
     compileOnly(paper(mcApiVer))
+    implementation("net.kyori:adventure-api:4.7.0")
 
     compileOnly("dev.jorel.CommandAPI:commandapi-core:5.12")
     compileOnly("dev.jorel.CommandAPI:commandapi-annotations:5.12")

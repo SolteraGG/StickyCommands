@@ -82,3 +82,6 @@ powertool:
 player-time:
   time-reset: "{prefix}&bYour time has been synced with the server &f({time} ticks)&b!"
   time-set: "{prefix}&bYour time has been set to &f{time} ticks&b{relative|empty_if_false:\" relative to server time\"}!"
+
+medallions:
+  no-space: "{prefix}&b You don't have enough inventory space to recieve your medallions. Please empty some slots and relog to try again. You need {SLOTS} slots free."

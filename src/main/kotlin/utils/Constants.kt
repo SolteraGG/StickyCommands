@@ -47,6 +47,11 @@ object Constants {
         const val WORTH = "$prefix.worth"
     }
 
+    object Files {
+        const val MEDALLION_UUIDS = "uuids_by_season.csv"
+        const val ITEM_WORTHS = "worth.yml"
+    }
+
     // Todo: auto-generate this stuff in the future
     object LanguagePaths {
         const val PREFIX = "prefix"

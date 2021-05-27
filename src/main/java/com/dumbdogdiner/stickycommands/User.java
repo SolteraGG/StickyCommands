@@ -20,6 +20,9 @@ import java.util.UUID;
 
 public class User implements Cacheable {
 
+
+    @Getter @Setter
+    private boolean firstJoinItemsGiven;
     /**
      * The username of the user.
      */
@@ -127,10 +130,11 @@ public class User implements Cacheable {
     public User(Player player) {
         this.name = player.getName();
         this.uniqueId = player.getUniqueId();
+        // FIXME get stuff from database here!
     }
 
     /**
-     * Get the {@link org.bukkit.entity.Player} object from this user
+     * Get the {@link Player} object from this user
      */
     public Player getPlayer() {
         return Bukkit.getPlayer(this.uniqueId);
@@ -186,4 +190,5 @@ public class User implements Cacheable {
     public void toggleAfk() {
         setAfk(!isAfk());
     }
+
 }

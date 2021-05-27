@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 
 import com.dumbdogdiner.stickycommands.commands.*;
 import com.dumbdogdiner.stickycommands.database.PostgresHandler;
-import com.dumbdogdiner.stickycommands.economy.Market;
+import com.dumbdogdiner.stickycommands.objects.Market;
 import com.dumbdogdiner.stickycommands.listeners.PlayerInteractionListener;
 import com.dumbdogdiner.stickycommands.listeners.PlayerJoinListener;
 import com.dumbdogdiner.stickycommands.runnables.AfkTimeRunnable;
@@ -32,7 +32,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import lombok.Getter;
 import net.milkbowl.vault.economy.Economy;
 
 

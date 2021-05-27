@@ -4,14 +4,14 @@
  */
 package com.dumbdogdiner.stickycommands.database
 
-import com.dumbdogdiner.stickycommands.economy.Listing
+import com.dumbdogdiner.stickycommands.objects.Listing
 import com.dumbdogdiner.stickycommands.database.tables.Listings
 import com.dumbdogdiner.stickycommands.database.tables.Locations
 import com.dumbdogdiner.stickycommands.database.tables.Locations.world
 import com.dumbdogdiner.stickycommands.database.tables.Users
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
-import com.dumbdogdiner.stickycommands.economy.Market
+import com.dumbdogdiner.stickycommands.objects.Market
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material
@@ -20,6 +20,7 @@ import org.bukkit.entity.Player
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import pw.forst.exposed.insertOrUpdate
+import stickycommands.database.DatabaseConstants
 import java.time.Instant
 import java.util.*
 import java.util.logging.Logger
