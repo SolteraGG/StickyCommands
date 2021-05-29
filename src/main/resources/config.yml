@@ -28,4 +28,4 @@ database:
   # Maximum number of times sql will try to reconnect
   max-reconnects: 5
   # Use SSL?
-  use-ssl: false
+  use-ssl: disabled

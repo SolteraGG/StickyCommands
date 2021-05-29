@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2021 DumbDogDiner <dumbdogdiner.com>. All rights reserved.
- * Licensed under the MIT license, see LICENSE for more information.
- */
 package com.dumbdogdiner.stickycommands.utils
 
 /**
@@ -84,7 +80,7 @@ object Constants {
         const val SPEED_MESSAGE = "speed-message"
 
         const val RELOAD_CONFIG_SUCCESS = "reload.configs-success"
-        const val RELOAD_DATABASE_SUCCESS = "reload.com.dumbdogdiner.stickycommands.database-success"
+        const val RELOAD_DATABASE_SUCCESS = "reload.database-success"
         const val RELOAD_ERROR = "reload.error"
 
         const val CANNOT_SELL = "sell.cannot-sell"
@@ -151,14 +147,14 @@ object Constants {
         const val ENABLE_MEDALLIONS = "enable-medallions"
     }
     object DatabaseConstants {
-        const val DATABASE_HOST = "stickycommands.database.host"
-        const val DATABASE_PORT = "stickycommands.database.port"
-        const val DATABASE_DATABASE = "stickycommands.database.stickycommands.database"
-        const val DATABASE_USERNAME = "stickycommands.database.username"
-        const val DATABASE_PASSWORD = "stickycommands.database.password"
-        const val DATABASE_TABLE_PREFIX = "stickycommands.database.table-prefix"
-        const val DATABASE_MAX_RECONNECTS = "stickycommands.database.max-reconnects"
-        const val DATABASE_USE_SSL = "stickycommands.database.use-ssl"
+        const val DATABASE_HOST = "database.host"
+        const val DATABASE_PORT = "database.port"
+        const val DATABASE_DATABASE = "database.database"
+        const val DATABASE_USERNAME = "database.username"
+        const val DATABASE_PASSWORD = "database.password"
+        const val DATABASE_TABLE_PREFIX = "database.table-prefix"
+        const val DATABASE_MAX_RECONNECTS = "database.max-reconnects"
+        const val DATABASE_USE_SSL = "database.use-ssl"
     }
 
     object Messages {

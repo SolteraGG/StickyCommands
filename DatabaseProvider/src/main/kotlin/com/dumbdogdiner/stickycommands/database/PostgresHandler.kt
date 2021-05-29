@@ -20,12 +20,12 @@ import org.bukkit.entity.Player
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import pw.forst.exposed.insertOrUpdate
-import com.dumbdogdiner.stickycommands.utils.Constants.DatabaseConstants
 import java.time.Instant
 import java.util.*
 import java.util.logging.Logger
 import com.dumbdogdiner.stickycommands.database.tables.TableVars
 import com.dumbdogdiner.stickycommands.utils.Constants
+import com.dumbdogdiner.stickycommands.utils.Constants.DatabaseConstants
 import java.util.function.Consumer
 
 
