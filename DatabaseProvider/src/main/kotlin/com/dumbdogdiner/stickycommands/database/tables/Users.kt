@@ -5,6 +5,8 @@
 package com.dumbdogdiner.stickycommands.database.tables
 
 import org.jetbrains.exposed.sql.Table
+import com.dumbdogdiner.stickycommands.database.tables.TableVars.prefix
+import com.dumbdogdiner.stickycommands.database.tables.TableVars.server
 
 object Users : Table(prefix + "users"){
 

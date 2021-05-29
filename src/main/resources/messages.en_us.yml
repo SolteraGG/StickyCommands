@@ -32,14 +32,15 @@ reload:
 
 sell:
   cannot-sell: "{prefix}&cThis item cannot be sold!"
-  bad-worth: "{prefix}&f1 {item} &cis worth a negative amount &f(${single_worth}) &cand thusly cannot be sold &4(Please ask a developer)"
-  worth-message: "{prefix}&f1 {item} &bis worth &f${single_worth} &7(Hand: ${hand_worth}, Inventory: ${inventory_worth})"
-  sell-message: "{prefix}&bYou sold &f{AMOUNT} {ITEM} &bfor &f${WORTH}&b!"
+  bad-worth: "{prefix}&f1 {item} &cis worth a negative amount &f({single_worth}) &cand thusly cannot be sold &4(Please ask a developer)"
+  worth-message: "{prefix}&f1 {item} &bis worth &f{single_worth} &7(Hand: {hand_worth}, Inventory: {inventory_worth})"
+  damagable-worth: "{prefix}&f1 undamaged item (without Silk Touch) is worth &f{single_worth} &7(Hand: {hand_worth}, Inventory: {inventory_worth})"
+  sell-message: "{prefix}&bYou sold &f{AMOUNT} {ITEM} &bfor &f{WORTH}&b!"
   must-confirm: "{prefix}&cPlease confirm your sale by typing /sell [inventory/hand] confirm!"
   log:
     log-message: "{prefix}&bRecent sale logs"
-    log: "{newline}&7({date|datetime:\"mm/dd HH:mm\"}) &f{log_player} &bsold &f{amount} {item} &bfor &f${price}"
-    log-hover: "&bSale &f#{saleid}\n&8&l» &bItem Sold:&f {item_enum}\n&8&l» &bAmount Sold:&f {amount}\n&8&l» &bNew Balance:&f ${new_balance} &2(+${balance_change})\n&8&l» &bDate:&f {date} &7({date|expiry})\n&8&l» &bTransaction ID:&f {saleid}"
+    log: "{newline}&7({date|datetime:\"mm/dd HH:mm\"}) &f{log_player} &bsold &f{amount} {item} &bfor &f{price}"
+    log-hover: "&bSale &f#{saleid}\n&8&l» &bItem Sold:&f {item_enum}\n&8&l» &bAmount Sold:&f {amount}\n&8&l» &bNew Balance:&f {new_balance} &2(+{balance_change})\n&8&l» &bDate:&f {date} &7({date|expiry})\n&8&l» &bTransaction ID:&f {saleid}"
     no-sales: "{prefix}&bThere have been no sales!"
     paginator: "{prefix}&bpage &f{current}&b/&f{total}"
 
@@ -59,6 +60,7 @@ memory-message: "{prefix}&bServer performance \n{newline}&bWorld: &f{world}\n{ne
 kill:
   you-were-killed: "{prefix}&bThou hast been slain!"
   you-killed: "{prefix}&bYou killed {PLAYER}"
+  you-killed-entities: "{prefix}&bYou killed {QUANTITY} of {ENTITY}"
   suicide: "{prefix}&bYou magically died!"
 
 smite:

@@ -8,8 +8,8 @@ import kr.entree.spigradle.kotlin.spigotmc
 plugins {
     id("java-library")
     idea
-    kotlin("jvm")
-    id("org.jetbrains.dokka")
+    kotlin("jvm") version "1.4.32"
+    //id("org.jetbrains.dokka")
 }
 
 group = "com.dumbdogdiner.stickycommands.db"
@@ -24,6 +24,7 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib"))
+    implementation(project(":Konstants"))
 
     compileOnly(paper())
 

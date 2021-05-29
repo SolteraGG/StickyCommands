@@ -1,0 +1,150 @@
+{
+  "pages": [
+    [
+      {
+        "text": "Dumb Dog Diner MC\nSeason 4 Handbook",
+        "bold": true,
+        "italic": true,
+        "color": "dark_purple"
+      },
+      {
+        "text": "\n\n",
+        "color": "reset"
+      },
+      {
+        "text": "Table of Contents:",
+        "bold": true,
+        "italic": true,
+        "underlined": true,
+        "color": "dark_red"
+      },
+      {
+        "text": "\n",
+        "color": "reset"
+      },
+      {
+        "text": "Page 2: ",
+        "color": "red"
+      },
+      {
+        "text": "Rules\n",
+        "color": "reset"
+      },
+      {
+        "text": "Pg. 3: ",
+        "color": "red"
+      },
+      {
+        "text": "Gameplay\n",
+        "color": "reset"
+      },
+      {
+        "text": "Pg. 5: ",
+        "color": "red"
+      },
+      {
+        "text": "Trading\n",
+        "color": "reset"
+      },
+      {
+        "text": "Pg. 7: ",
+        "color": "red"
+      },
+      {
+        "text": "Commands\n",
+        "color": "reset"
+      },
+      {
+        "text": "Pg. 9: ",
+        "color": "red"
+      },
+      {
+        "text": "Trading\nCommands\n",
+        "color": "reset"
+      },
+      {
+        "text": "Pg. 10: ",
+        "color": "red"
+      },
+      {
+        "text": "Extras\n",
+        "color": "reset"
+      },
+      {
+        "text": "Pg. 11: ",
+        "color": "red"
+      },
+      {
+        "text": "Getting Help\n",
+        "color": "reset"
+      },
+      {
+        "text": "Pg. 13: ",
+        "color": "red"
+      },
+      {
+        "text": "Credits",
+        "color": "reset"
+      }
+    ],
+    [
+      {
+        "text": "The Rules:",
+        "bold": true,
+        "italic": true,
+        "underlined": true,
+        "color": "red"
+      },
+      {
+        "text": "\n1. Absolutely no\ngriefing, theft, or\nintentional distress!\n2. No cheating/hacking\nallowed. No exploits.\n3. No floating trees.\n4. No fully-automatic\nredstone farms.\n5. No harassment,\nbullying, or abuse.\n6. No AFK fishing.",
+        "color": "reset"
+      }
+    ],
+    [
+      {
+        "text": "Gameplay:",
+        "bold": true,
+        "italic": true,
+        "underlined": true,
+        "color": "dark_green"
+      },
+      {
+        "text": "\nThe world border for all worlds is 16,000\nblocks from the\ncenter. Because of\nnow ",
+        "color": "reset"
+      },
+      {
+        "text": "Nether Portal",
+        "color": "dark_red"
+      },
+      {
+        "text": "\ntravel works, you will\nnot be able to light\nthem past 2,000 blocks\nfrom the center.\nYou may build wherever you like! Try ",
+        "color": "reset"
+      },
+      {
+        "text": "/rtp",
+        "color": "blue"
+      },
+      {
+        "text": " to help find a spot!",
+        "color": "reset"
+      }
+    ]
+  ],
+  "title": "\u0026ddddMC Survival Handbook v4.0c",
+  "author": "Stixil",
+  "lore": [
+    {
+      "text": "Tutorial and rules for Season 4 of the survival server!",
+      "color": "aqua"
+    },
+    {
+      "text": "dddMC 2021",
+      "bold": false,
+      "color": "dark_purple"
+    },
+    {
+      "text": "",
+      "color": "reset"
+    }
+  ]
+}

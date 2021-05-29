@@ -19,11 +19,11 @@ debug: false
 server: "lobby"
 
 database:
-  host: localhost
+  host: 192.168.25.128
   port: 3306
-  name: dbname
-  username: root
-  password: root
+  name: stickycommandstest
+  username: stickycommands
+  password: stixil
   table-prefix: stickycommands_
   # Maximum number of times sql will try to reconnect
   max-reconnects: 5

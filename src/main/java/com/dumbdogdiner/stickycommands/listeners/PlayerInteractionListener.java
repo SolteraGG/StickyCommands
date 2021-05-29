@@ -27,7 +27,7 @@ public class PlayerInteractionListener implements Listener {
 
         if (user.getPowerTools() != null) {
             for (PowerTool pt : user.getPowerTools().values()) {
-                if (pt.getItem().getType() != is.getType())
+                if (pt.getItem() != is.getType())
                     continue;
                 pt.execute();
                 event.setCancelled(true);

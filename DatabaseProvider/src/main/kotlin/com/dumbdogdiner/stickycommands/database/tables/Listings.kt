@@ -5,6 +5,7 @@
 package com.dumbdogdiner.stickycommands.database.tables
 
 import org.jetbrains.exposed.sql.Table
+import com.dumbdogdiner.stickycommands.database.tables.TableVars.prefix
 
 object Listings : Table(prefix + "listings"){
     val id = integer("id").autoIncrement()

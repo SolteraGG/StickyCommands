@@ -14,6 +14,17 @@ object Constants {
     const val SMITE_EXPLOSION_STRENGTH = 1.5f
     const val SMITE_TARGET_RANGE = 512
 
+
+    object Commands {
+        const val RULEBOOK = "rulebook"
+        const val RULES = "rules"
+        const val AFK = "afk"
+        const val WORTH = "worth"
+        const val SELL = "sell"
+        const val SPEED = "speed"
+
+    }
+
     object Permissions {
         const val AFK = "$prefix.afk"
         const val SBACK = "$prefix.sback"
@@ -22,7 +33,9 @@ object Constants {
         const val HAT = "$prefix.hat"
 
         const val KILL = "$prefix.kill"
-        const val KILL_IMMUNE = "$prefix.kill.immune"
+        const val KILL_IMMUNE = "$KILL.immune"
+        const val KILL_OTHERS = "$KILL.others"
+        const val KILL_ENTITIES = "$KILL.ENTITIES"
 
         const val POWERTOOL = "$prefix.powertool"
         const val POWERTOOL_CLEAR = "$POWERTOOL.clear"
@@ -136,7 +149,19 @@ object Constants {
         const val DEBUG = "debug"
         const val SERVER = "server"
         const val ENABLE_MEDALLIONS = "enable-medallions"
+    }
+    object DatabaseConstants {
+        const val DATABASE_HOST = "stickycommands.database.host"
+        const val DATABASE_PORT = "stickycommands.database.port"
+        const val DATABASE_DATABASE = "stickycommands.database.stickycommands.database"
+        const val DATABASE_USERNAME = "stickycommands.database.username"
+        const val DATABASE_PASSWORD = "stickycommands.database.password"
+        const val DATABASE_TABLE_PREFIX = "stickycommands.database.table-prefix"
+        const val DATABASE_MAX_RECONNECTS = "stickycommands.database.max-reconnects"
+        const val DATABASE_USE_SSL = "stickycommands.database.use-ssl"
+    }
 
+    object Messages {
 
     }
 }

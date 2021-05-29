@@ -1,7 +1,7 @@
 package com.dumbdogdiner.stickycommands;
 
 import com.dumbdogdiner.stickyapi.common.cache.Cacheable;
-import com.dumbdogdiner.stickycommands.utils.Item;
+import com.dumbdogdiner.stickycommands.database.tables.Users;
 import com.dumbdogdiner.stickycommands.utils.PowerTool;
 import com.dumbdogdiner.stickycommands.utils.SpeedType;
 import lombok.Getter;
@@ -17,12 +17,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class User implements Cacheable {
 
 
     @Getter @Setter
     private boolean firstJoinItemsGiven;
+
+    @Getter @Setter
+    private long firstSeen;
+
+    @Getter @Setter
+    private long lastSeen;
+
     /**
      * The username of the user.
      */
@@ -125,12 +133,16 @@ public class User implements Cacheable {
     public User(@NotNull String username, @NotNull UUID uniqueId) {
         this.name = username;
         this.uniqueId = uniqueId;
+        // FIXME get stuff from database here!
+        StickyCommands.getDatabaseHandler().loadUser(this.uniqueId, row -> {
+            this.firstJoinItemsGiven = row.get(Users.INSTANCE.getFirstJoinItemsGiven());
+            this.firstSeen = row.get(Users.INSTANCE.getFirstSeen());
+            this.lastSeen = row.get(Users.INSTANCE.getLastSeen());
+        });
     }
 
     public User(Player player) {
-        this.name = player.getName();
-        this.uniqueId = player.getUniqueId();
-        // FIXME get stuff from database here!
+        this(player.getName(), player.getUniqueId());
     }
 
     /**
@@ -152,17 +164,17 @@ public class User implements Cacheable {
     }
 
     public void addPowerTool(PowerTool powerTool) {
-        this.powerTools.put(powerTool.getItem().getType(), powerTool);
+        this.powerTools.put(powerTool.getItem(), powerTool);
     }
 
-    public void removePowerTool(Item item) {
-        for (PowerTool pt : this.powerTools.values()) {
-            if (item.getType() == pt.getItem().getType())
-                this.powerTools.remove(pt.getItem().getType());
+    public void removePowerTool(Material item) {
+        for (PowerTool pt : this.powerTools.values().stream().collect(Collectors.toList())) {
+            if (item == pt.getItem())
+                this.powerTools.remove(pt.getItem());
         }
     }
 
-    public void setSpeed(SpeedType type, Float speed) {
+    public void setSpeed(SpeedType type, float speed) {
         if (speed <= 0F)
             speed = 0.1F;
 
@@ -178,11 +190,11 @@ public class User implements Cacheable {
         switch (type) {
             case FLY:
                 p.setFlySpeed(speed);
-                // fixme this is ignored for nowStickyCommands.getDatabaseHandler().setSpeed(this.uniqueId, speed, 1);
+                StickyCommands.getDatabaseHandler().setSpeed(this.uniqueId, speed, true);
                 break;
             case WALK:
                 p.setWalkSpeed(speed);
-                // fixme this is ignored for now StickyCommands.getInstance().getDatabaseHandler().setSpeed(this.uniqueId, speed, 0);
+                StickyCommands.getDatabaseHandler().setSpeed(this.uniqueId, speed, false);
                 break;
         }
     }

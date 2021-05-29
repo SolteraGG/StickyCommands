@@ -1,11 +1,11 @@
 import kr.entree.spigradle.kotlin.*
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.gradle.kotlin.dsl.execution.ProgramText.Companion.from
 
 plugins {
-    java
+    id("java-library")
     idea
-    kotlin("jvm") version "1.4.32"
-    id("org.jetbrains.dokka") version "1.4.32"
+    //kotlin("jvm") version "1.4.32"
+    //id("org.jetbrains.dokka") version "1.4.32"
     id("com.github.johnrengelman.shadow") version "6.1.0"
     id("maven-publish")
     id("io.freefair.lombok") version "6.0.0-m2"
@@ -13,8 +13,9 @@ plugins {
 }
 
 group = "com.dumbdogdiner"
-version = "3.3.2"
-val mcApi = "1.16.5"
+version = "4.0.0-test"
+val mcApiMajor = "1.16"
+val mcApi = "$mcApiMajor.5"
 val mcApiVer = mcApi + "-R0.1-SNAPSHOT"
 val useLocal = false;
 val withClosedSource = false;
@@ -65,8 +66,9 @@ repositories {
 
 dependencies {
     // *sigh* kotlin bullshit
-    implementation(kotlin("stdlib"))
-    implementation(project(":DatabaseProvider"))
+    //implementation(kotlin("stdlib"))
+    api(project(":DatabaseProvider"))
+    api(project(":Konstants"))
 
     // java deps
 //    implementation("org.projectlombok:lombok:1.18.16")
@@ -85,7 +87,8 @@ dependencies {
     // plugin-specific deps
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")
     compileOnly("me.clip:placeholderapi:2.10.6")
-    implementation("com.dumbdogdiner:stickyapi:1.5.0")
+    implementation("com.dumbdogdiner:stickyapi-common:3.0.3")
+    implementation("com.dumbdogdiner:stickyapi-bukkit:3.0.3")
     compileOnly("net.luckperms:api:5.2")
     implementation("org.apache.commons:commons-csv:1.8")
 
@@ -100,9 +103,9 @@ dependencies {
 }
 
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = JavaVersion.VERSION_11.toString()
-}
+//tasks.withType<KotlinCompile> {
+//    kotlinOptions.jvmTarget = JavaVersion.VERSION_11.toString()
+//}
 
 tasks.withType<JavaCompile> {
     targetCompatibility = JavaVersion.VERSION_11.toString()
@@ -123,24 +126,27 @@ tasks {
 
     build {
         finalizedBy(shadowJar)
+
     }
 
     shadowJar {
-        //archiveClassifier.set("")
+        dependsOn(generateSpigotDescription)
+        archiveClassifier.set("")
         val pkg = "com.dumbdogdiner.stickycommands.libs."
         relocate("com.zaxxer", "${pkg}com.zaxxer")
         relocate("org.postgresql", "${pkg}org.postgresql")
     }
 
-    compileKotlin {
-        //setSource(delombok.get().outputs)
-        println(source.asPath)
-    }
-
-
     spigot {
-        apiVersion = mcApi
+        name = "StickyCommands"
+        authors = mutableListOf("ZachyFoxx", "SkyezerFox", "Rodwuff")
+        apiVersion = "1.16"
+        softDepends = mutableListOf("Vault", "LuckPerms", "StaffFacilities")
         version = this.version
+        load = kr.entree.spigradle.data.Load.STARTUP
+        debug {
+            buildVersion = mcApi
+        }
     }
 
     register<Jar>("sourcesJar") {
@@ -160,25 +166,4 @@ tasks {
 
 
 
-//
-//tasks.publish.dependsOn build, sources
-//
-//
-//publishing {
-//    repositories {
-//        maven {
-//            name = "GitHubPackages"
-//            url = uri("https://maven.pkg.github.com/DumbDogDiner/StickyCommands")
-//            credentials {
-//                username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")
-//                password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
-//            }
-//        }
-//    }
-//    publications {
-//        gpr(MavenPublication) {
-//            from(components.java)
-//            artifact sources // Publish the output of the sources task
-//        }
-//    }
-//}
+apply(from="publish.gradle")

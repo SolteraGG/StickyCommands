@@ -1,8 +1,6 @@
 package com.dumbdogdiner.stickycommands;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Timer;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
@@ -16,9 +14,7 @@ import com.dumbdogdiner.stickycommands.listeners.PlayerInteractionListener;
 import com.dumbdogdiner.stickycommands.listeners.PlayerJoinListener;
 import com.dumbdogdiner.stickycommands.runnables.AfkTimeRunnable;
 import com.dumbdogdiner.stickycommands.listeners.AfkEventListener;
-import com.dumbdogdiner.stickycommands.utils.Item;
 import com.dumbdogdiner.stickyapi.StickyAPI;
-import com.dumbdogdiner.stickyapi.bukkit.util.CommandUtil;
 import com.dumbdogdiner.stickyapi.bukkit.util.StartupUtil;
 import com.dumbdogdiner.stickyapi.common.translation.LocaleProvider;
 import com.dumbdogdiner.stickyapi.common.util.TimeUtil;
@@ -28,7 +24,6 @@ import kr.entree.spigradle.annotations.PluginMain;
 import lombok.Getter;
 import net.luckperms.api.LuckPerms;
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -48,24 +43,24 @@ public class StickyCommands extends JavaPlugin {
     /**
      * The singleton instance of the plugin.
      */
-    @Getter
-    private static StickyCommands instance;
+    public static StickyCommands getInstance() {
+        return StickyCommands.getPlugin(StickyCommands.class);
+    }
 
-    @Getter
-    private static Logger logger;
+    private Logger logger;
 
     @Getter
     protected static Boolean enabled = false;
 
     @Getter
-    private static boolean staffFacilitiesEnabled;
+    private boolean staffFacilitiesEnabled;
 
 
     /**
      * Thread pool for the execution of asynchronous tasks.
      */
     @Getter
-    protected static ExecutorService pool = Executors.newFixedThreadPool(3);
+    protected ExecutorService pool = Executors.newFixedThreadPool(3);
 
     /**
      * Cache of all online users.
@@ -78,23 +73,23 @@ public class StickyCommands extends JavaPlugin {
      * AFK TimerTask that tracks how long a player has been AFK
      */
     @Getter
-    protected static Timer afkRunnable = new Timer();
+    protected Timer afkRunnable = new Timer();
 
 
     /**
      * The server's uptime in seconds
      */
     @Getter
-    protected static Long upTime = TimeUtil.getUnixTime();
+    protected Long upTime = TimeUtil.getUnixTime();
 
     /**
      * The current vault com.dumbdogdiner.stickycommands.economy instance.
      */
     @Getter
-    private static Economy economy = null;
+    private Economy economy = null;
 
     @Getter
-    private static LocaleProvider localeProvider;
+    private LocaleProvider localeProvider;
 
 
     /**
@@ -120,11 +115,9 @@ public class StickyCommands extends JavaPlugin {
     @Override
     public void onLoad() {
         enabled = true;
-        instance = this;
         logger = super.getLogger();
         // Set our thread pool
         StickyAPI.setPool(pool);
-        new Item();
         // onlineUserCache.setMaxSize(1000);
     }
 

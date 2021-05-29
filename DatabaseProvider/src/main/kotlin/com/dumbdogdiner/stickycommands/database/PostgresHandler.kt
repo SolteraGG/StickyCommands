@@ -20,10 +20,13 @@ import org.bukkit.entity.Player
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import pw.forst.exposed.insertOrUpdate
-import stickycommands.database.DatabaseConstants
+import com.dumbdogdiner.stickycommands.utils.Constants.DatabaseConstants
 import java.time.Instant
 import java.util.*
 import java.util.logging.Logger
+import com.dumbdogdiner.stickycommands.database.tables.TableVars
+import com.dumbdogdiner.stickycommands.utils.Constants
+import java.util.function.Consumer
 
 
 // TODO: for the love of anything document this please!!!
@@ -33,6 +36,9 @@ class PostgresHandler(val config: FileConfiguration, val logger: Logger) {
     fun init(): Boolean {
         var success = true
         logger.info("[SQL] Checking SQL com.dumbdogdiner.stickycommands.database has been set up correctly...")
+
+        TableVars.server = config.getString(Constants.SettingsPaths.SERVER, "unknown")!!
+        TableVars.prefix = config.getString(Constants.DatabaseConstants.DATABASE_TABLE_PREFIX, "stickycommands_")!!
 
         val config = HikariConfig().apply {
             jdbcUrl = "jdbc:postgresql://${
@@ -95,6 +101,24 @@ class PostgresHandler(val config: FileConfiguration, val logger: Logger) {
         return info
     }
 
+    fun loadUser(playerId: UUID, callback: Consumer<ResultRow>) {
+        transaction(db) {
+            val column = Users.select { Users.uniqueId eq playerId.toString() }.singleOrNull()
+            if (column != null) {
+                callback.accept(column)
+            } else {
+                // just in case
+                Users.insert {
+                    it[name] = ""
+                    it[uniqueId] = playerId.toString()
+                    it[ipAddress] = ""
+                    it[lastSeen] = 0
+                    callback.accept(it.resultedValues!!.single())
+                }
+            }
+        }
+    }
+
     fun getUserInfo(uniqueId: UUID) = getUserInfo(uniqueId, false)
 
     // Workaround for some stupid shit below.
@@ -110,6 +134,18 @@ class PostgresHandler(val config: FileConfiguration, val logger: Logger) {
             .firstOrNull()?.let {
                 return@transaction listOf(it[Users.walkSpeed], it[Users.flySpeed])
             }
+    }
+
+    fun setSpeed(playerId: UUID, speed: Float, isFlySpeed: Boolean) {
+        transaction(db) {
+            Users.update {
+                if (isFlySpeed) {
+                    it[flySpeed] = speed
+                } else {
+                    it[walkSpeed] = speed
+                }
+            }
+        }
     }
 
     fun updateUser(player: Player, leaving: Boolean) {

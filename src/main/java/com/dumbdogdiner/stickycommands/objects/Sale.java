@@ -5,8 +5,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.UUID;
 
-import com.dumbdogdiner.stickycommands.utils.Item;
-
+import com.dumbdogdiner.stickyapi.common.util.NumberUtil;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -28,7 +27,7 @@ public class Sale {
     String username;
 
     @Getter
-    Item item;
+    Material item;
 
     @Getter
     Integer amount;
@@ -51,10 +50,10 @@ public class Sale {
             this.saleId = result.getInt("id");
             this.uniqueId = uuid;
             this.username = result.getString("player_name");
-            this.item = new Item(new ItemStack(Material.getMaterial(result.getString("item")), result.getInt("amount")));
+            this.item = Material.getMaterial(result.getString("item"));
             this.amount = result.getInt("amount");
-            this.price = Double.valueOf(Item.getDecimalFormat().format(result.getDouble("item_worth")));
-            this.newBalance = Double.valueOf(Item.getDecimalFormat().format(result.getDouble("new_balance")));
+            this.price = Double.valueOf(NumberUtil.formatPrice(result.getDouble("item_worth")));
+            this.newBalance = Double.valueOf(NumberUtil.formatPrice(result.getDouble("new_balance")));
             this.date = result.getTimestamp("time_sold");
         } catch(SQLException e) {
             e.printStackTrace();
@@ -62,7 +61,7 @@ public class Sale {
     }
 
     public Double getOldBalance() {
-        return Double.valueOf(Item.getDecimalFormat().format(this.newBalance - this.price));
+        return Double.valueOf(NumberUtil.formatPrice(this.newBalance - this.price));
     }
     
 }

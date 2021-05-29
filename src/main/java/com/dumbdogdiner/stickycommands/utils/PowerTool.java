@@ -3,6 +3,7 @@ package com.dumbdogdiner.stickycommands.utils;
 import com.dumbdogdiner.stickycommands.StickyCommands;
 
 import org.bukkit.entity.Player;
+import org.bukkit.Material;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -21,7 +22,7 @@ public class PowerTool {
      */
     @Getter
     @Setter
-    Item item;
+    Material item;
 
     /**
      * The command this powertool will execute
@@ -35,14 +36,14 @@ public class PowerTool {
      */
     @Getter
     @Setter
-    Boolean chat = false;
+    boolean chat = false;
 
     /**
      * If this powertool is enabled or not
      */
     @Getter
     @Setter
-    Boolean enabled = true;
+    boolean enabled = true;
 
     /**
      * Create a new powertool object
@@ -50,7 +51,7 @@ public class PowerTool {
      * @param command The command to bind to this powertool
      * @param player The player to bind this powertool to
      */
-    public PowerTool(Item item, String command, Player player) {
+    public PowerTool(Material item, String command, Player player) {
         this.player = player;
         this.item = item;
         this.command = command;

@@ -9,6 +9,7 @@ import com.dumbdogdiner.stickyapi.bukkit.command.ExitCode;
 import com.dumbdogdiner.stickyapi.common.translation.LocaleProvider;
 
 import com.dumbdogdiner.stickycommands.utils.Constants;
+import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.annotations.Command;
 import dev.jorel.commandapi.annotations.Default;
 import dev.jorel.commandapi.annotations.Permission;
@@ -19,11 +20,11 @@ import org.bukkit.plugin.Plugin;
 
 @Command("afk")
 public class AfkCommand {
-    private static StickyCommands plugin;
+
     private static LocaleProvider locale;
     public AfkCommand(StickyCommands plugin) {
-        AfkCommand.plugin = plugin;
         AfkCommand.locale = plugin.getLocaleProvider();
+        CommandAPI.registerCommand(getClass());
     }
 
     @Default

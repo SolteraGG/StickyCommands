@@ -6,6 +6,7 @@ import com.dumbdogdiner.stickyapi.common.arguments.Arguments;
 import com.dumbdogdiner.stickyapi.common.translation.LocaleProvider;
 import com.dumbdogdiner.stickycommands.StickyCommands;
 
+import com.dumbdogdiner.stickycommands.utils.Constants;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.model.group.Group;
 import org.bukkit.Bukkit;
@@ -54,7 +55,7 @@ public class SmiteCommand extends AsyncCommand {
         // Should really be in some sort of util function
         if (!sender.hasPermission(SMITE_PERMISSION_USE))
             return ExitCode.EXIT_PERMISSION_DENIED.setMessage(locale.translate("no-permission", variables));
-        Arguments a = new Arguments(args);
+        Arguments a = new Arguments(Arrays.asList(args));
         a.optionalFlag("group", "group");
         a.optionalString("smitetarget", "target");
 
@@ -175,7 +176,7 @@ public class SmiteCommand extends AsyncCommand {
             public void run() {
                 LightningStrike strike = world.strikeLightning(location);
 
-                world.createExplosion(location, Constants.SMITE_EXPLOSION_STRENGTH, false, false, strike);
+                //world.createExplosion(location, Constants.SMITE_EXPLOSION_STRENGTH, false, false, strike);
             }
         }, 1L);
 

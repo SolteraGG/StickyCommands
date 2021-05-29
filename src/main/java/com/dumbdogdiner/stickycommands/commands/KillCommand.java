@@ -1,85 +1,85 @@
 package com.dumbdogdiner.stickycommands.commands;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.TreeMap;
-
-import com.dumbdogdiner.stickycommands.StickyCommands;
-import com.dumbdogdiner.stickyapi.common.arguments.Arguments;
-import com.dumbdogdiner.stickyapi.bukkit.command.AsyncCommand;
-import com.dumbdogdiner.stickyapi.bukkit.command.ExitCode;
 import com.dumbdogdiner.stickyapi.common.translation.LocaleProvider;
-
-import org.bukkit.Bukkit;
+import com.dumbdogdiner.stickycommands.StickyCommands;
+import com.dumbdogdiner.stickycommands.utils.Constants;
+import dev.jorel.commandapi.CommandAPI;
+import dev.jorel.commandapi.annotations.Command;
+import dev.jorel.commandapi.annotations.Default;
+import dev.jorel.commandapi.annotations.Permission;
+import dev.jorel.commandapi.annotations.arguments.AEntitySelectorArgument;
+import dev.jorel.commandapi.arguments.EntitySelectorArgument.EntitySelector;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
-public class KillCommand extends AsyncCommand {
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
-    private final LocaleProvider locale = StickyCommands.getPlugin(StickyCommands.class).getLocaleProvider();
-    TreeMap<String, String> variables = locale.newVariables();
+/**
+ * Kill a player or yourself
+ */
+@Command("kill")
+public class KillCommand {
+    private static LocaleProvider localeProvider;
 
-    public KillCommand(Plugin owner) {
-        super("kill", owner);
-        setPermission("stickycommands.kill");
-        setDescription("Kill a player, or yourself...");
-        setAliases(Arrays.asList("slay", "murder"));
-        variables.put("syntax", "/kill [player]");
+    public KillCommand(StickyCommands instance){
+        localeProvider = instance.getLocaleProvider();
+        CommandAPI.registerCommand(getClass());
+    }
+    @Default @Permission(Constants.Permissions.KILL)
+    public static void killSelf(Player player) {
+        player.setHealth(0D);
+        player.setKiller(player);
+        player.sendMessage(localeProvider.translate("kill.suicide", localeProvider.newVariables()));
     }
 
-    @Override
-    public ExitCode executeCommand(CommandSender sender, String commandLabel, String[] args) {
-        try {
-            if (!sender.hasPermission("stickycommands.kill"))
-                return ExitCode.EXIT_PERMISSION_DENIED.setMessage(locale.translate("no-permission", variables));
-
-            Arguments a = new Arguments(args);
-            a.optionalString("target");
-
-            Player target;
-            variables.put("player", a.get("target"));
-            variables.put("sender", sender.getName());
-
-            if (a.get("target") == null) {
-                if (sender instanceof Player) {
-                    target = (Player) sender;
-                    killPlayer(target, variables, "kill.suicide");
-                } else
-                    sender.sendMessage(locale.translate("must-be-player", variables));
-                    
-                return ExitCode.EXIT_SUCCESS;
+    @Default @Permission(Constants.Permissions.KILL_ENTITIES)
+    public static void killEntities(CommandSender sender, @AEntitySelectorArgument(EntitySelector.MANY_ENTITIES)Collection<Entity> entities){
+        Map<String, Integer> entityTypes = new HashMap<>();
+        for(Entity e : entities) {
+            if(!e.hasPermission(Constants.Permissions.KILL_IMMUNE)) {
+                entityTypes.put(e.getName(), entityTypes.getOrDefault(e.getName(), 0) + 1);
+                // Not sure if this will work
+                e.sendMessage(localeProvider.translate("kill.you-were-killed", localeProvider.newVariables()));
+                if (e instanceof LivingEntity)
+                    ((LivingEntity) e).setHealth(0);
+                else
+                    e.remove();
             }
+        }
 
-            target = Bukkit.getPlayer(a.get("target"));
-            if (target != null) {
-                killPlayer(target, variables, "kill.you-were-killed");
-                sender.sendMessage(locale.translate("kill.you-killed", variables));
-            } else
-                sender.sendMessage(locale.translate("player-does-not-exist", variables));
-
-            return ExitCode.EXIT_SUCCESS;
-        } catch (Exception e) {
-            return ExitCode.EXIT_ERROR.setMessage(locale.translate("server-error", variables));
+        for(Map.Entry<String, Integer> entity : entityTypes.entrySet()){
+            var vars = localeProvider.newVariables();
+            vars.put("ENTITY", entity.getKey());
+            vars.put("QUANTITY", String.valueOf(entity.getValue()));
+            sender.sendMessage(localeProvider.translate("kill.you-killed-entities", vars));
         }
     }
 
-    private void killPlayer(Player target, TreeMap<String, String> variables, String message) {
-        variables.put("player", target.getName());
-        target.sendMessage(locale.translate(message, variables));
-        // md_5 couldn't help but throw exceptions instead of trying to actually solve the problem
-        // so we have to run certain events, like kick and death, synchronously
-        Bukkit.getScheduler().scheduleSyncDelayedTask(StickyCommands.getInstance(), () -> target.setHealth(0), 1L);
+    @Default @Permission(Constants.Permissions.KILL_OTHERS)
+    public static void killPlayers(CommandSender sender, @AEntitySelectorArgument(EntitySelector.MANY_PLAYERS) Collection<Player> players){
+        for(Player player : players){
+            if(!player.hasPermission(Constants.Permissions.KILL_IMMUNE)) {
+                player.setHealth(0D);
+                player.sendMessage(localeProvider.translate("kill.you-were-killed", localeProvider.newVariables()));
+                var vars = localeProvider.newVariables();
+                vars.put("PLAYER", player.getName());
+                sender.sendMessage(localeProvider.translate("kill.you-killed", vars));
+            }
+        }
     }
 
-    @Override
-    public List<String> tabComplete(CommandSender sender, String alias, String[] args) {
-        var usernames = new ArrayList<String>();
-        if (args.length < 2) {
-            for (var player : Bukkit.getOnlinePlayers())
-                usernames.add(player.getName());
-        }
-        return usernames;
+    @Default @Permission(Constants.Permissions.KILL_OTHERS)
+    public static void killPlayer(CommandSender sender, @AEntitySelectorArgument(EntitySelector.ONE_PLAYER) Player player){
+        killPlayers(sender, Collections.singleton(player));
+    }
+
+    @Default @Permission(Constants.Permissions.KILL_ENTITIES)
+    public static void killEntity(CommandSender sender, @AEntitySelectorArgument(EntitySelector.ONE_ENTITY) Entity entity){
+        killEntities(sender, Collections.singleton(entity));
     }
 }

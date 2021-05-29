@@ -1,6 +1,7 @@
 package com.dumbdogdiner.stickycommands;
 
 import com.dumbdogdiner.stickycommands.utils.Constants;
+import com.dumbdogdiner.stickycommands.utils.ResourceUtils;
 import com.google.common.base.Predicate;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -45,11 +46,7 @@ public class MedallionManager implements Listener {
     public MedallionManager(@NotNull StickyCommands pluginInstance) {
         this.pluginInstance = pluginInstance;
 
-        File medallionFile = new File(pluginInstance.getDataFolder(), Constants.Files.MEDALLION_UUIDS);
-        if(!medallionFile.exists()) {
-            medallionFile.getParentFile().mkdirs();
-            pluginInstance.saveResource(Constants.Files.MEDALLION_UUIDS, false);
-        }
+        File medallionFile = ResourceUtils.getOrCreate(Constants.Files.MEDALLION_UUIDS);
 
         // This can be cleaned up by using an sqlite db or importing into postgres directly or similar
         // for now its fine

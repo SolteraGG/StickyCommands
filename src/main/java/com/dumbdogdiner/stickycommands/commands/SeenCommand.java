@@ -2,7 +2,6 @@ package com.dumbdogdiner.stickycommands.commands;
 
 import com.dumbdogdiner.stickyapi.bukkit.command.AsyncCommand;
 import com.dumbdogdiner.stickyapi.bukkit.command.ExitCode;
-import com.dumbdogdiner.stickyapi.bukkit.player.PlayerUtils;
 import com.dumbdogdiner.stickyapi.common.arguments.Arguments;
 import com.dumbdogdiner.stickyapi.common.translation.LocaleProvider;
 import com.dumbdogdiner.stickyapi.common.util.StringUtil;
@@ -12,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -34,7 +34,7 @@ public class SeenCommand extends AsyncCommand {
         var player = (Player)sender;
         variables.put("player", player.getName());
         variables.put("player_uuid", player.getUniqueId().toString());
-        Arguments a = new Arguments(args);
+        Arguments a = new Arguments(Arrays.asList(args));
         a.requiredString("player");
 
         if (!a.valid())
@@ -56,17 +56,17 @@ public class SeenCommand extends AsyncCommand {
     }
 
 
-    @Override
-    public @NotNull List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, String[] args) {
-        //List<String> players = PlayerUtils.Names.getAllPlayers();
-        //FIXME: The line above generates too much lag, needs to be cached. for now, lets just grab online players i guess
-        List<String> players = PlayerUtils.Names.getOnlinePlayers();
-        if (args.length < 2) {
-            if(args.length >=1){
-                players.removeIf(str -> (!str.toLowerCase().contains(args[0].toLowerCase())));
-            }
-            return players;
-        }
-        return List.of();
-    }
+//    @Override
+//    public @NotNull List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, String[] args) {
+//        //List<String> players = PlayerUtils.Names.getAllPlayers();
+//        //FIXME: The line above generates too much lag, needs to be cached. for now, lets just grab online players i guess
+//        List<String> players = PlayerUtils.Names.getOnlinePlayers();
+//        if (args.length < 2) {
+//            if(args.length >=1){
+//                players.removeIf(str -> (!str.toLowerCase().contains(args[0].toLowerCase())));
+//            }
+//            return players;
+//        }
+//        return List.of();
+//    }
 }

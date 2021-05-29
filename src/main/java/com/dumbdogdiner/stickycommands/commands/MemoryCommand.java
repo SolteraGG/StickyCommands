@@ -13,10 +13,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 import java.util.TreeMap;
+
 
 public class MemoryCommand extends AsyncCommand {
     LocaleProvider locale = StickyCommands.getInstance().getLocaleProvider();
@@ -43,6 +46,13 @@ public class MemoryCommand extends AsyncCommand {
             var df = new DecimalFormat("0.0");
 
             // TODO Use an external utility to get memory usage stuffs
+            // TODO v2 run in async for safety
+            Process psProcess = Runtime.getRuntime().exec("/bin/ps -o pid,rss,stat,user,group,args,time");
+            psProcess.onExit().get();
+            Scanner scanner = new Scanner(psProcess.getInputStream());
+            while (scanner.hasNext()){
+                sender.sendMessage(scanner.nextLine());
+            }
             var max = Runtime.getRuntime().maxMemory() / 1024 / 1024;
             var used = Runtime.getRuntime().totalMemory() / 1024 / 1024 - Runtime.getRuntime().freeMemory() / 1024 / 1024;
             double usage = Double.parseDouble(df.format((((float)used / max) * 100)));
