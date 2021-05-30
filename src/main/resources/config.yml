@@ -20,7 +20,7 @@ server: "lobby"
 
 database:
   host: 192.168.25.128
-  port: 3306
+  port: 5432
   name: stickycommandstest
   username: stickycommands
   password: stixil

@@ -81,6 +81,7 @@ dependencies {
     implementation("net.kyori:adventure-api:4.7.0")
 
     compileOnly("dev.jorel.CommandAPI:commandapi-core:5.12")
+    shadow("dev.jorel.CommandAPI:commandapi-shade:5.12")
     compileOnly("dev.jorel.CommandAPI:commandapi-annotations:5.12")
     annotationProcessor("dev.jorel.CommandAPI:commandapi-annotations:5.12")
 
