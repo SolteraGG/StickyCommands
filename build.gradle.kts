@@ -17,7 +17,7 @@ version = "4.0.0-test"
 val mcApiMajor = "1.16"
 val mcApi = "$mcApiMajor.5"
 val mcApiVer = mcApi + "-R0.1-SNAPSHOT"
-val useLocal = false;
+val useLocal = true;
 val withClosedSource = false;
 
 repositories {
@@ -52,17 +52,6 @@ repositories {
     }
 }
 
-//
-//sourceSets.register("mainLomboked")
-//configure<SourceSetContainer> {
-//    named("main") {
-//        java.srcDirs(setOf("src/main/java", "src/main/kotlin"))
-//    }
-//    named("mainLomboked") {
-//        java.srcDirs(setOf("src/main/kotlin", "src/main/delombok"))
-//    }
-//}
-
 
 dependencies {
     // *sigh* kotlin bullshit
@@ -81,6 +70,7 @@ dependencies {
     implementation("net.kyori:adventure-api:4.7.0")
 
     compileOnly("dev.jorel.CommandAPI:commandapi-core:5.12")
+    implementation("dev.jorel.CommandAPI:commandapi-shade:5.12")
     shadow("dev.jorel.CommandAPI:commandapi-shade:5.12")
     compileOnly("dev.jorel.CommandAPI:commandapi-annotations:5.12")
     annotationProcessor("dev.jorel.CommandAPI:commandapi-annotations:5.12")
@@ -88,8 +78,8 @@ dependencies {
     // plugin-specific deps
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")
     compileOnly("me.clip:placeholderapi:2.10.6")
-    implementation("com.dumbdogdiner:stickyapi-common:3.0.3")
-    implementation("com.dumbdogdiner:stickyapi-bukkit:3.0.3")
+    //implementation("com.dumbdogdiner:stickyapi-common:3.0.4a")
+    //implementation("com.dumbdogdiner:stickyapi-bukkit:3.0.4a")
     compileOnly("net.luckperms:api:5.2")
     implementation("org.apache.commons:commons-csv:1.8")
 
@@ -127,7 +117,9 @@ tasks {
 
     build {
         finalizedBy(shadowJar)
-
+    }
+    acceptSpigotEula {
+        dependsOn(build)
     }
 
     shadowJar {
@@ -142,7 +134,8 @@ tasks {
         name = "StickyCommands"
         authors = mutableListOf("ZachyFoxx", "SkyezerFox", "Rodwuff")
         apiVersion = "1.16"
-        softDepends = mutableListOf("Vault", "LuckPerms", "StaffFacilities")
+        depends = mutableListOf("Vault", "LuckPerms", "StaffFacilities", "PlaceholderAPI")
+        //softDepends = mutableListOf("Vault", "LuckPerms", "StaffFacilities", "PlaceholderAPI")
         version = this.version
         load = kr.entree.spigradle.data.Load.STARTUP
         debug {

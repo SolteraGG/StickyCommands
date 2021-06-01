@@ -7,6 +7,8 @@ import com.dumbdogdiner.stickycommands.utils.SpeedType;
 import lombok.Getter;
 import lombok.Setter;
 import me.xtomyserrax.StaffFacilities.SFAPI;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -72,9 +74,11 @@ public class User implements Cacheable {
 
         if (!isHidden()) {
             if (isAfk()) {
-                Bukkit.broadcastMessage(StickyCommands.getInstance().getLocaleProvider().translate("afk.afk", vars));
+                Bukkit.broadcastMessage(StickyCommands.getInstance().getLocaleProvider().translate("afk", vars));
             } else {
-                Bukkit.broadcastMessage(StickyCommands.getInstance().getLocaleProvider().translate("afk.not-afk", vars));
+                Bukkit.broadcastMessage(
+                        StickyCommands.getInstance().getLocaleProvider()
+                                .translate("not-afk", vars));
             }
         }
     }

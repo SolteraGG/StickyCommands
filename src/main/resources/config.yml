@@ -19,13 +19,13 @@ debug: false
 server: "lobby"
 
 database:
-  host: 192.168.25.128
+  host: 127.0.0.1
   port: 5432
-  name: stickycommandstest
+  database-name: stickycommands
   username: stickycommands
   password: stixil
   table-prefix: stickycommands_
   # Maximum number of times sql will try to reconnect
   max-reconnects: 5
   # Use SSL?
-  use-ssl: disable
+  use-ssl: allow

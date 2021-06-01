@@ -46,8 +46,8 @@ class PostgresHandler(val config: FileConfiguration, val logger: Logger) {
             }:${
                 config.getInt(DatabaseConstants.DATABASE_PORT)
             }/${
-                config.getString(DatabaseConstants.DATABASE_DATABASE)
-            }?sslmode=${config.getString(DatabaseConstants.DATABASE_USE_SSL, "disabled")}"
+                config.getString(DatabaseConstants.DATABASE_NAME)
+            }?sslmode=${config.getString(DatabaseConstants.DATABASE_USE_SSL, "allow")}"
 
             driverClassName = "com.dumbdogdiner.stickycommands.libs.org.postgresql.Driver"
             username = config.getString(DatabaseConstants.DATABASE_USERNAME, "postgres")!!

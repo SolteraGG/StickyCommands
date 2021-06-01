@@ -38,6 +38,9 @@ object Constants {
         const val POWERTOOL_TOGGLE = "$POWERTOOL.toggle"
         const val POWERTOOL_VIEW_ALL_COMMANDS = "$POWERTOOL.viewallcommands"
 
+        const val STICKYCOMMANDS = "$prefix"
+        const val STICKYCOMMANDS_RELOAD = "$prefix.reload"
+
         const val SEEN = "$prefix.seen"
 
         const val SELL = "$prefix.sell"
@@ -149,7 +152,7 @@ object Constants {
     object DatabaseConstants {
         const val DATABASE_HOST = "database.host"
         const val DATABASE_PORT = "database.port"
-        const val DATABASE_DATABASE = "database.database"
+        const val DATABASE_NAME = "database.database-name"
         const val DATABASE_USERNAME = "database.username"
         const val DATABASE_PASSWORD = "database.password"
         const val DATABASE_TABLE_PREFIX = "database.table-prefix"

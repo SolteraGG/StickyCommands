@@ -16,16 +16,18 @@ import org.bukkit.event.player.PlayerQuitEvent;
  * Handles logic relating to players joining and leaving the server.
  */
 public class PlayerJoinListener implements Listener {
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerJoin(PlayerJoinEvent event) {
+        StickyCommands.getInstance().getLogger().severe("DBG: Join event captured");
         //StickyCommands.getDatabaseHandler().updateUser(event.getPlayer(), false);
         StickyCommands.getOnlineUserCache().put(event.getPlayer().getUniqueId(), new User(event.getPlayer()));
+
 //        var player = event.getPlayer();
 //        StickyCommands.getInstance().getOnlineUserCache().put(player.getUniqueId(), User.fromPlayer(player));
 //        StickyCommands.getDatabaseHandler().updateUser(player.getUniqueId().toString(), player.getName(), player.getAddress().getAddress().getHostAddress(), TimeUtil.now(), true, true);
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerQuit(PlayerQuitEvent event) {
         StickyCommands.getDatabaseHandler().updateUser(event.getPlayer(), true);
 //        var player = event.getPlayer();
@@ -33,7 +35,7 @@ public class PlayerJoinListener implements Listener {
 //        StickyCommands.getInstance().getDatabaseHandler().updateUser(player.getUniqueId().toString(), player.getName(), player.getAddress().getAddress().getHostAddress(), TimeUtil.now(), false, false);
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerQuit(PlayerKickEvent event) {
         StickyCommands.getDatabaseHandler().updateUser(event.getPlayer(), true);
 //        var player = event.getPlayer();

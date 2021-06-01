@@ -1,10 +1,13 @@
 package com.dumbdogdiner.stickycommands.utils;
 
+import com.dumbdogdiner.stickyapi.common.config.FileConfiguration;
+import com.dumbdogdiner.stickyapi.common.config.providers.YamlProvider;
 import com.dumbdogdiner.stickyapi.common.util.MathUtil;
 import com.dumbdogdiner.stickycommands.StickyCommands;
 import com.dumbdogdiner.stickycommands.utils.Constants;
 import com.dumbdogdiner.stickycommands.utils.ResourceUtils;
 import com.google.common.collect.ImmutableList;
+import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -16,6 +19,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.HashMap;
@@ -23,13 +27,19 @@ import java.util.List;
 
 @UtilityClass
 public class ItemWorths {
-    private static final HashMap<Material, Double> worths = new HashMap<>();
+    private static YamlProvider worthCfg;
 
-    // Precondition: Stickycommands is initialized before class is accessed!!!
-    // Potentially unsafe??
     static {
-        File worthsFile = ResourceUtils.getOrCreate(Constants.Files.ITEM_WORTHS);
-        // TODO parse worths file and insert into map
+        try {
+            worthCfg = new YamlProvider(ResourceUtils.getOrCreate(Constants.Files.ITEM_WORTHS));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public static void reloadWorths() {
+        worthCfg.reload();
     }
 
     private static final ImmutableList<Material> illegals = ImmutableList.of(
@@ -86,9 +96,8 @@ public class ItemWorths {
      * @return The value of it
      */
     public static double get(Material key) {
-        if (!worths.containsKey(key))
-            return 0D;
-        return worths.get(key);
+        StickyCommands.getInstance().getLogger().severe(key.toString());
+        return worthCfg.getDouble(key.toString(), 0D);
     }
 
     public static boolean isIllegal(ItemStack item){

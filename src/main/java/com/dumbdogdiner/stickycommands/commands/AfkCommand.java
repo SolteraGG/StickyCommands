@@ -20,13 +20,14 @@ import org.bukkit.plugin.Plugin;
 
 @Command("afk")
 public class AfkCommand {
-
-    private static LocaleProvider locale;
-    public AfkCommand(StickyCommands plugin) {
-        AfkCommand.locale = plugin.getLocaleProvider();
-        CommandAPI.registerCommand(getClass());
+    private static final LocaleProvider locale = StickyCommands.getInstance().getLocaleProvider();
+    @Default
+    @Permission(Constants.Permissions.AFK)
+    public static void afk(CommandSender s){
+        if(s instanceof Player){
+            afk((Player) s);
+        }
     }
-
     @Default
     @Permission(Constants.Permissions.AFK)
     public static void afk(Player player) {

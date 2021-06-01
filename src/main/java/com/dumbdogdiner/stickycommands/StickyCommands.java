@@ -1,6 +1,7 @@
 package com.dumbdogdiner.stickycommands;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Timer;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
@@ -20,6 +21,7 @@ import com.dumbdogdiner.stickyapi.common.translation.LocaleProvider;
 import com.dumbdogdiner.stickyapi.common.util.TimeUtil;
 
 import dev.jorel.commandapi.CommandAPI;
+import dev.jorel.commandapi.CommandAPIConfig;
 import kr.entree.spigradle.annotations.PluginMain;
 import lombok.Getter;
 import net.luckperms.api.LuckPerms;
@@ -28,6 +30,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import static dev.jorel.commandapi.CommandAPI.registerCommand;
 import net.milkbowl.vault.economy.Economy;
 
 
@@ -66,7 +69,7 @@ public class StickyCommands extends JavaPlugin {
      * Cache of all online users.
      */
     @Getter
-    protected static HashMap<UUID, User> onlineUserCache = new HashMap<UUID, User>();
+    protected static Map<UUID, User> onlineUserCache = new HashMap<>();
 
 
     /**
@@ -119,6 +122,9 @@ public class StickyCommands extends JavaPlugin {
         // Set our thread pool
         StickyAPI.setPool(pool);
         // onlineUserCache.setMaxSize(1000);
+        CommandAPIConfig commandAPIConfig = new CommandAPIConfig();
+        commandAPIConfig.setVerboseOutput(true);
+        CommandAPI.onLoad(commandAPIConfig);
     }
 
     @Override
@@ -161,6 +167,9 @@ public class StickyCommands extends JavaPlugin {
         for (Player player : Bukkit.getOnlinePlayers()) {
             onlineUserCache.put(player.getUniqueId(), new User(player));
         }
+
+        // Setup commandAPI
+        CommandAPI.onEnable(this);
 
         if (!registerEvents())
             return;
@@ -228,27 +237,13 @@ public class StickyCommands extends JavaPlugin {
      * Register all the commands!
      */
     boolean registerCommands() {
-//        List<Command> commandList = new ArrayList<Command>();
-        // Register com.dumbdogdiner.stickycommands.economy based commands only if the com.dumbdogdiner.stickycommands.economy provider is not null.
-//        if (economy != null) {
-//            commandList.add(new SellCommand(this));
-//            commandList.add(new WorthCommand(this));
-//        }
-//
-//        commandList.add(new SpeedCommand(this));
-//        commandList.add(new SeenCommand(this));
-//
-//        commandList.add(new KillCommand(this));
-//        commandList.add(new JumpCommand(this));
-//        commandList.add(new MemoryCommand(this));
-//        commandList.add(new TopCommand(this));
-//        commandList.add(new PowerToolCommand(this));
-        CommandAPI.registerCommand(AfkCommand.class);
-//        commandList.add(new PlayerTimeCommand(this));
-//        commandList.add(new SmiteCommand(this));
-//        commandList.add(new HatCommand(this));
-//
-//        CommandUtil.registerCommands(getServer(), commandList);
+        if(!CommandAPI.canRegister()){
+            logger.severe("Cannot register commands, wtf??");
+            return false;
+        }
+        registerCommand(AfkCommand.class);
+        registerCommand(MainCommand.class);
+        registerCommand(WorthCommand.class);
         return true;
     }
 
