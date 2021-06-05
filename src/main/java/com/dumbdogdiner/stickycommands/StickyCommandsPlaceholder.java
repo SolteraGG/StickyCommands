@@ -1,17 +1,14 @@
 package com.dumbdogdiner.stickycommands;
 
+import lombok.NoArgsConstructor;
+import lombok.experimental.UtilityClass;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 
+@NoArgsConstructor
 public class StickyCommandsPlaceholder extends PlaceholderExpansion {
     private static StickyCommandsPlaceholder INSTANCE;
 
-    /**
-     * Exists to defeat instantiation
-     */
-    private StickyCommandsPlaceholder(){
-
-    }
 
 
     /**
@@ -28,7 +25,7 @@ public class StickyCommandsPlaceholder extends PlaceholderExpansion {
 
     /**
      * The name of the person who created this expansion should go here.
-     * <br>For convienience do we return the author from the plugin.yml
+     * <br>For convenience we return the author from the plugin.yml
      *
      * @return The name of the author as a String.
      */
@@ -55,7 +52,7 @@ public class StickyCommandsPlaceholder extends PlaceholderExpansion {
      * This is the version of the expansion.
      * <br>You don't have to use numbers, since it is set as a String.
      *
-     * For convienience do we return the version from the plugin.yml
+     * For convenience we return the version from the plugin.yml
      *
      * @return The version as a String.
      */

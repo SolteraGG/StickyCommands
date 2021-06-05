@@ -65,7 +65,6 @@ public class User implements Cacheable {
     private Integer afkTime = 0;
 
 
-
     public void setAfk(boolean AFKState) {
         if (!AFKState)
             afkTime = 0;
@@ -140,11 +139,11 @@ public class User implements Cacheable {
     public User(@NotNull String username, @NotNull UUID uniqueId) {
         this.name = username;
         this.uniqueId = uniqueId;
-        // FIXME get stuff from database here!
+
         StickyCommands.getDatabaseHandler().loadUser(this.uniqueId, row -> {
-            this.firstJoinItemsGiven = row.get(Users.INSTANCE.getFirstJoinItemsGiven());
-            this.firstSeen = row.get(Users.INSTANCE.getFirstSeen());
-            this.lastSeen = row.get(Users.INSTANCE.getLastSeen());
+            this.firstJoinItemsGiven = row.get(Users.getFirstJoinItemsGiven());
+            this.firstSeen = row.get(Users.getFirstSeen());
+            this.lastSeen = row.get(Users.getLastSeen());
         });
     }
 
@@ -181,6 +180,8 @@ public class User implements Cacheable {
         }
     }
 
+    // Setters
+
     public void setSpeed(SpeedType type, float speed) {
         if (speed <= 0F)
             speed = 0.1F;
@@ -209,5 +210,4 @@ public class User implements Cacheable {
     public void toggleAfk() {
         setAfk(!isAfk());
     }
-
 }

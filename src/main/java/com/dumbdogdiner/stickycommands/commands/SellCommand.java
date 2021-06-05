@@ -17,6 +17,7 @@ import dev.jorel.commandapi.annotations.Default;
 import dev.jorel.commandapi.annotations.Permission;
 import dev.jorel.commandapi.annotations.Subcommand;
 import dev.jorel.commandapi.annotations.arguments.AIntegerArgument;
+import dev.jorel.commandapi.annotations.arguments.ALiteralArgument;
 import dev.jorel.commandapi.annotations.arguments.APlayerArgument;
 import org.bukkit.entity.Player;
 
@@ -48,25 +49,27 @@ public class SellCommand {
         player.sendMessage(locale.translate(Constants.LanguagePaths.SELL_MUST_CONFIRM, vars));
     }
 
-    @Subcommand("inventory confirm")
+    @Subcommand("inventory")
     @Permission(Constants.Permissions.SELL_INVENTORY)
-    public static void sellInventoryConfirm(Player player) {
+    public static void sellInventoryConfirm(Player player, @ALiteralArgument("confirm")String conf) {
         execute(player, true);
     }
 
     @Subcommand("hand")
     @Permission(Constants.Permissions.SELL_HAND)
-    public static void sellHand(Player player) {
+    public static void sellHand(Player player, @ALiteralArgument("confirm") String confirm) {
         var vars = locale.newVariables();
+        StickyCommands.getInstance().getLogger().severe("CONFIRM="+confirm);
         VariableUtils.withPlayer(vars, player, false);
+        execute(player, false);
         player.sendMessage(locale.translate(Constants.LanguagePaths.SELL_MUST_CONFIRM, vars));
     }
 
-    @Subcommand("hand confirm")
-    @Permission(Constants.Permissions.SELL_HAND)
-    public static void sellHandConfirm(Player player) {
-        execute(player, false);
-    }
+//    @Subcommand("hand")
+//    @Permission(Constants.Permissions.SELL_HAND)
+//    public static void sellHandConfirm(Player player) {
+//
+//    }
 
     @Subcommand("log")
     @Permission(Constants.Permissions.SELL_LOG)

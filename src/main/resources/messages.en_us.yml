@@ -55,6 +55,7 @@ hat:
   no-hat: "{prefix}&bYou do not have a hat!"
   new-hat: "{prefix}&bEnjoy your new hat!"
   remove-hat: "{prefix}&bYour hat has been removed!"
+
 item-message: "{prefix}&bGave you &f{AMOUNT} {ITEM}&b!"
 memory-message: "{prefix}&bServer performance \n{newline}&bWorld: &f{world}\n{newline}&bEntities: &f{entities}\n{newline}&bLoaded Chunks: &f{loaded_chunks}\n{newline}&bTPS: &f{tps_1m}, {tps_5m}, {tps_15m} (1m, 5m, 15m)\n{newline}&bMemory: {memory_bar}\n{newline}&bUptime: &f{uptime|duration}"
 
@@ -69,7 +70,7 @@ smite:
   smite-block: "{prefix}&bYour fury reigns down on the block at &f{X}, {Y}, {Z} &bof world &f{WORLD}"
   smite-message: "{prefix}&bThou hast been smitten!"
   smite-immune: "{prefix}&f{PLAYER}&b is immune to your wrath!"
-  yourself: "{prefix}&bYou have smitten yourself!"
+  yourself: "{prefix}&bYou have smitten yourself!\n{smite-message}"
 
 whip:
   you-whipped: "{prefix}&bYou whipped &f{PLAYER}&b for &f{DAMAGE}&bhp &f{AMOUNT}&b times!"

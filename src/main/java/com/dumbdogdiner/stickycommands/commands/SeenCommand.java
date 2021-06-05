@@ -13,11 +13,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 
 public class SeenCommand extends AsyncCommand {
     private static LocaleProvider locale = StickyCommands.getInstance().getLocaleProvider();
-    TreeMap<String, String> variables = locale.newVariables();
+    Map<String, String> variables = locale.newVariables();
     
     public SeenCommand(Plugin owner) {
         super("seen", owner);

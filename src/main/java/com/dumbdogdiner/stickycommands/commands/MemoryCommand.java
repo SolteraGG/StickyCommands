@@ -17,13 +17,14 @@ import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.TreeMap;
 
 
 public class MemoryCommand extends AsyncCommand {
     LocaleProvider locale = StickyCommands.getInstance().getLocaleProvider();
-    TreeMap<String, String> variables = locale.newVariables();
+    Map<String, String> variables = LocaleProvider.newVariables();
 
     public MemoryCommand(Plugin owner) {
         super("memory", owner);

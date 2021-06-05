@@ -1,5 +1,6 @@
 package com.dumbdogdiner.stickycommands.commands;
 
+import java.util.Map;
 import java.util.TreeMap;
 
 import com.dumbdogdiner.stickycommands.StickyCommands;
@@ -31,7 +32,7 @@ public class AfkCommand {
     @Default
     @Permission(Constants.Permissions.AFK)
     public static void afk(Player player) {
-        TreeMap<String, String> vars = locale.newVariables();
+        Map<String, String> vars = LocaleProvider.newVariables();
         vars.put("player", player.getName());
 
         User u = StickyCommands.getInstance().getOnlineUser(player.getUniqueId());

@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 
 import com.dumbdogdiner.stickycommands.commands.*;
 import com.dumbdogdiner.stickycommands.database.PostgresHandler;
+import com.dumbdogdiner.stickycommands.managers.MedallionManager;
 import com.dumbdogdiner.stickycommands.objects.Market;
 import com.dumbdogdiner.stickycommands.listeners.PlayerInteractionListener;
 import com.dumbdogdiner.stickycommands.listeners.PlayerJoinListener;
@@ -245,7 +246,7 @@ public class StickyCommands extends JavaPlugin {
         registerCommand(AfkCommand.class);
         registerCommand(HatCommand.class);
         registerCommand(JumpCommand.class);
-        registerCommand(KillCommand.class);
+//        registerCommand(KillCommand.class);
         registerCommand(MainCommand.class);
         registerCommand(MakeANoteForMeToFixItLater.class);
         registerCommand(MemoryCommand.class);
@@ -254,6 +255,7 @@ public class StickyCommands extends JavaPlugin {
         registerCommand(WorthCommand.class);
         registerCommand(HatCommand.class);
         registerCommand(SellCommand.class);
+        SmiteCommand.register();
         return true;
     }
 

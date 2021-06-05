@@ -1,5 +1,6 @@
 package com.dumbdogdiner.stickycommands.commands;
 
+import java.util.Map;
 import java.util.TreeMap;
 
 import com.dumbdogdiner.stickycommands.StickyCommands;
@@ -17,7 +18,7 @@ import org.bukkit.plugin.Plugin;
 public class TopCommand extends AsyncCommand {
 
     LocaleProvider locale = StickyCommands.getInstance().getLocaleProvider();
-    TreeMap<String, String> variables = locale.newVariables();
+    Map<String, String> variables = locale.newVariables();
     public TopCommand(Plugin owner) {
         super("top", owner);
         setPermission("stickycommands.top");

@@ -12,8 +12,11 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import java.time.Instant;
+
 /**
  * Handles logic relating to players joining and leaving the server.
+ * TODO: see why we cannot use monitor priority
  */
 public class PlayerJoinListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -29,7 +32,8 @@ public class PlayerJoinListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerQuit(PlayerQuitEvent event) {
-        StickyCommands.getDatabaseHandler().updateUser(event.getPlayer(), true);
+        StickyCommands.getOnlineUserCache().remove(event.getPlayer().getUniqueId());
+        StickyCommands.getDatabaseHandler().updateUser(event.getPlayer(), true, Instant.now(), null);
 //        var player = event.getPlayer();
 //        StickyCommands.getInstance().getOnlineUserCache().remove(player.getUniqueId());
 //        StickyCommands.getInstance().getDatabaseHandler().updateUser(player.getUniqueId().toString(), player.getName(), player.getAddress().getAddress().getHostAddress(), TimeUtil.now(), false, false);
@@ -37,7 +41,8 @@ public class PlayerJoinListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerQuit(PlayerKickEvent event) {
-        StickyCommands.getDatabaseHandler().updateUser(event.getPlayer(), true);
+        StickyCommands.getOnlineUserCache().remove(event.getPlayer().getUniqueId());
+        StickyCommands.getDatabaseHandler().updateUser(event.getPlayer(), true, Instant.now(), null);
 //        var player = event.getPlayer();
 //        StickyCommands.getInstance().getOnlineUserCache().remove(player.getUniqueId());
 //        StickyCommands.getInstance().getDatabaseHandler().updateUser(player.getUniqueId().toString(), player.getName(), player.getAddress().getAddress().getHostAddress(), TimeUtil.now(), false, false);

@@ -1,5 +1,7 @@
-package com.dumbdogdiner.stickycommands;
+package com.dumbdogdiner.stickycommands.managers;
 
+import com.dumbdogdiner.stickycommands.StickyCommands;
+import com.dumbdogdiner.stickycommands.User;
 import com.dumbdogdiner.stickycommands.utils.Constants;
 import com.dumbdogdiner.stickycommands.utils.ResourceUtils;
 import com.google.common.base.Predicate;

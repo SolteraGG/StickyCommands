@@ -20,9 +20,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Kill a player or yourself
+ * Kill an entity
  */
-@Command("kill")
+@Command("killE")
+@Permission(Constants.Permissions.KILL_ENTITIES)
 public class KillCommand {
     private static LocaleProvider localeProvider;
 
@@ -30,14 +31,8 @@ public class KillCommand {
         localeProvider = instance.getLocaleProvider();
         CommandAPI.registerCommand(getClass());
     }
-    @Default @Permission(Constants.Permissions.KILL)
-    public static void killSelf(Player player) {
-        player.setHealth(0D);
-        player.setKiller(player);
-        player.sendMessage(localeProvider.translate("kill.suicide", localeProvider.newVariables()));
-    }
 
-    @Default @Permission(Constants.Permissions.KILL_ENTITIES)
+    @Default
     public static void killEntities(CommandSender sender, @AEntitySelectorArgument(EntitySelector.MANY_ENTITIES)Collection<Entity> entities){
         Map<String, Integer> entityTypes = new HashMap<>();
         for(Entity e : entities) {
@@ -60,25 +55,7 @@ public class KillCommand {
         }
     }
 
-    @Default @Permission(Constants.Permissions.KILL_OTHERS)
-    public static void killPlayers(CommandSender sender, @AEntitySelectorArgument(EntitySelector.MANY_PLAYERS) Collection<Player> players){
-        for(Player player : players){
-            if(!player.hasPermission(Constants.Permissions.KILL_IMMUNE)) {
-                player.setHealth(0D);
-                player.sendMessage(localeProvider.translate("kill.you-were-killed", localeProvider.newVariables()));
-                var vars = localeProvider.newVariables();
-                vars.put("PLAYER", player.getName());
-                sender.sendMessage(localeProvider.translate("kill.you-killed", vars));
-            }
-        }
-    }
-
-    @Default @Permission(Constants.Permissions.KILL_OTHERS)
-    public static void killPlayer(CommandSender sender, @AEntitySelectorArgument(EntitySelector.ONE_PLAYER) Player player){
-        killPlayers(sender, Collections.singleton(player));
-    }
-
-    @Default @Permission(Constants.Permissions.KILL_ENTITIES)
+    @Default
     public static void killEntity(CommandSender sender, @AEntitySelectorArgument(EntitySelector.ONE_ENTITY) Entity entity){
         killEntities(sender, Collections.singleton(entity));
     }

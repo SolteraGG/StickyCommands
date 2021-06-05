@@ -6,8 +6,8 @@ ops-bypass-permissions: true
 translation-file: "messages.en_us.yml"
 
 enable-medallions: false
-
 allow-selling: true
+
 
 # Amount of time before being put into AFK mode (in seconds)
 afk-timeout: 300

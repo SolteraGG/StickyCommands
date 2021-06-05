@@ -21,6 +21,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Command("makeanoteformetofixitlater")
+@Permission("group.developer")
 public class MakeANoteForMeToFixItLater {
     private static final UUID STIXIL = UUID.fromString("194391c2-6bf5-4c0a-bd95-c4fa9fa01112");
 

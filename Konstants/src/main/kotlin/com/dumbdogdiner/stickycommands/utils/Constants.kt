@@ -7,24 +7,24 @@ object Constants {
     private const val prefix = "stickycommands"
     const val DEFAULT_WALKING_SPEED = 0.2f // 0.1 is sneak, supposedly.
     const val DEFAULT_FLYING_SPEED = 0.1f // according to google
-    const val SMITE_EXPLOSION_STRENGTH = 1.5f
-    const val SMITE_TARGET_RANGE = 512
+    const val DEFAULT_SMITE_EXPLOSION_STRENGTH = 1.5f
+    const val DEFAULT_SMITE_TARGET_RANGE = 512
+    const val DEFAULT_WHIP_DAMAGE = 2.5f
 
 
     object Commands {
+        const val SMITE = "smite"
         const val RULEBOOK = "rulebook"
         const val RULES = "rules"
         const val AFK = "afk"
         const val WORTH = "worth"
         const val SELL = "sell"
         const val SPEED = "speed"
-
+        const val MEDALLION = "medallion"
     }
 
     object Permissions {
         const val AFK = "$prefix.afk"
-        const val SBACK = "$prefix.sback"
-        const val SBACK_OTHER = "$prefix.sback.other"
 
         const val HAT = "$prefix.hat"
 
@@ -49,7 +49,7 @@ object Constants {
         const val SELL_LOG = "$SELL.log"
 
         const val SMITE = "$prefix.smite"
-        const val SMITE_IMMUNE = "$prefix.immune"
+        const val SMITE_IMMUNE = "$SMITE.immune"
 
         const val SPEED = "$prefix.speed"
 
@@ -149,6 +149,9 @@ object Constants {
         const val DEBUG = "debug"
         const val SERVER = "server"
         const val ENABLE_MEDALLIONS = "enable-medallions"
+        const val SMITE_EXPLOSION_STRENGTH = "smite-explosion-strength"
+        const val TARGET_RANGE = "target-range"
+        const val WHIP_DAMAGE = "whip-damage"
     }
     object DatabaseConstants {
         const val DATABASE_HOST = "database.host"
@@ -162,6 +165,12 @@ object Constants {
     }
 
     object Messages {
-
+        object SMITE {
+            const val SMITE_OTHER_PLAYER_SUCCESS = "smite.smite-other-player-success"
+            const val SMITE_BLOCK = "smite.smite-block"
+            const val SMITE_MESSAGE = "smite.smite-message"
+            const val SMITE_IMMUNE = "smite.smite-immune"
+            const val SMITE_YOURSELF = "smite.yourself"
+        }
     }
 }

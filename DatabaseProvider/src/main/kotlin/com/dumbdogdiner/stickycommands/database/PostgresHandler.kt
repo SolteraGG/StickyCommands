@@ -26,6 +26,7 @@ import java.util.logging.Logger
 import com.dumbdogdiner.stickycommands.database.tables.TableVars
 import com.dumbdogdiner.stickycommands.utils.Constants
 import com.dumbdogdiner.stickycommands.utils.Constants.DatabaseConstants
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import java.util.function.Consumer
 
 
@@ -119,6 +120,14 @@ class PostgresHandler(val config: FileConfiguration, val logger: Logger) {
         }
     }
 
+    fun setFirstJoinItemsGiven(playerId: UUID, firstJoinItemsGiven : Boolean) {
+            transaction(db) {
+                Users.update({ Users.uniqueId eq playerId.toString() }) {
+                    it[Users.firstJoinItemsGiven] = firstJoinItemsGiven
+                }
+            }
+    }
+
     fun getUserInfo(uniqueId: UUID) = getUserInfo(uniqueId, false)
 
     // Workaround for some stupid shit below.
@@ -126,6 +135,11 @@ class PostgresHandler(val config: FileConfiguration, val logger: Logger) {
     private fun getFirstSeen(player: Player) = transaction(db) {
         Users.select { (Users.uniqueId eq player.uniqueId.toString()) }.firstOrNull().let {
             return@transaction it?.get(Users.firstSeen) ?: player.firstPlayed
+        }
+    }
+    private fun getFirstJoinItemsGiven(player: Player) = transaction(db) {
+        Users.select { (Users.uniqueId eq player.uniqueId.toString()) }.firstOrNull().let {
+            return@transaction it?.get(Users.firstJoinItemsGiven) ?: false
         }
     }
 
@@ -138,7 +152,7 @@ class PostgresHandler(val config: FileConfiguration, val logger: Logger) {
 
     fun setSpeed(playerId: UUID, speed: Float, isFlySpeed: Boolean) {
         transaction(db) {
-            Users.update {
+            Users.update({ Users.uniqueId eq playerId.toString()}) {
                 if (isFlySpeed) {
                     it[flySpeed] = speed
                 } else {
@@ -148,7 +162,7 @@ class PostgresHandler(val config: FileConfiguration, val logger: Logger) {
         }
     }
 
-    fun updateUser(player: Player, leaving: Boolean) {
+    fun updateUser(player: Player, leaving: Boolean, lastSeenTime :Instant?, areFirstJoinItemsGiven: Boolean?) {
         if (!leaving) {
             val speed = getUserSpeed(player)
             player.walkSpeed = (speed?.get(0) ?: player.walkSpeed)
@@ -156,18 +170,20 @@ class PostgresHandler(val config: FileConfiguration, val logger: Logger) {
         }
 
         transaction(db) {
-            // FIXME WHY DOES THIS UPDATE A COLUMN NOT LISTED BELOW?!
+            // FIXME WHY DOES THIS UPDATE A COLUMN IF IT'S NOT LISTED BELOW?!
             // firstSeen updates when they join, this should not happen.
+            // probably a bug in insertOrUpdate???
             Users.insertOrUpdate(Users.uniqueId) {
                 it[name] = player.name
                 it[uniqueId] = player.uniqueId.toString()
                 it[ipAddress] = player.address.address.hostAddress
-                it[lastSeen] = (System.currentTimeMillis())
+                it[lastSeen] = if(lastSeenTime == null) Instant.now().toEpochMilli() else lastSeenTime.toEpochMilli()
                 it[firstSeen] = getFirstSeen(player)
                 it[lastServer] = config.getString("server") ?: "unknown"
                 it[isOnline] = !leaving
                 it[flySpeed] = player.flySpeed
                 it[walkSpeed] = player.walkSpeed
+                it[firstJoinItemsGiven] = areFirstJoinItemsGiven ?: getFirstJoinItemsGiven(player)
             }
             commit()
         }
