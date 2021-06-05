@@ -51,16 +51,20 @@ public class MedallionManager implements Listener {
         // This can be cleaned up by using an sqlite db or importing into postgres directly or similar
         // for now its fine
         try {
-            CSVParser medallionParser = CSVParser.parse(medallionFile, StandardCharsets.US_ASCII, CSVFormat.EXCEL);
+            CSVParser medallionParser = CSVParser.parse(medallionFile, StandardCharsets.US_ASCII, CSVFormat.EXCEL.withFirstRecordAsHeader());
             List<String> csvHeader = medallionParser.getHeaderNames();
 
             for(CSVRecord line : medallionParser.getRecords()){
-                UUID id = UUID.fromString(line.get(csvHeader.get(0)));
-                int season = Integer.parseInt(line.get(csvHeader.get(1)).substring(1));
-                if(!medallionsList.containsKey(id)){
-                    medallionsList.put(id, new ArrayList<>());
+                try {
+                    UUID id = UUID.fromString(line.get(csvHeader.get(1)));
+                    int season = Integer.parseInt(line.get(csvHeader.get(0)).substring(1));
+                    if (!medallionsList.containsKey(id)) {
+                        medallionsList.put(id, new ArrayList<>());
+                    }
+                    medallionsList.get(id).add(season);
+                } catch (IllegalArgumentException e) {
+                    e.printStackTrace();
                 }
-                medallionsList.get(id).add(season);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -196,7 +200,7 @@ public class MedallionManager implements Listener {
             }
             u.setFirstJoinItemsGiven(true);
              for(int i : seasons){
-                p.getInventory().addItem(medallions.get(i).apply(p.getName()));
+                p.getInventory().addItem(medallions.get(i - 1).apply(p.getName()));
              }
         }
     }

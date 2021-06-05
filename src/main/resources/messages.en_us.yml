@@ -45,10 +45,10 @@ sell:
     no-sales: "{prefix}&bThere have been no sales!"
     paginator: "{prefix}&bpage &f{current}&b/&f{total}"
 
-
-not-afk: "&7&o* {PLAYER} is no longer AFK!"
-afk: "&7&o* {PLAYER} is now AFK!"
-afk-kick: "&cYou have been AFK for {TIME|duration} and have been kicked!"
+afk:
+  not-afk: "&7&o* {PLAYER} is no longer AFK!"
+  afk: "&7&o* {PLAYER} is now AFK!"
+  afk-kick: "&cYou have been AFK for {TIME|duration} and have been kicked!"
 
 
 hat:

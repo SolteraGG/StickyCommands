@@ -11,6 +11,7 @@ import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
@@ -27,19 +28,15 @@ import java.util.List;
 
 @UtilityClass
 public class ItemWorths {
-    private static YamlProvider worthCfg;
+    private static YamlConfiguration worthCfg;
 
     static {
-        try {
-            worthCfg = new YamlProvider(ResourceUtils.getOrCreate(Constants.Files.ITEM_WORTHS));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        reloadWorths();
     }
 
 
     public static void reloadWorths() {
-        worthCfg.reload();
+        worthCfg = YamlConfiguration.loadConfiguration(ResourceUtils.getOrCreate(Constants.Files.ITEM_WORTHS));
     }
 
     private static final ImmutableList<Material> illegals = ImmutableList.of(
@@ -68,8 +65,12 @@ public class ItemWorths {
                 if(stack.containsEnchantment(Enchantment.SILK_TOUCH))
                     singleWorth *= 2;
                 // Take damage into account
-                if (stackMeta instanceof Damageable) {
-                    durability = ((double) ((Damageable) stackMeta).getDamage())/((double) type.getMaxDurability());
+                // TODO: figure out how to use damagable properly
+
+
+                if (isDamagable(stack)) {
+                    durability = ((double) ((Damageable) stackMeta).getDamage())
+                            /((double) type.getMaxDurability());
                     singleWorth = damagableWorth(singleWorth, durability);
                 }
                 worth += singleWorth * qty;
@@ -108,6 +109,14 @@ public class ItemWorths {
 
     public static boolean isIllegal(Material material){
         return illegals.contains(material);
+    }
+
+    public static boolean isDamagable(ItemStack itemStack){
+        return isDamagable(itemStack.getType());
+    }
+
+    public static boolean isDamagable(Material type){
+        return type.getMaxDurability() > 0;
     }
 
 

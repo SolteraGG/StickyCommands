@@ -2,13 +2,13 @@
   "pages": [
     [
       {
-        "text": "Dumb Dog Diner MC\nSeason 4 Handbook",
+        "text": "Dumb Dog Diner MC\\nSeason 4 Handbook",
         "bold": true,
         "italic": true,
         "color": "dark_purple"
       },
       {
-        "text": "\n\n",
+        "text": "\\n\\n",
         "color": "reset"
       },
       {
@@ -19,7 +19,7 @@
         "color": "dark_red"
       },
       {
-        "text": "\n",
+        "text": "\\n",
         "color": "reset"
       },
       {
@@ -27,7 +27,7 @@
         "color": "red"
       },
       {
-        "text": "Rules\n",
+        "text": "Rules\\n",
         "color": "reset"
       },
       {
@@ -35,7 +35,7 @@
         "color": "red"
       },
       {
-        "text": "Gameplay\n",
+        "text": "Gameplay\\n",
         "color": "reset"
       },
       {
@@ -43,7 +43,7 @@
         "color": "red"
       },
       {
-        "text": "Trading\n",
+        "text": "Trading\\n",
         "color": "reset"
       },
       {
@@ -51,7 +51,7 @@
         "color": "red"
       },
       {
-        "text": "Commands\n",
+        "text": "Commands\\n",
         "color": "reset"
       },
       {
@@ -59,7 +59,7 @@
         "color": "red"
       },
       {
-        "text": "Trading\nCommands\n",
+        "text": "Trading\\nCommands\\n",
         "color": "reset"
       },
       {
@@ -67,7 +67,7 @@
         "color": "red"
       },
       {
-        "text": "Extras\n",
+        "text": "Extras\\n",
         "color": "reset"
       },
       {
@@ -75,7 +75,7 @@
         "color": "red"
       },
       {
-        "text": "Getting Help\n",
+        "text": "Getting Help\\n",
         "color": "reset"
       },
       {
@@ -96,7 +96,7 @@
         "color": "red"
       },
       {
-        "text": "\n1. Absolutely no\ngriefing, theft, or\nintentional distress!\n2. No cheating/hacking\nallowed. No exploits.\n3. No floating trees.\n4. No fully-automatic\nredstone farms.\n5. No harassment,\nbullying, or abuse.\n6. No AFK fishing.",
+        "text": "\\n1. Absolutely no\\ngriefing, theft, or\\nintentional distress!\\n2. No cheating/hacking\\nallowed. No exploits.\\n3. No floating trees.\\n4. No fully-automatic\\nredstone farms.\\n5. No harassment,\\nbullying, or abuse.\\n6. No AFK fishing.",
         "color": "reset"
       }
     ],
@@ -109,7 +109,7 @@
         "color": "dark_green"
       },
       {
-        "text": "\nThe world border for all worlds is 16,000\nblocks from the\ncenter. Because of\nnow ",
+        "text": "\\nThe world border for all worlds is 16,000\\nblocks from the\\ncenter. Because of\\nnow ",
         "color": "reset"
       },
       {
@@ -117,7 +117,7 @@
         "color": "dark_red"
       },
       {
-        "text": "\ntravel works, you will\nnot be able to light\nthem past 2,000 blocks\nfrom the center.\nYou may build wherever you like! Try ",
+        "text": "\\ntravel works, you will\\nnot be able to light\\nthem past 2,000 blocks\\nfrom the center.\\nYou may build wherever you like! Try ",
         "color": "reset"
       },
       {
@@ -127,6 +127,355 @@
       {
         "text": " to help find a spot!",
         "color": "reset"
+      }
+    ],
+    [
+      {
+        "text": "This server uses a "
+      },
+      {
+        "text": "Death Chest ",
+        "color": "red"
+      },
+      {
+        "text": "system. Upon death, a campfire with your items will spawn at your death location. It will last\\nfor 10 minutes!\\n\\nYou can have up to 3\\n",
+        "color": "reset"
+      },
+      {
+        "text": "Death Chests",
+        "color": "red"
+      },
+      {
+        "text": " at a time.",
+        "color": "reset"
+      }
+    ],
+    [
+      {
+        "text": "Trading:",
+        "bold": true,
+        "italic": true,
+        "underlined": true,
+        "color": "dark_aqua"
+      },
+      {
+        "text": "\\nWe use chest chops\\nfor player to trade\\ngood for ",
+        "color": "reset"
+      },
+      {
+        "text": "Bells",
+        "color": "gold"
+      },
+      {
+        "text": ".\\n\\nBells may be earned through selling goods\\nto other players,\\npaying/receiving\\nmoney for a service,\\nor by selling goods to\\nthe server itself.",
+        "color": "reset"
+      }
+    ],
+    [
+      {
+        "text": "To create a shop or browse other player shops, use "
+      },
+      {
+        "text": "/shop",
+        "color": "blue"
+      },
+      {
+        "text": ".",
+        "color": "black"
+      },
+      {
+        "text": "\\n\\nThere are Admin Shops in the spawn ",
+        "color": "reset"
+      },
+      {
+        "text": "market area to purchase from an infinite supply of select items and resources. Use ",
+        "color": "black"
+      },
+      {
+        "text": "/spawn",
+        "color": "blue"
+      },
+      {
+        "text": " and turn around!",
+        "color": "black"
+      }
+    ],
+    [
+      {
+        "text": "Commands:",
+        "bold": true,
+        "italic": true,
+        "underlined": true,
+        "color": "red"
+      },
+      {
+        "text": "\\nTab-complete is set\\nup to only show commands you have access to. Here are some useful ones:\\n\\n",
+        "color": "reset"
+      },
+      {
+        "text": "/helpmenu ",
+        "color": "blue"
+      },
+      {
+        "text": "- Opens\\nthe help menu\\n",
+        "color": "reset"
+      },
+      {
+        "text": "/server ",
+        "color": "blue"
+      },
+      {
+        "text": "- Opens the\\nservers menu\\n",
+        "color": "reset"
+      },
+      {
+        "text": "/rules",
+        "color": "blue"
+      },
+      {
+        "text": " - Grants this\\nbook",
+        "color": "reset"
+      }
+    ],
+    [
+      {
+        "text": "/options ",
+        "color": "blue"
+      },
+      {
+        "text": "- Opens the player options menu\\n",
+        "color": "reset"
+      },
+      {
+        "text": "/warp ",
+        "color": "blue"
+      },
+      {
+        "text": "- Warp to a preset location",
+        "color": "black"
+      },
+      {
+        "text": "\\n",
+        "color": "reset"
+      },
+      {
+        "text": "/tpa ",
+        "color": "blue"
+      },
+      {
+        "text": "- Sends a\\nteleport request to another player\\n",
+        "color": "reset"
+      },
+      {
+        "text": "/rtp ",
+        "color": "blue"
+      },
+      {
+        "text": "- Start a\\nrandom teleport\\n",
+        "color": "reset"
+      },
+      {
+        "text": "/pwarp /home ",
+        "color": "blue"
+      },
+      {
+        "text": "- Opens your home menu\\n",
+        "color": "reset"
+      },
+      {
+        "text": "/helpme ",
+        "color": "blue"
+      },
+      {
+        "text": "- Pings an online staff member",
+        "color": "reset"
+      }
+    ],
+    [
+      {
+        "text": "Trading Commands:",
+        "bold": true,
+        "italic": true,
+        "underlined": true,
+        "color": "dark_purple"
+      },
+      {
+        "text": "\\n",
+        "color": "reset"
+      },
+      {
+        "text": "/bal ",
+        "color": "blue"
+      },
+      {
+        "text": "- Check your\\nbalance\\n",
+        "color": "reset"
+      },
+      {
+        "text": "/pay ",
+        "color": "blue"
+      },
+      {
+        "text": "- Pay another player\\n",
+        "color": "reset"
+      },
+      {
+        "text": "/sell ",
+        "color": "blue"
+      },
+      {
+        "text": "- Sell the item in your hand to the server\\n",
+        "color": "reset"
+      },
+      {
+        "text": "/check",
+        "color": "blue"
+      },
+      {
+        "text": " - Write or\\nredeem a cash check\\n",
+        "color": "reset"
+      },
+      {
+        "text": "/worth ",
+        "color": "blue"
+      },
+      {
+        "text": "- Shows the\\nitem price when selling\\nto the server",
+        "color": "reset"
+      }
+    ],
+    [
+      {
+        "text": "Extras:",
+        "bold": true,
+        "italic": true,
+        "underlined": true,
+        "color": "dark_aqua"
+      },
+      {
+        "text": "\\n",
+        "color": "reset"
+      },
+      {
+        "text": "/donate, /vip ",
+        "color": "blue"
+      },
+      {
+        "text": "- Gives link to the server Patreon page\\n",
+        "color": "reset"
+      },
+      {
+        "text": "/pvp ",
+        "color": "blue"
+      },
+      {
+        "text": "- Warp to the PVP arena. Durability is disabled here and KeepInventory is on.\\n",
+        "color": "reset"
+      },
+      {
+        "text": "/afk ",
+        "color": "blue"
+      },
+      {
+        "text": "- Set your status to AFK\\n",
+        "color": "reset"
+      },
+      {
+        "text": "/tamer tool ",
+        "color": "blue"
+      },
+      {
+        "text": "- Gives\\ntool to protect pets\\n ",
+        "color": "reset"
+      }
+    ],
+    [
+      {
+        "text": "Getting Help:",
+        "bold": true,
+        "italic": true,
+        "underlined": true,
+        "color": "light_purple"
+      },
+      {
+        "text": "\\nIf you ever need help\\ngetting your way\\naround the server,\\nplease ask any staff!\\n",
+        "color": "reset"
+      },
+      {
+        "text": "/helpme",
+        "color": "blue"
+      },
+      {
+        "text": "\\n\\nPlease join the\\nDiscord server to get\\ntechnical help!\\n",
+        "color": "reset"
+      },
+      {
+        "text": "/discord",
+        "color": "blue"
+      }
+    ],
+    [
+      {
+        "text": "Please report any\\nbugs, griefing, etc.\\nthat you come\\nacross or are\\na victim of!",
+        "bold": true,
+        "underlined": true,
+        "color": "red"
+      },
+      {
+        "text": "\\n\\nUse ",
+        "color": "reset"
+      },
+      {
+        "text": "/report <player>",
+        "color": "blue"
+      },
+      {
+        "text": "\\nto report another\\nplayer to staff!\\n\\nThe help menu makes getting help easy!\\n",
+        "color": "reset"
+      },
+      {
+        "text": "/helpme",
+        "color": "blue"
+      }
+    ],
+    [
+      {
+        "text": "Credits:",
+        "bold": true,
+        "italic": true,
+        "underlined": true,
+        "color": "gold"
+      },
+      {
+        "text": "\\n",
+        "color": "reset"
+      },
+      {
+        "text": "dddMC ",
+        "bold": true,
+        "color": "dark_purple"
+      },
+      {
+        "text": "is fully funded\\nthrough player donations. Please consider helping support us on Patreon!\\n",
+        "color": "reset"
+      },
+      {
+        "text": "/donate /patreon",
+        "color": "blue"
+      },
+      {
+        "text": "\\n\\nPatrons will receive a\\nVIP rank. More ranks\\nwill be added in the\\nfuture.",
+        "color": "reset"
+      }
+    ],
+    [
+      {
+        "text": "We hope you enjoy\\nyour time playing\\non the server!\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n- Stixil, "
+      },
+      {
+        "text": "dddMC 2021",
+        "bold": true,
+        "color": "dark_purple"
       }
     ]
   ],
@@ -146,5 +495,6 @@
       "text": "",
       "color": "reset"
     }
-  ]
+  ],
+  "generation": 0
 }

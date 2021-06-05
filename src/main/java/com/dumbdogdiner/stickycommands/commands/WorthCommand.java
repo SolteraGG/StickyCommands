@@ -38,8 +38,6 @@ public class WorthCommand {
             player.sendMessage(locale.translate("sell.cannot-sell", locale.newVariables()));
         }
 
-        boolean isDamagable = item.getItemMeta() instanceof Damageable;
-
         double inventoryWorth;
         double singleUndamagedWorth = ItemWorths.get(type);
         double handWorth = ItemWorths.getWorthOfItems(Collections.singletonList(item));
@@ -67,7 +65,7 @@ public class WorthCommand {
         } else if(singleUndamagedWorth < 0 || inventoryWorth < 0 || handWorth < 0){
             SoundUtil.sendError(player);
             player.sendMessage(locale.translate("sell.bad-worth", vars));
-        } else if(isDamagable){
+        } else if(ItemWorths.isDamagable(type)){
             SoundUtil.sendSuccess(player);
             player.sendMessage(locale.translate("sell.damagable-worth", vars));
         } else {

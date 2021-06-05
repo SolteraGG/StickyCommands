@@ -8,6 +8,7 @@ plugins {
     //id("org.jetbrains.dokka") version "1.4.32"
     id("com.github.johnrengelman.shadow") version "6.1.0"
     id("maven-publish")
+    // Handles delombok and lombok annotation processing
     id("io.freefair.lombok") version "6.0.0-m2"
     id("kr.entree.spigradle") version "2.2.3"
 }
@@ -59,21 +60,25 @@ dependencies {
     api(project(":DatabaseProvider"))
     api(project(":Konstants"))
 
+
     // java deps
-//    implementation("org.projectlombok:lombok:1.18.16")
-//    annotationProcessor("org.projectlombok:lombok:1.18.12")
+
+    // Newer GSON than bukkit because they are stupid
+    //api("com.google.code.gson:gson:2.8.7")
     implementation("org.jetbrains:annotations:20.1.0")
-//    kapt("org.projectlombok:lombok:1.18.12")
+    /////////////////////////////////////////////////////////////////////
 
     // spigot, paper
     compileOnly(paper(mcApiVer))
     implementation("net.kyori:adventure-api:4.7.0")
 
+    // CommandAPI
     compileOnly("dev.jorel.CommandAPI:commandapi-core:5.12")
     implementation("dev.jorel.CommandAPI:commandapi-shade:5.12")
     shadow("dev.jorel.CommandAPI:commandapi-shade:5.12")
     compileOnly("dev.jorel.CommandAPI:commandapi-annotations:5.12")
     annotationProcessor("dev.jorel.CommandAPI:commandapi-annotations:5.12")
+
 
     // plugin-specific deps
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")
@@ -91,6 +96,7 @@ dependencies {
     if (useLocal) {
         implementation(fileTree("libs") { include("*.jar") })
     }
+
 }
 
 
@@ -98,12 +104,13 @@ dependencies {
 //    kotlinOptions.jvmTarget = JavaVersion.VERSION_11.toString()
 //}
 
-tasks.withType<JavaCompile> {
-    targetCompatibility = JavaVersion.VERSION_11.toString()
-    sourceCompatibility = JavaVersion.VERSION_11.toString()
-    options.compilerArgs.addAll(arrayOf("-parameters", "-Xlint:all"))
+allprojects {
+    tasks.withType<JavaCompile> {
+        targetCompatibility = JavaVersion.VERSION_11.toString()
+        sourceCompatibility = JavaVersion.VERSION_11.toString()
+        options.compilerArgs.addAll(arrayOf("-parameters", "-Xlint:all"))
+    }
 }
-
 //tasks.withType(JavaCompile) {
 //    options.compilerArgs() << "-Xlint:unchecked" << "-Xlint:deprecation"
 //}
@@ -160,4 +167,4 @@ tasks {
 
 
 
-apply(from="publish.gradle")
+apply(from = "publish.gradle")

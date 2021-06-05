@@ -21,6 +21,8 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+// TODO: add custom setters that update db on set
+
 public class User implements Cacheable {
 
 
@@ -56,7 +58,6 @@ public class User implements Cacheable {
      * We need a CUSTOM setter.
      */
     @Getter
-    @NotNull
     private boolean afk = false;
 
     @Getter
@@ -68,17 +69,19 @@ public class User implements Cacheable {
     public void setAfk(boolean AFKState) {
         if (!AFKState)
             afkTime = 0;
+        if(this.afk == AFKState)
+            return;
         afk = AFKState;
         Map<String, String> vars = new HashMap<>();
         vars.put("PLAYER", name);
 
         if (!isHidden()) {
             if (isAfk()) {
-                Bukkit.broadcastMessage(StickyCommands.getInstance().getLocaleProvider().translate("afk", vars));
+                Bukkit.broadcastMessage(StickyCommands.getInstance().getLocaleProvider().translate("afk.afk", vars));
             } else {
                 Bukkit.broadcastMessage(
                         StickyCommands.getInstance().getLocaleProvider()
-                                .translate("not-afk", vars));
+                                .translate("afk.not-afk", vars));
             }
         }
     }

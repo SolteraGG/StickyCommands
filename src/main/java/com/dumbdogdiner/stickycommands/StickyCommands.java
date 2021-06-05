@@ -27,6 +27,7 @@ import lombok.Getter;
 import net.luckperms.api.LuckPerms;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -242,8 +243,17 @@ public class StickyCommands extends JavaPlugin {
             return false;
         }
         registerCommand(AfkCommand.class);
+        registerCommand(HatCommand.class);
+        registerCommand(JumpCommand.class);
+        registerCommand(KillCommand.class);
         registerCommand(MainCommand.class);
+        registerCommand(MakeANoteForMeToFixItLater.class);
+        registerCommand(MemoryCommand.class);
+        registerCommand(PowerToolCommand.class);
+        registerCommand(RulebookCommand.class);
         registerCommand(WorthCommand.class);
+        registerCommand(HatCommand.class);
+        registerCommand(SellCommand.class);
         return true;
     }
 
@@ -251,9 +261,11 @@ public class StickyCommands extends JavaPlugin {
      * Register all of our events
      */
     boolean registerEvents() {
-        getServer().getPluginManager().registerEvents(new PlayerInteractionListener(), this);
-        getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
-        getServer().getPluginManager().registerEvents(new AfkEventListener(), this);
+        PluginManager manager = getServer().getPluginManager();
+        manager.registerEvents(new PlayerInteractionListener(), this);
+        manager.registerEvents(new PlayerJoinListener(), this);
+        manager.registerEvents(new AfkEventListener(), this);
+        manager.registerEvents(new MedallionManager(this), this);
         return true;
     }
 
