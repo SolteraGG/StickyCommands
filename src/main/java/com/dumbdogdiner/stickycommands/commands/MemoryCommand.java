@@ -48,6 +48,7 @@ public class MemoryCommand extends AsyncCommand {
 
             // TODO Use an external utility to get memory usage stuffs
             // TODO v2 run in async for safety
+            // TODO v3: dont run this on windows
             Process psProcess = Runtime.getRuntime().exec("/bin/ps -o pid,rss,stat,user,group,args,time");
             psProcess.onExit().get();
             Scanner scanner = new Scanner(psProcess.getInputStream());
