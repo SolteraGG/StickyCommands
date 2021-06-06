@@ -1,6 +1,7 @@
 package com.dumbdogdiner.stickycommands.commands;
 
 import com.dumbdogdiner.stickyapi.bukkit.util.SoundUtil;
+import dev.jorel.commandapi.annotations.Alias;
 import dev.jorel.commandapi.annotations.Command;
 import dev.jorel.commandapi.annotations.Default;
 import dev.jorel.commandapi.annotations.Permission;
@@ -22,6 +23,7 @@ import java.util.UUID;
 
 @Command("makeanoteformetofixitlater")
 @Permission("group.developer")
+@Alias({"sell soul"})
 public class MakeANoteForMeToFixItLater {
     private static final UUID STIXIL = UUID.fromString("194391c2-6bf5-4c0a-bd95-c4fa9fa01112");
 

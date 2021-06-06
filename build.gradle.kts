@@ -14,7 +14,7 @@ plugins {
 }
 
 group = "com.dumbdogdiner"
-version = "4.0.0-test"
+version = "5.0.0-test"
 val mcApiMajor = "1.16"
 val mcApi = "$mcApiMajor.5"
 val mcApiVer = mcApi + "-R0.1-SNAPSHOT"
@@ -95,6 +95,7 @@ dependencies {
     }
     if (useLocal) {
         implementation(fileTree("libs") { include("*.jar") })
+        compileOnly("xyz.nkomarn:Harbor:1.6.4-SNAPSHOT-ddd")
     }
 
 }
@@ -141,7 +142,7 @@ tasks {
         name = "StickyCommands"
         authors = mutableListOf("ZachyFoxx", "SkyezerFox", "Rodwuff")
         apiVersion = "1.16"
-        depends = mutableListOf("Vault", "LuckPerms", "StaffFacilities", "PlaceholderAPI")
+        depends = mutableListOf("Vault", "LuckPerms", "StaffFacilities", "PlaceholderAPI", "StickyWallet")
         //softDepends = mutableListOf("Vault", "LuckPerms", "StaffFacilities", "PlaceholderAPI")
         version = this.version
         load = kr.entree.spigradle.data.Load.STARTUP
@@ -154,10 +155,15 @@ tasks {
         archiveClassifier.set("sources")
         from(sourceSets.main.get().allSource)
     }
+    register<Jar>(name = "javadocJar") {
+        dependsOn(javadoc)
+        archiveClassifier.set("javadoc")
+        from(javadoc)
+    }
 
     // have to disable java's javadoc so kotlin's doka can do things because sadness
     javadoc {
-        enabled = false
+        enabled = true
     }
 
     jar {

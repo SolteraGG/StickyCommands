@@ -1,0 +1,231 @@
+{
+  "s1": {
+    "item": "STRUCTURE_BLOCK",
+    "unbreakable": true,
+    "enchantment": "infinity",
+    "display": {
+      "text": "Season 1 Medallion",
+      "color": "#ff66d8"
+    },
+    "lore": [
+      [
+        {
+          "color": "#66c7f4",
+          "text": "This special token recognizes"
+        },
+        {
+          "color": "#66c7f4",
+          "text": "your unending dedication to the"
+        },
+        {
+          "color": "#66c7f4",
+          "text": "Dumb Dog Diner Minecraft server"
+        },
+        {
+          "color": "#66c7f4",
+          "text": "network ever since the very beginning!"
+        },
+        {
+          "text": ""
+        },
+        {
+          "text": ""
+        },
+        {
+          "color": "#66c7f4",
+          "extra": [
+            {
+              "color": "gold",
+              "extra": [
+                {
+                  "color": "#66c7f4",
+                  "text": "are forever"
+                }
+              ],
+              "text": "Spawntown "
+            }
+          ],
+          "text": "The people of "
+        },
+        {
+          "color": "#66c7f4",
+          "text": "grateful, and proud to be able to call"
+        },
+        {
+          "color": "#66c7f4",
+          "text": "you an important part of our family!"
+        },
+        {
+          "text": ""
+        },
+        {
+          "text": ""
+        },
+        {
+          "italic": true,
+          "color": "#6c6ea0",
+          "text": "- Stixil"
+        }
+      ]
+    ]
+  },
+  "s2": {
+    "item": "REPEATING_COMMAND_BLOCK",
+    "unbreakable": true,
+    "display": {
+      "text": "Season 2 Medallion",
+      "color": "#7e2e88"
+    },
+    "enchantment": "multishot",
+    "lore":
+      [
+        {
+          "color": "#d14081",
+          "text": "This special token recognizes"
+        },
+        {
+          "color": "#d14081",
+          "text": "your long-standing dedication"
+        },
+        {
+          "color": "#d14081",
+          "text": "to the Dumb Dog Diner"
+        },
+        {
+          "color": "#d14081",
+          "text": "Minecraft server network"
+        },
+        {
+          "text": ""
+        },
+        {
+          "text": ""
+        },
+        {
+          "color": "#d14081",
+          "text": "Live together, shop"
+        },
+        {
+          "color": "#d14081",
+          "text": "together, fight together!"
+        },
+        {
+          "text": ""
+        },
+        {
+          "text": ""
+        },
+        {
+          "italic": true,
+          "color": "#ff798a",
+          "text": "- Stixil"
+        }
+    ]
+  },
+  "s3": {
+    "item": "JIGSAW",
+    "unbreakable": true,
+    "enchantment": "mending",
+    "display": {
+      "text": "Season 3 Medallion",
+      "color": "#16697a"
+    },
+    "lore": [
+      {
+        "color": "#82c0cc",
+        "text": "This special token"
+      },
+      {
+        "color": "#82c0cc",
+        "text": "recognizes your dedication"
+      },
+      {
+        "color": "#82c0cc",
+        "text": "to the Dumb Dog Diner"
+      },
+      {
+        "color": "#82c0cc",
+        "text": "Minecraft server network"
+      },
+      {
+        "text": ""
+      },
+      {
+        "text": ""
+      },
+      {
+        "color": "#ffff99",
+        "extra": [
+          {
+            "color": "#82c0cc",
+            "extra": [
+              {
+                "color": "#ff6666",
+                "text": "Sunrise"
+              }
+            ],
+            "text": " and "
+          }
+        ],
+        "text": "Starlight"
+      },
+      {
+        "color": "#82c0cc",
+        "text": "will never forget you!"
+      },
+      {
+        "text": ""
+      },
+      {
+        "text": ""
+      },
+      {
+        "italic": true,
+        "color": "#ccffff",
+        "text": "- Stixil"
+      }
+    ]
+  },
+  "s4_dragon": {
+    "item": "DRAGON_EGG",
+    "unbreakable": true,
+    "enchantment": "sharpness",
+    "display": {
+      "text": "Season 4 Dragon Medallion",
+      "color": "#990066"
+    },
+    "lore": [
+      {
+        "text": "This special token recognizes",
+        "color": "#33ffff"
+      },
+      {
+        "text": "your spirit and valour in fighting",
+        "color": "#33ffff"
+      },
+      {
+        "text": "the ender dragon during Survival",
+        "color": "#33ffff"
+      },
+      {
+        "text": "Season 4 on the Dumb Dog",
+        "color": "#33ffff"
+      },
+      {
+        "text": "Diner Minecraft Server Network",
+        "color": "#33ffff"
+      },
+      {
+        "text": ""
+      },
+      {
+        "text": ""
+      },
+      {
+        "text": "- Stixil",
+        "color": "#6600ff",
+        "italic": true
+      }
+    ]
+  }
+}

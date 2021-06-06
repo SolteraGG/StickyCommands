@@ -5,7 +5,7 @@
 # Global variables, you can use these in any message in this file.
 da: ">>"# »
 newline: "&8&l{da} "
-prefix: "&b&lStickyCommands {newline}"
+prefix: "&b&ldddMC| &2Commands&r {newline}"
 network-name: "&bDumb Dog Diner"
 website: "dumbdogdiner.com"
 
@@ -19,6 +19,8 @@ must-be-player: "{prefix}&cYou must be a player to execute this command!"
 not-online-player: "{prefix}&c Error! {PLAYER} is not online!"
 invalid-group: "{prefix}&cError! Group {GROUP} is invalid!"
 
+version: "{prefix} \n{newline} {plugin_name} version {plugin_version} \n By {authors}"
+
 # The config supports new lines (\n), it can be used on any node
 seen-message: "{prefix}&bUser data for {data_player}\n{newline}&b{online|yesno:'&aOnline,&cOffline'} &bsince: &f{lastlogin|expiry}\n{newline}&bIP: &f{IPADDRESS}\n{newline}&bFirst Login: &f{firstlogin|datetime:\"EEE, MMM d yyyy HH:mm:ss\"}\n{newline}&bLast Login: &f{lastlogin|datetime:\"EEE, MMM d yyyy HH:mm:ss\"}\n{newline}&bLast Server: &f{SERVER}\n{newline}&bTimes Connected: &f{timesconnected}\n{newline}&bFly/Walk: &f{fly_speed}&b / &f{walk_speed}"
 top-message: "{prefix}&bWoosh! You're at the top!"
@@ -29,14 +31,12 @@ reload:
   database-success: "{prefix}&aReloaded configuration and messages successfully!"
   error: "{prefix}&cThere was an error reloading StickyCommands, please see console for details!"
 
-
-
 sell:
   cannot-sell: "{prefix}&cThis item cannot be sold!"
   bad-worth: "{prefix}&f1 {item} &cis worth a negative amount &f({single_worth}) &cand thusly cannot be sold &4(Please ask a developer)"
   worth-message: "{prefix}&f1 {item} &bis worth &f{single_worth} &7(Hand: {hand_worth}, Inventory: {inventory_worth})"
   damagable-worth: "{prefix}&f1 undamaged item (without Silk Touch) is worth &f{single_worth} &7(Hand: {hand_worth}, Inventory: {inventory_worth})"
-  sell-message: "{prefix}&bYou sold &f{AMOUNT} {ITEM} &bfor &f{WORTH}&b!"
+  sell-message: "{prefix}&bYou sold &f{amount} {item} &bfor &f{worth}&b!"
   must-confirm: "{prefix}&cPlease confirm your sale by typing /sell [inventory/hand] confirm!"
   log:
     log-message: "{prefix}&bRecent sale logs"
@@ -50,7 +50,6 @@ afk:
   afk: "&7&o* {PLAYER} is now AFK!"
   afk-kick: "&cYou have been AFK for {TIME|duration} and have been kicked!"
 
-
 hat:
   no-hat: "{prefix}&bYou do not have a hat!"
   new-hat: "{prefix}&bEnjoy your new hat!"
@@ -59,22 +58,8 @@ hat:
 item-message: "{prefix}&bGave you &f{AMOUNT} {ITEM}&b!"
 memory-message: "{prefix}&bServer performance \n{newline}&bWorld: &f{world}\n{newline}&bEntities: &f{entities}\n{newline}&bLoaded Chunks: &f{loaded_chunks}\n{newline}&bTPS: &f{tps_1m}, {tps_5m}, {tps_15m} (1m, 5m, 15m)\n{newline}&bMemory: {memory_bar}\n{newline}&bUptime: &f{uptime|duration}"
 
-kill:
-  you-were-killed: "{prefix}&bThou hast been slain!"
-  you-killed: "{prefix}&bYou killed {PLAYER}"
-  you-killed-entities: "{prefix}&bYou killed {QUANTITY} of {ENTITY}"
+die:
   suicide: "{prefix}&bYou magically died!"
-
-smite:
-  smite-other-player-success: "{prefix}&bYour fury reigns down on {is_group|empty_if_false:\"&fthe group \"}&f{PLAYER}&b!"
-  smite-block: "{prefix}&bYour fury reigns down on the block at &f{X}, {Y}, {Z} &bof world &f{WORLD}"
-  smite-message: "{prefix}&bThou hast been smitten!"
-  smite-immune: "{prefix}&f{PLAYER}&b is immune to your wrath!"
-  yourself: "{prefix}&bYou have smitten yourself!\n{smite-message}"
-
-whip:
-  you-whipped: "{prefix}&bYou whipped &f{PLAYER}&b for &f{DAMAGE}&bhp &f{AMOUNT}&b times!"
-  were-whipped: "{prefix}&bOWWW!! That hurts!!!"
 
 powertool:
   cleared: "{prefix}&bCleared your powertool!"

@@ -61,7 +61,9 @@ public class SellCommand {
         var vars = locale.newVariables();
         StickyCommands.getInstance().getLogger().severe("CONFIRM="+confirm);
         VariableUtils.withPlayer(vars, player, false);
-        execute(player, false);
+        if(confirm.equals("confirm"))
+            execute(player, false);
+        else
         player.sendMessage(locale.translate(Constants.LanguagePaths.SELL_MUST_CONFIRM, vars));
     }
 

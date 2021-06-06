@@ -13,7 +13,7 @@ public class Boop {
 
     }
     @Default
-    public static void boop (ConsoleCommandSender me, @APlayerArgument Player them){
+    public static void boop(ConsoleCommandSender me, @APlayerArgument Player them){
 
     }
 }

@@ -26,17 +26,9 @@ import java.util.Objects;
 @Command(Constants.Commands.RULEBOOK)
 @Alias({Constants.Commands.RULES})
 public class RulebookCommand {
-    private static final ItemStack rulebookStack;
+    private static ItemStack rulebookStack;
     static{
-        File bookFile = ResourceUtils.getOrCreate(Constants.Files.RULEBOOK);
-        JsonObject bookJson;
-        try {
-            bookJson = new JsonParser().parse(new FileReader(bookFile)).getAsJsonObject();
-        } catch (FileNotFoundException e) {
-            StickyCommands.getInstance().getLogger().severe("External rulebook not found, trying internal");
-            bookJson = new JsonParser().parse(new InputStreamReader(Objects.requireNonNull(StickyCommands.getInstance().getResource(Constants.Files.RULEBOOK)))).getAsJsonObject();
-        }
-        rulebookStack = WrittenBookBuilder.fromJson(bookJson).toItemStack(1);
+        reloadRulebook();
     }
 
     @Default
@@ -51,5 +43,17 @@ public class RulebookCommand {
             player.sendMessage("You don't have space for this");
             SoundUtil.sendError(player);
         }
+    }
+
+    public static void reloadRulebook() {
+        File bookFile = ResourceUtils.getOrCreate(Constants.Files.RULEBOOK);
+        JsonObject bookJson;
+        try {
+            bookJson = new JsonParser().parse(new FileReader(bookFile)).getAsJsonObject();
+        } catch (FileNotFoundException e) {
+            StickyCommands.getInstance().getLogger().severe("External rulebook not found, trying internal");
+            bookJson = new JsonParser().parse(new InputStreamReader(Objects.requireNonNull(StickyCommands.getInstance().getResource(Constants.Files.RULEBOOK)))).getAsJsonObject();
+        }
+        rulebookStack = WrittenBookBuilder.fromJson(bookJson).toItemStack(1);
     }
 }

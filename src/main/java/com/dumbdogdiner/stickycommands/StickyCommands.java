@@ -6,6 +6,7 @@ import java.util.Timer;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.dumbdogdiner.stickycommands.commands.*;
@@ -21,6 +22,7 @@ import com.dumbdogdiner.stickyapi.bukkit.util.StartupUtil;
 import com.dumbdogdiner.stickyapi.common.translation.LocaleProvider;
 import com.dumbdogdiner.stickyapi.common.util.TimeUtil;
 
+import com.dumbdogdiner.stickycommands.utils.Constants;
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPIConfig;
 import kr.entree.spigradle.annotations.PluginMain;
@@ -218,6 +220,7 @@ public class StickyCommands extends JavaPlugin {
         // no longer needed??? com.dumbdogdiner.stickycommands.database.terminate(); // Terminate our com.dumbdogdiner.stickycommands.database connection
         afkRunnable.cancel(); // Stop our AFK runnable
         enabled = false;
+
     }
 
     /**
@@ -255,7 +258,6 @@ public class StickyCommands extends JavaPlugin {
         registerCommand(WorthCommand.class);
         registerCommand(HatCommand.class);
         registerCommand(SellCommand.class);
-        SmiteCommand.register();
         return true;
     }
 
@@ -263,11 +265,13 @@ public class StickyCommands extends JavaPlugin {
      * Register all of our events
      */
     boolean registerEvents() {
+        getLogger().log(Level.INFO, "Enabling event listeners");
         PluginManager manager = getServer().getPluginManager();
         manager.registerEvents(new PlayerInteractionListener(), this);
         manager.registerEvents(new PlayerJoinListener(), this);
         manager.registerEvents(new AfkEventListener(), this);
         manager.registerEvents(new MedallionManager(this), this);
+        getLogger().log(Level.INFO, "Enabled event listeners");
         return true;
     }
 

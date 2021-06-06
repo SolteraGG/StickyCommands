@@ -21,6 +21,7 @@ object Constants {
         const val SELL = "sell"
         const val SPEED = "speed"
         const val MEDALLION = "medallion"
+        const val DIE = "die"
     }
 
     object Permissions {
@@ -60,7 +61,8 @@ object Constants {
     }
 
     object Files {
-        const val MEDALLION_UUIDS = "uuids_by_season.csv"
+        const val MEDALLION_UUIDS = "medallions.yml"// "uuids_by_season.csv"
+        const val MEDALLION_ITEMS = "medallions.json"
         const val ITEM_WORTHS = "worth.yml"
         const val RULEBOOK = "rulebook.json"
     }
@@ -165,12 +167,6 @@ object Constants {
     }
 
     object Messages {
-        object SMITE {
-            const val SMITE_OTHER_PLAYER_SUCCESS = "smite.smite-other-player-success"
-            const val SMITE_BLOCK = "smite.smite-block"
-            const val SMITE_MESSAGE = "smite.smite-message"
-            const val SMITE_IMMUNE = "smite.smite-immune"
-            const val SMITE_YOURSELF = "smite.yourself"
-        }
+        const val STICKYCOMMANDS_VERSION = "version"
     }
 }
