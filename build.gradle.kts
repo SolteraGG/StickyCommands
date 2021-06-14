@@ -5,7 +5,7 @@ plugins {
     java
     kotlin("jvm") version "1.4.32"
     id("com.diffplug.spotless") version "5.11.0"
-    id("kr.entree.spigradle") version "2.2.3"
+    id("kr.entree.spigradle") version "2.2.4"
     id("io.freefair.lombok") version "5.3.0"
 }
 
